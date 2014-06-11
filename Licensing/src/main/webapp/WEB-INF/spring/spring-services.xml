@@ -1,0 +1,24 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="activationService" class="com.magmanics.licensing.service.ActivationServiceImpl">
+        <constructor-arg ref="configurationRepository" />
+        <constructor-arg ref="customerRepository" />
+        <constructor-arg ref="productRepository" />
+    </bean>
+
+    <bean id="productRepository" class="com.magmanics.licensing.service.ProductRepositoryImpl">
+        <constructor-arg ref="productDao" />
+    </bean>
+
+    <bean id="configurationRepository" class="com.magmanics.licensing.service.ConfigurationRepositoryImpl">
+        <constructor-arg ref="configurationDao" />
+        <constructor-arg ref="serialGenerator" />
+    </bean>
+
+    <bean id="customerRepository" class="com.magmanics.licensing.service.CustomerRepositoryImpl">
+        <constructor-arg ref="customerDao" />
+    </bean>
+
+</beans>

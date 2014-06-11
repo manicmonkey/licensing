@@ -1,0 +1,23 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss} %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="DEBUG">
+    <appender-ref ref="STDOUT" />
+  </root>
+
+  <!-- log4jdbc logging -->
+  <logger name="jdbc.sqlonly" level="INFO" />
+  <logger name="jdbc.sqltiming" level="ERROR" />
+  <logger name="jdbc.audit" level="ERROR" />
+  <logger name="jdbc.resultset" level="ERROR" />
+  <logger name="jdbc.resultsettable" level="DEBUG" />
+  <logger name="jdbc.connection" level="ERROR" />
+
+</configuration>

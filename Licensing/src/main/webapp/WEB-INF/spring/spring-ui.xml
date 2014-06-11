@@ -1,0 +1,81 @@
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.magmanics.licensing.ui" />
+
+    <context:mbean-export />
+
+    <!--<bean class="com.magmanics.licensing.ui.ContentPanelButton"-->
+          <!--p:label="menu.button.licences"-->
+          <!--p:contentPanel-ref="licenceContentPanel" />-->
+    <!--<bean class="com.magmanics.licensing.ui.ContentPanelButton"-->
+          <!--p:label="menu.button.customers"-->
+          <!--p:contentPanel-ref="customerContentPanel" />-->
+    <!--<bean class="com.magmanics.licensing.ui.ContentPanelButton"-->
+          <!--p:label="menu.button.products"-->
+          <!--p:contentPanel-ref="productContentPanel" />-->
+
+    <!--<bean id="customerContentPanel" class="com.magmanics.licensing.ui.content.CustomerContentPanel" />-->
+    <!--<bean id="licenceContentPanel" class="com.magmanics.licensing.ui.content.LicenceContentPanel" />-->
+    <!--<bean id="productContentPanel" class="com.magmanics.licensing.ui.content.ProductContentPanel" />-->
+
+    <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"
+		  p:basenames="ApplicationResources,AuditResources"/>
+
+    <bean class="com.magmanics.vaadin.spring.VaadinApplicationObjectSupport" />
+
+    <!--
+    <bean id="application" class="com.magmanics.licensing.ui.LicensingApplication"
+          p:applicationLogin-ref="applicationLogin"
+          p:applicationMenu-ref="applicationMenu"
+          p:applicationPanel-ref="applicationPanel" />
+
+    <bean id="applicationLogin" class="com.magmanics.licensing.ui.AuthenticationServicervice"
+          p:authenticationManager-ref="authenticationManager" />
+
+    <bean id="applicationPanel" class="com.magmanics.licensing.ui.WelcomePanel
+
+    <bean id="applicationMenu" class="com.magmanics.licensing.ui.ApplicationMenu">
+        <property name="buttons">
+            <list>
+                <bean class="com.magmanics.licensing.ui.ContentPanelButton">
+                    <constructor-arg value="Licences" />
+                    <constructor-arg ref="applicationPanel" />
+                    <constructor-arg ref="licenceContentPanel" />
+                </bean>
+                <bean class="com.magmanics.licensing.ui.ContentPanelButton">
+                    <constructor-arg value="Customers" />
+                    <constructor-arg ref="applicationPanel" />
+                    <constructor-arg ref="customerContentPanel" />
+                </bean>
+                <bean class="com.magmanics.licensing.ui.ContentPanelButton">
+                    <constructor-arg value="Products" />
+                    <constructor-arg ref="applicationPanel" />
+                    <constructor-arg ref="productContentPanel" />
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="licenceContentPanel" class="com.magmanics.licensing.ui.content.LicenceContentPanel">
+        <constructor-arg ref="customerDropdown" />
+        <constructor-arg ref="configurationTable" />
+    </bean>
+
+    <bean id="customerContentPanel" class="com.magmanics.licensing.ui.content.CustomerContentPanel">
+        <constructor-arg ref="customerRepository" />
+    </bean>
+
+    <bean id="productContentPanel" class="com.magmanics.licensing.ui.content.ProductContentPanel"
+          p:productRepository-ref="productRepository" />
+
+    <bean id="customerDropdown" class="com.magmanics.licensing.ui.content.subcontent.CustomerComboBox"
+          p:customerRepository-ref="customerRepository" />
+
+    <bean id="configurationTable" class="com.magmanics.licensing.ui.content.subcontent.ConfigurationTable"
+          p:configurationRepository-ref="configurationRepository"
+          p:productRepository-ref="productRepository" />-->
+
+</beans>

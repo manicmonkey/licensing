@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+           targetNamespace="http://magmanics.com/licensing/ws/model"
+           xmlns:tns="http://magmanics.com/licensing/ws/model">
+    <xs:element name="ActivationRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="tns:serial"/>
+                <xs:element ref="tns:hardwareIdentifier"/>
+                <xs:element ref="tns:extraInfo"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="serial" type="xs:string"/>
+    <xs:element name="hardwareIdentifier" type="xs:string"/>
+    <xs:element name="extraInfo" type="tns:map" />
+    <xs:complexType name="map">
+        <xs:sequence>
+            <xs:element name="entry" type="tns:mapEntry" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="mapEntry">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="key" type="xs:string" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+</xs:schema>

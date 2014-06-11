@@ -1,0 +1,21 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Licensing:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="licensing-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Licensing:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.scala-lang:scala-library:2.8.1" />
+          <element id="library" level="project" name="Maven: org.scala-lang:scala-compiler:2.8.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

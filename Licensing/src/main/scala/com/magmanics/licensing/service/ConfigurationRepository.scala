@@ -1,0 +1,112 @@
+/**
+ * Magmanics Licensing. This web application allows for centralized control
+ * of client application activation, with optional configuration parameters
+ * to control licensable features, and storage of supplementary information
+ * about the client machine. Client applications may interface with this
+ * central server (for activation) using libraries licenced under an
+ * alternative licence.
+ *
+ * Copyright (C) 2010 James Baxter <j.w.baxter(at)gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package com.magmanics.licensing.service
+
+import com.magmanics.licensing.datalayer.dao.ConfigurationDao
+import model.{Configuration, Customer}
+import com.magmanics.licensing.datalayer.SerialGenerator
+import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
+import com.magmanics.auditing.Auditable
+
+/**
+ * Repository for {@link com.magmanics.licensing.service.model.Configuration Configurations}. In addition to basic data
+ * access, implementations will add method level authentication and auditing.
+ *
+ * @author James Baxter <j.w.baxter@gmail.com>
+ * @since 15-Aug-2010
+ */
+trait ConfigurationRepository {
+  /**
+   * Create a configuration
+   * @return the persistent configuration (ie includes an id).
+   */
+  def create(configuration: Configuration): Configuration
+
+  /**
+   * Updates a configuration
+   */
+  def update(configuration: Configuration)
+
+  /**
+   * Lookup a Configuration by its id
+   * @throws NoSuchEntityException If a configuration with the given id cannot be found
+   */
+  def get(id: Long): Configuration
+
+  /**
+   * Get configurations for a particular customer. Returns an empty list if none are found.
+   */
+  def get(customer: Customer): Seq[Configuration]
+
+  /**
+   * Try to get a configuration given a serial.
+   */
+  def get(serial: String): Option[Configuration]
+}
+
+@PreAuthorize("isAuthenticated()")
+class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGenerator: SerialGenerator) extends ConfigurationRepository {
+
+  val log = LoggerFactory.getLogger(classOf[ConfigurationRepositoryImpl])
+
+  @PreAuthorize("hasRole('CREATE_CONFIGURATION')")
+  @Auditable("audit.configuration.create")
+  def create(configuration: Configuration): Configuration = {
+    val generatedSerial = serialGenerator.generateSerial()
+    val newConfiguration = configuration copy (serial = Some(generatedSerial))
+    log.debug("Creating new configuration: {}", newConfiguration)
+    configurationDao.create(newConfiguration)
+  }
+
+  @PreAuthorize("hasRole('UPDATE_CONFIGURATION')")
+  @Auditable("audit.configuration.update")
+  def update(configuration: Configuration) {
+    log.debug("Updating {}", configuration)
+    configurationDao.update(configuration)
+  }
+
+  @Auditable("audit.configuration.get")
+  def get(id: Long): Configuration = {
+    log.debug("Getting Configuration#{}", id)
+    val configuration = configurationDao.get(id)
+    log.debug("Got configuration: {}", configuration)
+    configuration
+  }
+
+  @Auditable("audit.configurations.getByCustomer")
+  def get(customer: Customer): Seq[Configuration] = {
+    log.debug("Getting Configurations for {}", customer)
+    val configurations = configurationDao.getByCustomer(customer)
+    log.debug("Got configurations for customer({}): {}", customer, configurations)
+    configurations
+  }
+
+  @Auditable("audit.configuration.getBySerial")
+  def get(serial: String): Option[Configuration] = {
+    log.debug("Getting Configuration with serial: {}", serial)
+    configurationDao.getBySerial(serial)
+  }
+}

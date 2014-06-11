@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <global-method-security pre-post-annotations="enabled" />
+
+    <!--<http use-expressions="true">-->
+        <!--<intercept-url pattern="/*" access="hasRole('ROLE_USER')" />-->
+    <!--</http>-->
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider>
+            <password-encoder hash="md5" />
+            <user-service>
+                <user name="createCustomer" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="CREATE_CUSTOMER" />
+                <user name="updateCustomer" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="UPDATE_CUSTOMER" />
+                <user name="createProduct" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="CREATE_PRODUCT" />
+                <user name="updateProduct" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="UPDATE_PRODUCT" />
+                <user name="createConfiguration" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="CREATE_CONFIGURATION" />
+                <user name="updateConfiguration" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="UPDATE_CONFIGURATION" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

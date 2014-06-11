@@ -1,0 +1,58 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Licensing-ui:war exploded">
+    <output-path>$PROJECT_DIR$/target/licensing-UI-1.0-SNAPSHOT</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Licensing-ui/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Licensing-ui" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: com.magmanics.licensing:licensing-backup:1.0-SNAPSHOT" />
+          <element id="library" level="project" name="Maven: org.scala-lang:scala-library:2.8.1" />
+          <element id="library" level="project" name="Maven: org.scala-lang:scala-compiler:2.8.1" />
+          <element id="library" level="project" name="Maven: javax.xml.bind:jaxb-api:2.2" />
+          <element id="library" level="project" name="Maven: javax.xml.stream:stax-api:1.0-2" />
+          <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
+          <element id="library" level="project" name="Maven: com.vaadin:vaadin:6.5.1" />
+          <element id="library" level="project" name="Maven: com.google.gwt:gwt-user:2.1.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-asm:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: aopalliance:aopalliance:1.0" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:3.0.5.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:3.0.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:3.0.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjrt:1.6.8" />
+          <element id="library" level="project" name="Maven: org.aspectj:aspectjweaver:1.6.8" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:3.0.3.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:3.0.3.RELEASE" />
+          <element id="library" level="project" name="Maven: ru.circumflex:circumflex-orm:1.2" />
+          <element id="library" level="project" name="Maven: ru.circumflex:circumflex-core:1.2" />
+          <element id="library" level="project" name="Maven: org.mortbay.jetty:jetty:6.1.20" />
+          <element id="library" level="project" name="Maven: org.mortbay.jetty:jetty-util:6.1.20" />
+          <element id="library" level="project" name="Maven: org.mortbay.jetty:servlet-api:2.5-20081211" />
+          <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.6.1" />
+          <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.8.0" />
+          <element id="library" level="project" name="Maven: commons-io:commons-io:1.4" />
+          <element id="library" level="project" name="Maven: org.mortbay.jetty:jetty-servlet-tester:6.1.20" />
+          <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.2" />
+          <element id="library" level="project" name="Maven: hsqldb:hsqldb:1.8.0.10" />
+          <element id="library" level="project" name="Maven: org.lazyluke:log4jdbc-remix:0.2.4" />
+          <element id="library" level="project" name="Maven: junit:junit:3.8.1" />
+          <element id="library" level="project" name="Maven: org.easymock:easymock:2.5.2" />
+          <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:0.9.24" />
+          <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:0.9.24" />
+          <element id="library" level="project" name="Maven: org.jvnet.jaxb2_commons:jaxb2-basics:0.6.0" />
+          <element id="library" level="project" name="Maven: org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.6.0" />
+          <element id="library" level="project" name="Maven: org.jvnet.jaxb2_commons:jaxb2-basics-tools:0.6.0" />
+          <element id="library" level="project" name="Maven: commons-lang:commons-lang:2.2" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

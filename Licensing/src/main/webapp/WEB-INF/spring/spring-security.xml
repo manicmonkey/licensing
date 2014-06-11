@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://www.springframework.org/schema/security"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <global-method-security pre-post-annotations="enabled">
+        <protect-pointcut expression="execution(* com.magmanics.licensing.service.AuthenticationService.*(..))" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
+        <protect-pointcut expression="execution(* com.magmanics.licensing.service.*.*(..))" access="ROLE_USER"/>
+    </global-method-security>
+
+    <http>
+        <intercept-url pattern="/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+        <http-basic />
+    </http>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider>
+            <password-encoder hash="md5" />
+            <user-service>
+                <user name="admin" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="ROLE_USER,CREATE_CUSTOMER,CREATE_CONFIGURATION,UPDATE_PRODUCT" />
+            </user-service>
+        </authentication-provider>
+    </authentication-manager>
+
+    <beans:bean id="authenticationService" class="com.magmanics.licensing.service.AuthenticationServiceImpl">
+        <beans:constructor-arg ref="authenticationManager" />
+    </beans:bean>
+
+</beans:beans>

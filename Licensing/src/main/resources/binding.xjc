@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jaxb:bindings xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:tns="http://magmanics.com/licensing/ws/model"
+               version="2.0">
+    <jaxb:bindings schemaLocation="activation.xsd" node="/xsd:schema">
+        <!--<jaxb:bindings node="//xsd:complexType[@name='map']">-->
+        <jaxb:globalBindings>
+            <jaxb:javaType name="java.util.HashMap" xmlType="tns:map"
+                           parseMethod="com.magmanics.licensing.ws.MapConversion.unmarshal"
+                           printMethod="com.magmanics.licensing.ws.MapConversion.marshal"/>
+        </jaxb:globalBindings>
+        <!--</jaxb:bindings>-->
+    </jaxb:bindings>
+</jaxb:bindings>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Licensing/Licensing.iml" filepath="$PROJECT_DIR$/Licensing/Licensing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Licensing-UI/Licensing-UI.iml" filepath="$PROJECT_DIR$/Licensing-UI/Licensing-UI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/licensing-backup.iml" filepath="$PROJECT_DIR$/licensing-backup.iml" />
+    </modules>
+  </component>
+</project>
+
