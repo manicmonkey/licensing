@@ -24,21 +24,25 @@
 
 package com.magmanics.auditing.model
 
-import ru.circumflex.orm.{Table, Record}
+import ru.circumflex.orm.{IdentityGenerator, Table, Record}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 20-Sep-2010
  */
-class AuditCircumflex extends Record[AuditCircumflex] {
-  val created = "created" TIMESTAMP
-  val username = "username" VARCHAR(50)
-  val auditCode = "audit_code" VARCHAR(100)
-  val auditMessage = "audit_message" VARCHAR(255)
+class AuditCircumflex extends Record[Long, AuditCircumflex] with IdentityGenerator[Long, AuditCircumflex] {
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val created = "created".TIMESTAMP
+  val username = "username".VARCHAR(50)
+  val auditCode = "audit_code".VARCHAR(100)
+  val auditMessage = "audit_message".VARCHAR(1000)
+
+  def PRIMARY_KEY = id
+  def relation = AuditCircumflex
 
   override def toString = {
-    "AuditCircumflex{id=" + id.get + ", created=" + created.get + ", username=" + username.get + ", auditCode=" + auditCode.get + ", auditMessage=" + auditMessage +"}"
+    "AuditCircumflex{id=" + PRIMARY_KEY + ", created=" + created.get + ", username=" + username.get + ", auditCode=" + auditCode.get + ", auditMessage=" + auditMessage +"}"
   }
 }
 
-object AuditCircumflex extends Table[AuditCircumflex]
+object AuditCircumflex extends AuditCircumflex with Table[Long, AuditCircumflex]

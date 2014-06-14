@@ -49,7 +49,7 @@ class ActivationDaoCircumflex extends ActivationDao {
 
     log.debug("Creating Activation({}) against Configuration({})", activation, configurationId)
     val a = new ActivationCircumflex //todo constructor in circumflex model takes service model?
-    a.configuration := configurationId
+    a.configuration.field := configurationId
     a.activationType := activation.activationType.toString
     a.machineIdentifier := activation.machineIdentifier
     a.productVersion := activation.productVersion

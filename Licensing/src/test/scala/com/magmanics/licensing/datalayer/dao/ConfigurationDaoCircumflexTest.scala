@@ -28,7 +28,7 @@ class ConfigurationDaoCircumflexTest extends AutoRollbackTransaction {
     product.description := "PDM Archive"
     product.save
 
-    val transientConfiguration = new Configuration(user = "jbaxter", serial = Some("fake-serial"), productId = product.id.getValue, customerId = customer.id.getValue)
+    val transientConfiguration = new Configuration(user = "jbaxter", serial = Some("fake-serial"), productId = product.id(), customerId = customer.id())
     val persistentConfiguration = new ConfigurationDaoCircumflex(null).create(transientConfiguration)
 
     assertTrue(persistentConfiguration.id.isDefined)

@@ -41,7 +41,7 @@ object ImplicitCircumflexModelConversion {
   //implicit activation conversions
   implicit def activationCircumflexToActivation(ac: ActivationCircumflex): Activation = {
     log.trace("Converting ActivationCircumflex: {}", ac)
-    Activation(Some(ac.id.getValue), ac.created.getValue, ac.machineIdentifier.getValue, ac.productVersion.getValue, ActivationType.withName(ac.activationType.getValue), Map(ac.extraInfo.getValue.map(ai => ai.key.getValue -> ai.value.getValue): _*))
+    Activation(Some(ac.PRIMARY_KEY()), ac.created(), ac.machineIdentifier(), ac.productVersion(), ActivationType.withName(ac.activationType()), Map(ac.extraInfo.get.map(ai => ai.key() -> ai.value()): _*))
   }
   implicit def activationCircumflexSeqToActivationSeq(activations: Seq[ActivationCircumflex]): Seq[Activation] = {
     log.trace("Converting Seq[ActivationCircumflex]: {}", activations)
@@ -52,16 +52,16 @@ object ImplicitCircumflexModelConversion {
   implicit def configurationCircumflexToConfiguration(configuration: ConfigurationCircumflex): Configuration = {
     log.trace("Converting ConfigurationCircumflex: {}", configuration)
     Configuration(
-      Some(configuration.id.getValue),
-      configuration.user.getValue,
-      configuration.product.getValue.id.getValue,
-      configuration.customer.getValue.id.getValue,
-      configuration.created.getValue,
-      Some(configuration.serial.getValue),
-      Map(configuration.options.getValue.map(a => a.key.getValue -> a.value.getValue): _*),
-      configuration.enabled.getValue,
-      configuration.maxActivations.getValue,
-      configuration.activations.getValue)
+      Some(configuration.PRIMARY_KEY()),
+      configuration.user(),
+      configuration.product().PRIMARY_KEY(),
+      configuration.customer().PRIMARY_KEY(),
+      configuration.created(),
+      Some(configuration.serial()),
+      Map(configuration.options.get.map(a => a.key() -> a.value()): _*),
+      configuration.enabled(),
+      configuration.maxActivations(),
+      configuration.activations.get)
   }
   implicit def configurationCircumflexSeqToConfigurationSeq(configurations: Seq[ConfigurationCircumflex]): Seq[Configuration] = {
     log.trace("Converting Seq[ConfigurationCircumflex]: {}", configurations)
@@ -71,7 +71,7 @@ object ImplicitCircumflexModelConversion {
   //implicit customer conversions
   implicit def customerCircumflexToCustomer(customerCircumflex: CustomerCircumflex): Customer = {
     log.trace("Converting CustomerCircumflex: {}", customerCircumflex)
-    Customer(Some(customerCircumflex.id.getValue), customerCircumflex.name.getValue, customerCircumflex.enabled.getValue)
+    Customer(Some(customerCircumflex.PRIMARY_KEY()), customerCircumflex.name(), customerCircumflex.enabled())
   }
   implicit def customerCircumflexOptionToCustomerOption(customerCircumflex: Option[CustomerCircumflex]): Option[Customer] = {
     log.trace("Converting CustomerCircumflex: {}", customerCircumflex)
@@ -88,7 +88,7 @@ object ImplicitCircumflexModelConversion {
   //implicit product conversions
   implicit def productCircumflexToProduct(product: ProductCircumflex): Product = {
     log.trace("Converting ProductCircumflex: {}", product)
-    Product(Some(product.id.getValue), product.name.getValue, product.description.getValue, product.enabled.getValue, product.getOptions) //todo convert product option...
+    Product(Some(product.PRIMARY_KEY()), product.name(), product.description(), product.enabled(), product.getOptions) //todo convert product option...
   }
   implicit def productCircumflexOptionToProductOption(productCircumflex: Option[ProductCircumflex]): Option[Product] = {
     log.trace("Converting ProductCircumflex: {}", productCircumflex)
@@ -106,9 +106,9 @@ object ImplicitCircumflexModelConversion {
   implicit def productOptionCircumflexToProductOption(option: ProductOptionCircumflex[Any]): ProductOption[_] = {
     log.trace("Converting ProductOptionCircumflex: {}", option)
     option match {
-      case option: TextProductOptionCircumflex => TextOption(Some(option.id.getValue), option.name.getValue, option.default.getValue)
-      case option: RadioProductOptionCircumflex => BoolOption(Some(option.id.getValue), option.name.getValue, option.default.getValue)
-      case option: ListProductOptionCircumflex => ListOption(Some(option.id.getValue), option.name.getValue, option.default.getValue, option.values.apply.map(_.value.getValue))
+      case option: TextProductOptionCircumflex => TextOption(Some(option.PRIMARY_KEY()), option.name(), option.default())
+      case option: RadioProductOptionCircumflex => BoolOption(Some(option.PRIMARY_KEY()), option.name(), option.default())
+      case option: ListProductOptionCircumflex => ListOption(Some(option.PRIMARY_KEY()), option.name(), option.default(), option.values.apply.map(_.value()))
     }
   }
   implicit def productOptionCircumflexSeqToProductOptionSeq(options: Seq[ProductOptionCircumflex[_]]): Seq[ProductOption[_]] = {

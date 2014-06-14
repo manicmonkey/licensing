@@ -6,36 +6,36 @@
 
     <name>Licensing UI</name>
 
-    <groupId>com.magmanics</groupId>
-    <artifactId>licensing-UI</artifactId>
+    <artifactId>licensing-ui</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
+    <parent>
+        <groupId>com.magmanics.licensing</groupId>
+        <artifactId>licensing-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <properties>
-        <slf4j.version>1.6.1</slf4j.version>
-        <scala.version>2.8.1</scala.version>
         <spring.version>3.0.5.RELEASE</spring.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
         <!-- licensing backend -->
         <dependency>
             <groupId>com.magmanics.licensing</groupId>
-            <artifactId>licensing</artifactId>
+            <artifactId>licensing-server</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- Language -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
         </dependency>
         <!-- this for intellij to know which compiler to know -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
-            <version>${scala.version}</version>
         </dependency>
         <!-- UI -->
         <dependency>
@@ -74,22 +74,18 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency><!-- a few of our dependencies use commons-logging (this implements the interface and redirects to slf4j)-->
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>0.9.24</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>0.9.24</version>
         </dependency>
         <!-- Test dependencies -->
         <dependency>
@@ -119,24 +115,8 @@
         </testResources>
         <plugins>
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>2.14.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scalaVersion>${scala.version}</scalaVersion>
-                    <args>
-                        <arg>-target:jvm-1.5</arg>
-                        <arg>-deprecation</arg>
-                    </args>
-                </configuration>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -182,81 +162,13 @@
         </plugins>
     </build>
 
-    <organization>
-        <name>Magmanics</name>
-        <url>http://www.magmanics.co.uk</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <name>James Baxter</name>
-            <email>j.w.baxter(at)gmail.com</email>
-        </developer>
-    </developers>
-
-    <licenses>
-        <license>
-            <name>GNU General Public License V3</name>
-            <url>http://www.gnu.org/licenses/gpl.html</url>
-            <distribution>manual</distribution>
-        </license>
-    </licenses>
-
     <reporting>
         <plugins>
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>2.14.1</version>
-                <configuration>
-                    <scalaVersion>${scala.version}</scalaVersion>
-                </configuration>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </reporting>
-
-    <repositories>
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-        <repository>
-            <id>scala-tools.org_snapshots</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>undercover</id>
-            <url>http://undercover.googlecode.com/svn/maven/repository</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>undercover_snaphost</id>
-            <url>http://undercover.googlecode.com/svn/maven/snapshot-repository</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>emma</id>
-            <url>http://emma.sourceforge.net/maven/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>maven-repository.dev.java.net</id>
-            <name>Java.net Maven 2 Repository</name>
-            <url>http://download.java.net/maven/2</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>

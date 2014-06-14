@@ -29,6 +29,7 @@ import exception.{DataLayerException, ConstraintException}
 import com.magmanics.licensing.datalayer.model._
 import com.magmanics.licensing.service.exception.DuplicateNameException
 import org.slf4j.LoggerFactory
+import ru.circumflex.core.ValidationException
 
 /**
  * DAO for {@link com.magmanics.licensing.service.model.Product Product}s
@@ -153,7 +154,7 @@ class ProductDaoCircumflex extends ProductDao {
   private def getCircumflex(id: Long): Option[ProductCircumflex] = {
     log.debug("Getting Product with id: {}", id)
     val p = ProductCircumflex AS "p"
-    SELECT (p.*) FROM (p) WHERE (p.id EQ id) unique
+    SELECT (p.*) FROM (p) WHERE (p.PRIMARY_KEY EQ id) unique
   }
 
   def update(p: Product) {
@@ -175,38 +176,33 @@ class ProductDaoCircumflex extends ProductDao {
     product.enabled := p.enabled
     //todo how to attach to product? cascade?? new test proj
     //todo load options and delete/recreate
-    p.options.foreach(o => {
-      o match {
-        case b: BoolOption => {
-          val radio = new RadioProductOptionCircumflex
-          if (b.id.isDefined) radio.id := b.id.get
-          radio.name := b.name
-          radio.default := b.default
-          product.radioOptions.apply :+ radio
-        }
-        case t: TextOption => {
-          val text = new TextProductOptionCircumflex
-          if (t.id.isDefined) text.id := t.id.get
-          text.name := t.name
-          text.default := t.default
-          product.textOptions.apply :+ text
-        }
-        case l: ListOption => {
-          val list = new ListProductOptionCircumflex
-          if (l.id.isDefined) list.id := l.id.get
-          list.name := l.name
-          list.default := l.default
-          l.values.foreach(o => {
-            val option = new ListProductOptionValueCircumflex
-            if (l.id.isDefined) option.id := l.id.get
-            option.value := o
-            list.values.getValue :+ option
-          })
-          product.listOptions.getValue :+ list
-        }
-      }
-    })
+    p.options.foreach {
+      case b: BoolOption =>
+        val radio = new RadioProductOptionCircumflex
+        if (b.id.isDefined) radio.PRIMARY_KEY := b.id.get
+        radio.name := b.name
+        radio.default := b.default
+        product.radioOptions.apply :+ radio
+      case t: TextOption =>
+        val text = new TextProductOptionCircumflex
+        if (t.id.isDefined) text.PRIMARY_KEY := t.id.get
+        text.name := t.name
+        text.default := t.default
+        product.textOptions.apply :+ text
+      case l: ListOption =>
+        val list = new ListProductOptionCircumflex
+        if (l.id.isDefined) list.PRIMARY_KEY := l.id.get
+        list.name := l.name
+        list.default := l.default
+        l.values.foreach(o => {
+          val option = new ListProductOptionValueCircumflex
+          if (l.id.isDefined) option.PRIMARY_KEY := l.id.get
+          option.value := o
+          list.values.get :+ option
+        })
+        product.listOptions.get :+ list
+    }
 
-    product.update()
+    product.UPDATE()
   }
 }

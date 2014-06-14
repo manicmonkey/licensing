@@ -35,54 +35,66 @@ import ru.circumflex.orm._
  */
 trait ProductOptionCircumflex[+T] {
 
-  def name: TextField
+  def name: TextField[_]
 
-  def getLabel(): String = name.getValue
+  def getLabel(): String = name()
   def setLabel(label: String) = name := label
 
   def getDefault: T
   def setDefault[U >: T](default: U)
 }
 
-class TextProductOptionCircumflex extends Record[TextProductOptionCircumflex] with ProductOptionCircumflex[String] {
+class TextProductOptionCircumflex extends Record[Long, TextProductOptionCircumflex] with ProductOptionCircumflex[String] with IdentityGenerator[Long, TextProductOptionCircumflex] {
 
-  val name = "name" VARCHAR(100) NOT_NULL
-  val default = "default" VARCHAR(255) NOT_NULL
-  val product = "product_id" REFERENCES(ProductCircumflex) ON_DELETE CASCADE
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val name = "name".VARCHAR(100).NOT_NULL
+  val default = "default".VARCHAR(255).NOT_NULL
+  val product = "product_id".BIGINT.REFERENCES(ProductCircumflex).ON_DELETE(CASCADE)
 
-  override def getDefault() = default.getValue
+  def PRIMARY_KEY = id
+  def relation = TextProductOptionCircumflex
+
+  override def getDefault = default()
   override def setDefault[U >: String](defaultValue: U) = default := defaultValue.asInstanceOf[String]
 }
 
-object TextProductOptionCircumflex extends Table[TextProductOptionCircumflex]
+object TextProductOptionCircumflex extends TextProductOptionCircumflex with Table[Long, TextProductOptionCircumflex]
 
-class RadioProductOptionCircumflex extends Record[RadioProductOptionCircumflex] with ProductOptionCircumflex[Boolean] {
+class RadioProductOptionCircumflex extends Record[Long, RadioProductOptionCircumflex] with ProductOptionCircumflex[Boolean] with IdentityGenerator[Long, RadioProductOptionCircumflex] {
 
-  val name = "name" VARCHAR(100) NOT_NULL
-  val default = "default" BOOLEAN
-  val product = "product_id" REFERENCES(ProductCircumflex) ON_DELETE CASCADE
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val name = "name".VARCHAR(100).NOT_NULL
+  val default = "default".BOOLEAN
+  val product = "product_id".BIGINT.REFERENCES(ProductCircumflex).ON_DELETE(CASCADE)
 
-  override def getDefault() = default.getValue
+  def PRIMARY_KEY = id
+  def relation = RadioProductOptionCircumflex
+
+  override def getDefault = default()
   override def setDefault[U >: Boolean](defaultValue: U) = default := defaultValue.asInstanceOf[Boolean]
 }
 
-object RadioProductOptionCircumflex extends Table[RadioProductOptionCircumflex]
+object RadioProductOptionCircumflex extends RadioProductOptionCircumflex with Table[Long, RadioProductOptionCircumflex]
 
-class ListProductOptionCircumflex extends Record[ListProductOptionCircumflex] with ProductOptionCircumflex[String] {
+class ListProductOptionCircumflex extends Record[Long, ListProductOptionCircumflex] with ProductOptionCircumflex[String] with IdentityGenerator[Long, ListProductOptionCircumflex] {
 
-  val name = "name" VARCHAR(100) NOT_NULL
-  val default = "default" VARCHAR(100) NOT_NULL
-  val product = "product_id" REFERENCES(ProductCircumflex) ON_DELETE CASCADE
-  
-  def values = inverse(ListProductOptionValueCircumflex.listProductOption)
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val name = "name".VARCHAR(100).NOT_NULL
+  val default = "default".VARCHAR(100).NOT_NULL
+  val product = "product_id".BIGINT.REFERENCES(ProductCircumflex).ON_DELETE(CASCADE)
 
-  override def getDefault() = default.getValue
+  def PRIMARY_KEY = id
+  def relation = ListProductOptionCircumflex
+
+  def values = inverseMany(ListProductOptionValueCircumflex.listProductOption)
+
+  override def getDefault = default()
   override def setDefault[U >: String](defaultValue: U) = default := defaultValue.asInstanceOf[String]
 }
 
-object ListProductOptionCircumflex extends Table[ListProductOptionCircumflex]
+object ListProductOptionCircumflex extends ListProductOptionCircumflex with Table[Long, ListProductOptionCircumflex]
 
-class ListProductOptionValueCircumflex extends Record[ListProductOptionValueCircumflex] {
+class ListProductOptionValueCircumflex extends Record[Long, ListProductOptionValueCircumflex] with IdentityGenerator[Long, ListProductOptionValueCircumflex] {
 
   def this(myValue: String, parentList: ListProductOptionCircumflex) = {
     this()
@@ -90,11 +102,15 @@ class ListProductOptionValueCircumflex extends Record[ListProductOptionValueCirc
     listProductOption := parentList
   }
 
-  val value = "value" VARCHAR(100) NOT_NULL
-  val listProductOption = "list_product_option_id" REFERENCES(ListProductOptionCircumflex) ON_DELETE CASCADE
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val value = "value".VARCHAR(100).NOT_NULL
+  val listProductOption = "list_product_option_id".BIGINT.REFERENCES(ListProductOptionCircumflex).ON_DELETE(CASCADE)
+
+  def PRIMARY_KEY = id
+  def relation = ListProductOptionValueCircumflex
 }
 
-object ListProductOptionValueCircumflex extends Table[ListProductOptionValueCircumflex]
+object ListProductOptionValueCircumflex extends ListProductOptionValueCircumflex with Table[Long, ListProductOptionValueCircumflex]
 
   /**
    * for o in objects {

@@ -16,10 +16,10 @@ class ActivationDaoCircumflexTest {
   val ddl = new DDLUnit(CustomerCircumflex, ProductCircumflex, ConfigurationCircumflex, ActivationCircumflex)
 
   @BeforeClass
-  def createDatabase = ddl.create
+  def createDatabase = ddl.CREATE()
 
   @AfterClass
-  def removeDatabase = ddl.drop
+  def removeDatabase = ddl.DROP()
 
   @BeforeTest
   def startTransaction = tx

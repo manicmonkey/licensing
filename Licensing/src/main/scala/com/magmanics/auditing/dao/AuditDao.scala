@@ -88,13 +88,13 @@ class AuditDaoCircumflex extends AuditDao {
 
   override def getAuditCodes() = {
     log.debug("Getting distinct AuditCodes")
-    val a = AuditCircumflex as "a"
+    val a = AuditCircumflex AS "a"
     (SELECT (a.auditCode) FROM (a) GROUP_BY (a.auditCode)).list().map(AuditCode(_))
   }
 
   override def getUsernames() = {
     log.debug("Getting known usernames")
-    val a = AuditCircumflex as "a"
+    val a = AuditCircumflex AS "a"
     (SELECT (a.username) FROM (a) GROUP_BY (a.username) ORDER_BY (a.username ASC)).list()
   }
 
@@ -108,12 +108,12 @@ class AuditDaoCircumflex extends AuditDao {
   }
 
   private def auditMessageQuery(from: Date, to: Date, usernames: Seq[String], auditCodes: Seq[String]): Seq[AuditCircumflex] = {
-    val a = AuditCircumflex as "a"
-    (SELECT (a.*) FROM (a) WHERE ((a.created GT from) AND (a.created LT to) AND (a.username IN (usernames: _*)) AND (a.auditCode IN (auditCodes: _*)))).list()
+    val a = AuditCircumflex AS "a"
+    (SELECT (a.*) FROM a WHERE ((a.created GT from) AND (a.created LT to) AND (a.username IN usernames) AND (a.auditCode IN auditCodes))).list()
   }
 
   private def auditMessageQuery(from: Date, to: Date, usernames: Seq[String], auditCodes: Seq[String], filter: String): Seq[AuditCircumflex] = {
-    val a = AuditCircumflex as "a"
-    (SELECT (a.*) FROM (a) WHERE ((a.created GT from) AND (a.created LT to) AND (a.username IN (usernames: _*)) AND (a.auditCode IN (auditCodes: _*)) AND (a.auditMessage LIKE "%" + filter + "%"))).list()
+    val a = AuditCircumflex AS "a"
+    (SELECT (a.*) FROM a WHERE ((a.created GT from) AND (a.created LT to) AND (a.username IN usernames) AND (a.auditCode IN auditCodes) AND (a.auditMessage LIKE "%" + filter + "%"))).list()
   }
 }

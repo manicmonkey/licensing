@@ -22,8 +22,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="Licensing" />
         <module name="licensing" />
+        <module name="Licensing" />
         <module name="licensing-UI" />
         <module name="Licensing-UI" />
       </profile>

@@ -24,7 +24,8 @@
 
 package com.magmanics.circumflex.orm
 
-import ru.circumflex.orm.StatefulTransaction
+import ru.circumflex.orm.Transaction
+
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -32,11 +33,11 @@ import ru.circumflex.orm.StatefulTransaction
  */
 
 trait AutoRollbackTransaction {
-  def using(tx: StatefulTransaction)(transactionalWork: => Unit) {
+  def using(tx: Transaction)(transactionalWork: => Unit) {
     try {
       transactionalWork
     } finally {
-      tx.rollback
+      tx.rollback()
     }
   }
 }

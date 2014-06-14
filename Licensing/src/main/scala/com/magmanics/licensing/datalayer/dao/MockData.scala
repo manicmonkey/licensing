@@ -117,7 +117,6 @@ object MockData {
     licenceConfiguration.customer := customer
     licenceConfiguration.user := username
     licenceConfiguration.save
-    licenceConfiguration
 
     product.getOptions.foreach(c => {
       val po = new ConfigurationOptionCircumflex

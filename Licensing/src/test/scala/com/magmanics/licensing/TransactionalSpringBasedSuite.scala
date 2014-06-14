@@ -27,13 +27,13 @@ trait TransactionalSpringBasedSuite extends FeatureSpec with BeforeAndAfterAll w
 
     LogbackConfigurator.configure
 
-    ddl.create
+    ddl.CREATE()
 
     try {
       context = new ClassPathXmlApplicationContext(contextLocation)
     } catch {
       case e: Exception => {
-        ddl.drop
+        ddl.DROP()
         throw e
       }
     }
@@ -47,7 +47,7 @@ trait TransactionalSpringBasedSuite extends FeatureSpec with BeforeAndAfterAll w
     }
 
     try {
-      ddl.drop
+      ddl.DROP()
     } catch {
       case e: Exception => logger.error("Error dropping tables", e)
     }

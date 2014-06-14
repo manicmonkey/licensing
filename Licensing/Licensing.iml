@@ -4,10 +4,24 @@
     <facet type="scala" name="Scala">
       <configuration>
         <option name="compilerLibraryLevel" value="Project" />
-        <option name="compilerLibraryName" value="Maven: org.scala-lang:scala-compiler-bundle:2.8.1" />
-        <option name="compilerOptions" value="-target:jvm-1.5" />
-        <option name="deprecationWarnings" value="true" />
+        <option name="compilerLibraryName" value="Maven: org.scala-lang:scala-compiler-bundle:2.9.2" />
         <option name="vmOptions" value="" />
+      </configuration>
+    </facet>
+    <facet type="web" name="Web">
+      <configuration>
+        <descriptors>
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/src/main/webapp/WEB-INF/web.xml" />
+        </descriptors>
+        <webroots>
+          <root url="file://$MODULE_DIR$/src/main/webapp" relative="/" />
+        </webroots>
+        <sourceRoots>
+          <root url="file://$MODULE_DIR$/target/generated-sources/xjc" />
+          <root url="file://$MODULE_DIR$/src/main/generated-sources/xjc" />
+          <root url="file://$MODULE_DIR$/src/main/scala" />
+          <root url="file://$MODULE_DIR$/src/main/resources" />
+        </sourceRoots>
       </configuration>
     </facet>
   </component>
@@ -29,8 +43,8 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.8.1" level="project" />
-    <orderEntry type="library" name="Maven: org.scala-lang:scala-compiler:2.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.scala-lang:scala-library:2.9.2" level="project" />
+    <orderEntry type="library" name="Maven: org.scala-lang:scala-compiler:2.9.2" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.bind:jaxb-api:2.2" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.stream:stax-api:1.0-2" level="project" />
     <orderEntry type="library" name="Maven: javax.activation:activation:1.1" level="project" />
@@ -50,20 +64,21 @@
     <orderEntry type="library" name="Maven: org.aspectj:aspectjweaver:1.6.8" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-config:3.0.3.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.security:spring-security-web:3.0.3.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: ru.circumflex:circumflex-orm:1.2" level="project" />
-    <orderEntry type="library" name="Maven: ru.circumflex:circumflex-core:1.2" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.8.0" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:1.4" level="project" />
-    <orderEntry type="library" name="Maven: org.mortbay.jetty:jetty-servlet-tester:6.1.20" level="project" />
+    <orderEntry type="library" name="Maven: ru.circumflex:circumflex-orm:2.5" level="project" />
+    <orderEntry type="library" name="Maven: ru.circumflex:circumflex-core:2.5" level="project" />
+    <orderEntry type="library" name="Maven: commons-io:commons-io:2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.6" level="project" />
+    <orderEntry type="library" name="Maven: org.scalatest:scalatest_2.9.2:1.8" level="project" />
+    <orderEntry type="library" name="Maven: ru.circumflex:circumflex-cache:2.5" level="project" />
+    <orderEntry type="library" name="Maven: net.sf.ehcache:ehcache-core:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.transaction:jta:1.1" level="project" />
     <orderEntry type="library" name="Maven: c3p0:c3p0:0.9.1.2" level="project" />
-    <orderEntry type="library" name="Maven: hsqldb:hsqldb:1.8.0.10" level="project" />
-    <orderEntry type="library" name="Maven: org.lazyluke:log4jdbc-remix:0.2.4" level="project" />
+    <orderEntry type="library" name="Maven: com.h2database:h2:1.4.178" level="project" />
+    <orderEntry type="library" name="Maven: org.lazyluke:log4jdbc-remix:0.2.7" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.7" level="project" />
-    <orderEntry type="library" name="Maven: org.easymock:easymock:2.5.2" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.6.1" level="project" />
-    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:0.9.24" level="project" />
-    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:0.9.24" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:jcl-over-slf4j:1.7.7" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-core:1.1.2" level="project" />
+    <orderEntry type="library" name="Maven: ch.qos.logback:logback-classic:1.1.2" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:1.6.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.testng:testng:5.14.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.beanshell:bsh:2.0b4" level="project" />
@@ -73,6 +88,7 @@
     <orderEntry type="library" name="Maven: org.jvnet.jaxb2_commons:jaxb2-basics:0.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.jaxb2_commons:jaxb2-basics-runtime:0.6.0" level="project" />
     <orderEntry type="library" name="Maven: org.jvnet.jaxb2_commons:jaxb2-basics-tools:0.6.0" level="project" />
+    <orderEntry type="library" name="Maven: commons-beanutils:commons-beanutils:1.7.0" level="project" />
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.2" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.seleniumhq.selenium:selenium:2.0a7" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.seleniumhq.selenium:selenium-chrome-driver:2.0a7" level="project" />

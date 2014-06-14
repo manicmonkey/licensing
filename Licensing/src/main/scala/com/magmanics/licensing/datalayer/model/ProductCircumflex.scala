@@ -34,17 +34,21 @@ import ru.circumflex.orm._
  * To change this template use File | Settings | File Templates.
  */
 
-class ProductCircumflex extends Record[ProductCircumflex] {
+class ProductCircumflex extends Record[Long, ProductCircumflex] with IdentityGenerator[Long, ProductCircumflex] {
 
-  val name = "name" VARCHAR(100)
-  val description = "description" VARCHAR(200)
-  val enabled = "enabled" BOOLEAN
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val name = "name".VARCHAR(100)
+  val description = "description".VARCHAR(200)
+  val enabled = "enabled".BOOLEAN
 
-  def configurations = inverse(ConfigurationCircumflex.product)
+  def PRIMARY_KEY = id
+  def relation = ProductCircumflex
 
-  def listOptions = inverse(ListProductOptionCircumflex.product)
-  def textOptions = inverse(TextProductOptionCircumflex.product)
-  def radioOptions = inverse(RadioProductOptionCircumflex.product)
+  def configurations = inverseMany(ConfigurationCircumflex.product)
+
+  def listOptions = inverseMany(ListProductOptionCircumflex.product)
+  def textOptions = inverseMany(TextProductOptionCircumflex.product)
+  def radioOptions = inverseMany(RadioProductOptionCircumflex.product)
 
   def getOptions: Seq[ProductOptionCircumflex[Any]] = {
     val productOptions = Seq[ProductOptionCircumflex[Any]]() ++ listOptions.apply ++ textOptions.apply ++ radioOptions.apply
@@ -52,7 +56,7 @@ class ProductCircumflex extends Record[ProductCircumflex] {
   }
 }
 
-object ProductCircumflex extends Table[ProductCircumflex] {
+object ProductCircumflex extends ProductCircumflex with Table[Long, ProductCircumflex] {
   UNIQUE(this.name)
   validation.notEmpty((p: ProductCircumflex) => p.name)
 }

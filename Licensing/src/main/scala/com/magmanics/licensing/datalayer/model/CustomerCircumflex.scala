@@ -33,12 +33,16 @@ import ru.circumflex.orm._
  * To change this template use File | Settings | File Templates.
  */
 
-class CustomerCircumflex extends Record[CustomerCircumflex] {
+class CustomerCircumflex extends Record[Long, CustomerCircumflex] with IdentityGenerator[Long, CustomerCircumflex] {
 
-  val name = "name" VARCHAR(200) NOT_NULL
-  val enabled = "enabled" BOOLEAN
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val name = "name".VARCHAR(200).NOT_NULL.UNIQUE
+  val enabled = "enabled".BOOLEAN
 
-  def configurations = inverse(ConfigurationCircumflex.customer)
+  def PRIMARY_KEY = id
+  def relation = CustomerCircumflex
+
+  def configurations = inverseMany(ConfigurationCircumflex.customer)
 
 //  override def equals(that: Any) = {
 //    that match {
@@ -52,8 +56,7 @@ class CustomerCircumflex extends Record[CustomerCircumflex] {
 //  }
 }
 
-object CustomerCircumflex extends Table[CustomerCircumflex] { //todo remove not required
-  UNIQUE(this.name)
+object CustomerCircumflex extends CustomerCircumflex with Table[Long, CustomerCircumflex] { //todo remove not required
   validation.notEmpty((c: CustomerCircumflex) => c.name)
   validation.notNull((c: CustomerCircumflex) => c.enabled)
 

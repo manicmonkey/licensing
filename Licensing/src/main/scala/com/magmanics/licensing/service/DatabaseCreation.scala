@@ -44,7 +44,7 @@ object DatabaseCreation {
   def create {
     val ddl = new DDLUnit(CustomerCircumflex, ConfigurationCircumflex, ConfigurationOptionCircumflex, ActivationCircumflex, ActivationInfoCircumflex, ProductCircumflex, TextProductOptionCircumflex, RadioProductOptionCircumflex, ListProductOptionCircumflex, ListProductOptionValueCircumflex, AuditCircumflex)
 
-    ddl.create
+    ddl.CREATE()
 
     for (message <- ddl.messages) {
       log.info(message.toString)

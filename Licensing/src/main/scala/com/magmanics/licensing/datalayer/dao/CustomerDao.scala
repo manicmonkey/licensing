@@ -113,7 +113,7 @@ class CustomerDaoCircumflex extends CustomerDao {
   def getCircumflex(id: Long): Option[CustomerCircumflex] = {
     log.debug("Getting Customer with id: {}", id)
     val c = CustomerCircumflex AS "c"
-    SELECT (c.*) FROM (c) WHERE (c.id EQ id) unique
+    SELECT (c.*) FROM (c) WHERE (c.PRIMARY_KEY EQ id) unique
   }
 
   def getEnabled(): Seq[Customer] = {

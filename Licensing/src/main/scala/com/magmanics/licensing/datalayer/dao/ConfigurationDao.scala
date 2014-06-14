@@ -28,6 +28,7 @@ import com.magmanics.licensing.service.model.{Customer, Configuration}
 import com.magmanics.licensing.datalayer.model.{CustomerCircumflex, ConfigurationOptionCircumflex, ConfigurationCircumflex}
 import exception.{NoSuchEntityException, DataLayerException, ConstraintException}
 import org.slf4j.LoggerFactory
+import ru.circumflex.core.ValidationException
 
 /**
  * DAO for {@link com.magmanics.licensing.service.model.Configuration Configuration}s.
@@ -94,8 +95,8 @@ class ConfigurationDaoCircumflex(activationDao: ActivationDao) extends Configura
       c.enabled := configuration.enabled
       c.serial := configuration.serial.get
       c.maxActivations := configuration.maxActivations
-      c.product := configuration.productId
-      c.customer := configuration.customerId
+      c.product.field := configuration.productId
+      c.customer.field := configuration.customerId
       c.save
 
       configuration.options.foreach(option => {
@@ -151,7 +152,7 @@ class ConfigurationDaoCircumflex(activationDao: ActivationDao) extends Configura
 
     val con = ConfigurationCircumflex AS "con"
     val cus = CustomerCircumflex AS "cus"
-    SELECT(con.*) FROM (con JOIN cus) WHERE (cus.id EQ customer.id.get) list
+    SELECT(con.*) FROM (con JOIN cus) WHERE (cus.PRIMARY_KEY EQ customer.id.get) list
   }
 
   private def getCircumflex(id: Long): Option[ConfigurationCircumflex] = {
@@ -159,6 +160,6 @@ class ConfigurationDaoCircumflex(activationDao: ActivationDao) extends Configura
     log.debug("Getting Configuration with id: {}", id)
 
     val c = ConfigurationCircumflex AS "c"
-    (SELECT(c.*) FROM (c) WHERE (c.id EQ id)).unique
+    (SELECT(c.*) FROM (c) WHERE (c.PRIMARY_KEY EQ id)).unique
   }
 }

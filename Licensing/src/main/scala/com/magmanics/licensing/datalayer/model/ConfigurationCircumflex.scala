@@ -33,35 +33,41 @@ import java.util.Date
  * Time: 20:13:57
  * To change this template use File | Settings | File Templates.
  */
-class ConfigurationCircumflex extends Record[ConfigurationCircumflex] {
-  val created = "created" TIMESTAMP
-  val user = "user" VARCHAR(100)
-  val enabled = "enabled" BOOLEAN
-  val serial = "serial" VARCHAR(20)
-  val maxActivations = "max_activations" INTEGER
+class ConfigurationCircumflex extends Record[Long, ConfigurationCircumflex] with IdentityGenerator[Long, ConfigurationCircumflex] {
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val created = "created".TIMESTAMP
+  val user = "user".VARCHAR(100)
+  val enabled = "enabled".BOOLEAN
+  val serial = "serial".VARCHAR(50).UNIQUE
+  val maxActivations = "max_activations".INTEGER
 
-  val product = "product_id" REFERENCES(ProductCircumflex) ON_DELETE CASCADE
-  val customer = "customer_id" REFERENCES(CustomerCircumflex) ON_DELETE CASCADE
+  val product = "product_id".BIGINT.REFERENCES(ProductCircumflex).ON_DELETE(CASCADE)
+  val customer = "customer_id".BIGINT.REFERENCES(CustomerCircumflex).ON_DELETE(CASCADE)
 
-  def activations = inverse(ActivationCircumflex.configuration) //todo insert only - no delete
-  def options = inverse(ConfigurationOptionCircumflex.configuration)
+  def PRIMARY_KEY = id
+  def relation = ConfigurationCircumflex
 
-  override def insert_!(fields: Field[_]*): Int = {
-    if (created.empty_?) created := new Date
-    super.insert_!(fields: _*)
+  def activations = inverseMany(ActivationCircumflex.configuration) //todo insert only - no delete
+  def options = inverseMany(ConfigurationOptionCircumflex.configuration)
+
+  override def INSERT_!(fields: Field[_, ConfigurationCircumflex]*): Int = {
+    if (created.isEmpty) created := new Date
+    super.INSERT_!(fields: _*)
   }
 }
 
-object ConfigurationCircumflex extends Table[ConfigurationCircumflex] {
-  UNIQUE(this.serial)
+object ConfigurationCircumflex extends ConfigurationCircumflex with Table[Long, ConfigurationCircumflex]
+
+class ConfigurationOptionCircumflex extends Record[Long, ConfigurationOptionCircumflex] with IdentityGenerator[Long, ConfigurationOptionCircumflex] {
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val configuration = "configuration_id".BIGINT.REFERENCES(ConfigurationCircumflex)
+  val key = "key".VARCHAR(200).NOT_NULL
+  val value = "value".VARCHAR(200)
+
+  def PRIMARY_KEY = id
+  def relation = ConfigurationOptionCircumflex
 }
 
-class ConfigurationOptionCircumflex extends Record[ConfigurationOptionCircumflex] {
-  val configuration = "configuration_id" REFERENCES(ConfigurationCircumflex)
-  val key = "key" VARCHAR(200) NOT_NULL
-  val value = "value" VARCHAR(200)
-}
-
-object ConfigurationOptionCircumflex extends Table[ConfigurationOptionCircumflex] {
-  UNIQUE(this.id, this.key)
+object ConfigurationOptionCircumflex extends ConfigurationOptionCircumflex with Table[Long, ConfigurationOptionCircumflex] {
+  UNIQUE(this.PRIMARY_KEY, this.key)
 }

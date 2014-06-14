@@ -31,7 +31,7 @@ import java.util.Date
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 28-May-2010
  */
-class ActivationCircumflex extends Record[ActivationCircumflex] {
+class ActivationCircumflex extends Record[Long, ActivationCircumflex] with IdentityGenerator[Long, ActivationCircumflex] {
 
   def this(machineIdentifier: String, productVersion: String, activationType: String) {
     this()
@@ -40,17 +40,21 @@ class ActivationCircumflex extends Record[ActivationCircumflex] {
     this.activationType := activationType
   }
 
-  val created = "created" TIMESTAMP
-  val machineIdentifier = "machine_identifier" VARCHAR(200)
-  val productVersion = "product_version" VARCHAR(200)
-  val configuration = "configuration_id" REFERENCES(ConfigurationCircumflex)
-  val activationType = "activation_type" VARCHAR(10)
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val created = "created".TIMESTAMP
+  val machineIdentifier = "machine_identifier".VARCHAR(200)
+  val productVersion = "product_version".VARCHAR(200)
+  val configuration = "configuration_id".BIGINT.REFERENCES(ConfigurationCircumflex)
+  val activationType = "activation_type".VARCHAR(10)
 
-  def extraInfo = inverse(ActivationInfoCircumflex.activation)
+  def PRIMARY_KEY = id
+  def relation = ActivationCircumflex
 
-  override def insert_!(fields: Field[_]*): Int = {
-    if (created.empty_?) created := new Date
-    super.insert_!(fields: _*)
+  def extraInfo = inverseMany(ActivationInfoCircumflex.activation)
+
+  override def INSERT_!(fields: Field[_, ActivationCircumflex]*): Int = {
+    if (created.isEmpty) created := new Date
+    super.INSERT_!(fields: _*)
   }
 
 //  validation.add(a => { todo ensure can't go over limit
@@ -58,11 +62,11 @@ class ActivationCircumflex extends Record[ActivationCircumflex] {
 //  })
 
   override def toString = {
-    "ActivationCircumflex{id=" + id.get + ", machineIdentifier=" + machineIdentifier.get + ", activationType=" + activationType.get + "}"
+    "ActivationCircumflex{id=" + PRIMARY_KEY + ", machineIdentifier=" + machineIdentifier.get + ", activationType=" + activationType.get + "}"
   }
 }
 
-object ActivationCircumflex extends Table[ActivationCircumflex] {
+object ActivationCircumflex extends ActivationCircumflex with Table[Long, ActivationCircumflex] {
   CONSTRAINT("type_chk").CHECK("activation_type IN ('NEW', 'UPGRADE')") //todo enumeration ActivationType enums
   
 //  def apply(id: Option[Long], created: Date, machineIdentifier: String, activationType: ActivationType.Value): ActivationCircumflex = {
@@ -77,12 +81,16 @@ object ActivationCircumflex extends Table[ActivationCircumflex] {
 //  }
 }
 
-class ActivationInfoCircumflex extends Record[ActivationInfoCircumflex] {
-  val activation = "activation_id" REFERENCES(ActivationCircumflex)
-  val key = "key" VARCHAR(200)
-  val value = "value" VARCHAR(200)
+class ActivationInfoCircumflex extends Record[Long, ActivationInfoCircumflex] with IdentityGenerator[Long, ActivationInfoCircumflex] {
+  val id = "id".BIGINT.AUTO_INCREMENT.NOT_NULL
+  val activation = "activation_id".BIGINT.REFERENCES(ActivationCircumflex)
+  val key = "key".VARCHAR(200)
+  val value = "value".VARCHAR(200)
+
+  def PRIMARY_KEY = id
+  def relation = ActivationInfoCircumflex
 }
 
-object ActivationInfoCircumflex extends Table[ActivationInfoCircumflex] {
-  UNIQUE(this.id, this.key)
+object ActivationInfoCircumflex extends ActivationInfoCircumflex with Table[Long, ActivationInfoCircumflex] {
+  UNIQUE(this.PRIMARY_KEY, this.key)
 }

@@ -6,18 +6,20 @@
 
     <name>Licensing Server</name>
 
-    <groupId>com.magmanics.licensing</groupId>
-    <artifactId>licensing</artifactId>
+    <artifactId>licensing-server</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <parent>
+        <groupId>com.magmanics.licensing</groupId>
+        <artifactId>licensing-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
     <properties>
-        <slf4j.version>1.6.1</slf4j.version>
-        <scala.version>2.8.1</scala.version>
         <selenium.version>2.0a7</selenium.version>
         <spring.version>3.0.5.RELEASE</spring.version>
         <spring.security.version>3.0.3.RELEASE</spring.security.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -25,13 +27,11 @@
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-library</artifactId>
-            <version>${scala.version}</version>
         </dependency>
         <!-- this for intellij to know which compiler to know -->
         <dependency>
             <groupId>org.scala-lang</groupId>
             <artifactId>scala-compiler</artifactId>
-            <version>${scala.version}</version>
         </dependency>
         <!-- Web services -->
         <dependency>
@@ -98,7 +98,7 @@
         <dependency>
             <groupId>ru.circumflex</groupId>
             <artifactId>circumflex-orm</artifactId>
-            <version>1.2</version>
+            <version>2.5</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -116,14 +116,14 @@
         </dependency>
         <!-- Database -->
         <dependency>
-            <groupId>hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>1.8.0.10</version>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.178</version>
         </dependency>
         <dependency>
             <groupId>org.lazyluke</groupId>
             <artifactId>log4jdbc-remix</artifactId>
-            <version>0.2.4</version>
+            <version>0.2.7</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -135,22 +135,18 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency><!-- a few of our dependencies use commons-logging (this implements the interface and redirects to slf4j)-->
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-core</artifactId>
-            <version>0.9.24</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>0.9.24</version>
         </dependency>
         <!-- Nice date you are -->
         <dependency>
@@ -205,8 +201,6 @@
 
     <build>
         <finalName>licensing</finalName>
-        <sourceDirectory>src/main/scala</sourceDirectory>
-        <testSourceDirectory>src/test/scala</testSourceDirectory>
         <testResources>
             <testResource>
                 <directory>src/main/webapp/WEB-INF/spring</directory>
@@ -217,24 +211,8 @@
         </testResources>
         <plugins>
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>2.14.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>compile</goal>
-                            <goal>testCompile</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <scalaVersion>${scala.version}</scalaVersion>
-                    <args>
-                        <arg>-target:jvm-1.5</arg>
-                        <arg>-deprecation</arg>
-                    </args>
-                </configuration>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
             </plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
@@ -255,18 +233,8 @@
                 </configuration>
             </plugin>
             <plugin>
-                <!-- todo migrate to org.scalatest:scalatest-maven-plugin:1.0 -->
-                <groupId>com.jteigen</groupId>
-                <artifactId>maven-scalatest-plugin</artifactId>
-                <version>1.1-SNAPSHOT</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                        <phase>test</phase>
-                    </execution>
-                </executions>
+                <groupId>org.scalatest</groupId>
+                <artifactId>scalatest-maven-plugin</artifactId>
             </plugin>
             <!--<plugin>-->
                 <!--<groupId>org.codehaus.mojo</groupId>-->
@@ -296,7 +264,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.1</version>
             </plugin>
             <plugin>
                 <groupId>com.mycila.maven-license-plugin</groupId>
@@ -344,17 +311,17 @@
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>jcl-over-slf4j</artifactId>
-                        <version>${slf4j.version}</version>
+                        <version>1.6.6</version>
                     </dependency>
                     <dependency>
                         <groupId>ch.qos.logback</groupId>
                         <artifactId>logback-core</artifactId>
-                        <version>0.9.24</version>
+                        <version>1.1.2</version>
                     </dependency>
                     <dependency>
                         <groupId>ch.qos.logback</groupId>
                         <artifactId>logback-classic</artifactId>
-                        <version>0.9.24</version>
+                        <version>1.1.2</version>
                     </dependency>
                 </dependencies>
             </plugin>
@@ -402,81 +369,13 @@
         </plugins>
     </build>
 
-    <organization>
-        <name>Magmanics</name>
-        <url>http://www.magmanics.co.uk</url>
-    </organization>
-
-    <developers>
-        <developer>
-            <name>James Baxter</name>
-            <email>j.w.baxter(at)gmail.com</email>
-        </developer>
-    </developers>
-
-    <licenses>
-        <license>
-            <name>GNU General Public License V3</name>
-            <url>http://www.gnu.org/licenses/gpl.html</url>
-            <distribution>manual</distribution>
-        </license>
-    </licenses>
-
     <reporting>
         <plugins>
             <plugin>
-                <groupId>org.scala-tools</groupId>
-                <artifactId>maven-scala-plugin</artifactId>
-                <version>2.14.1</version>
-                <configuration>
-                    <scalaVersion>${scala.version}</scalaVersion>
-                </configuration>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </reporting>
-
-    <repositories>
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-        <repository>
-            <id>scala-tools.org_snapshots</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>undercover</id>
-            <url>http://undercover.googlecode.com/svn/maven/repository</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>undercover_snaphost</id>
-            <url>http://undercover.googlecode.com/svn/maven/snapshot-repository</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>emma</id>
-            <url>http://emma.sourceforge.net/maven/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>maven-repository.dev.java.net</id>
-            <name>Java.net Maven 2 Repository</name>
-            <url>http://download.java.net/maven/2</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>
