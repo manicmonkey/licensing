@@ -37,5 +37,7 @@ ehthumbs.db
 Thumbs.db
 
 # Custom #
-.idea/
-Licensing/src/main/generated-sources/
+*.iml
+**/.idea/
+**/target/
+**/generated-sources/

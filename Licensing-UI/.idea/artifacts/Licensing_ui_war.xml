@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="war" name="Licensing-ui:war">
-    <output-path>$PROJECT_DIR$/target</output-path>
-    <root id="archive" name="licensing-UI-1.0-SNAPSHOT.war">
-      <element id="artifact" artifact-name="Licensing-ui:war exploded" />
-    </root>
-  </artifact>
-</component>

@@ -1,7 +1,0 @@
-<component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Scala compilation server" type="ScalaCompilationServerRunConfiguration" factoryName="Scala Compilation Server">
-    <module name="Licensing" />
-    <setting name="vmparams" value="" />
-    <method />
-  </configuration>
-</component>
