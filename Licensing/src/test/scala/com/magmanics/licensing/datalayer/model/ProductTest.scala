@@ -1,7 +1,7 @@
 package com.magmanics.licensing.datalayer.model
 
+import com.magmanics.licensing.service.model.{BoolOption, ListOption, Product, TextOption}
 import org.testng.annotations.Test
-import com.magmanics.licensing.service.model.{Product, ListOption, TextOption, BoolOption}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -21,7 +21,6 @@ class ProductTest {
 
   @Test
   def enabledByDefault {
-    val product = Product(name = "Ubuntu 10.04")
-    assert(product.enabled)
+    assert(Product(name = "Ubuntu 10.04").enabled)
   }
 }

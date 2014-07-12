@@ -24,8 +24,10 @@
 
 package com.magmanics.licensing.datalayer.dao
 
+import javax.persistence.{EntityManager, PersistenceContext}
+
+import com.magmanics.licensing.datalayer.model.{ActivationEntity, ActivationInfoEntity}
 import com.magmanics.licensing.service.model.Activation
-import com.magmanics.licensing.datalayer.model.{ActivationInfoCircumflex, ActivationCircumflex}
 import org.slf4j.LoggerFactory
 
 /**
@@ -34,33 +36,38 @@ import org.slf4j.LoggerFactory
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 28-Jul-2010
  */
-abstract class ActivationDao {
+trait ActivationDao {
   /**
    * Persist a new Activation and associate with the given Configuration id
    */
-  def create(activation: Activation, configurationId: Long)
+  def create(activation: Activation)
 }
 
-class ActivationDaoCircumflex extends ActivationDao {
+class ActivationDaoJPA extends ActivationDao {
 
-  val log = LoggerFactory.getLogger(classOf[ActivationDaoCircumflex])
+  val log = LoggerFactory.getLogger(classOf[ActivationDaoJPA])
 
-  override def create(activation: Activation, configurationId: Long) {
+  @PersistenceContext
+  var em: EntityManager = _
 
-    log.debug("Creating Activation({}) against Configuration({})", activation, configurationId)
-    val a = new ActivationCircumflex //todo constructor in circumflex model takes service model?
-    a.configuration.field := configurationId
-    a.activationType := activation.activationType.toString
-    a.machineIdentifier := activation.machineIdentifier
-    a.productVersion := activation.productVersion
-    a.save
+  override def create(activation: Activation) {
+
+    log.debug("Creating Activation({}) against Configuration({})", activation, activation.configurationId)
+    val a = new ActivationEntity() //todo constructor in data model could take service model?
+    a.created = activation.created
+    a.configurationId = activation.configurationId
+    a.activationType = activation.activationType.toString
+    a.machineIdentifier = activation.machineIdentifier
+    a.productVersion = activation.productVersion
 
     activation.extraInfo.foreach(info => {
-      val i = new ActivationInfoCircumflex
-      i.activation := a
-      i.key := info._1
-      i.value := info._2
-      i.save
+      val i = new ActivationInfoEntity
+      i.activation = a
+      i.key = info._1
+      i.value = info._2
+      a.addActivationInfo(i)
     })
+
+    em.persist(a)
   }
 }

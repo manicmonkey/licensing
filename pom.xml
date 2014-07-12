@@ -17,7 +17,7 @@
 
     <modules>
         <module>Licensing</module>
-        <module>Licensing-UI</module>
+        <!--<module>Licensing-UI</module>-->
     </modules>
 
     <dependencyManagement>
@@ -45,19 +45,17 @@
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-compiler</artifactId>
-                <version>2.9.2</version>
+                <version>2.10.0</version>
             </dependency>
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-library</artifactId>
-                <version>2.9.2</version>
+                <version>2.10.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
-        <sourceDirectory>src/main/scala</sourceDirectory>
-        <testSourceDirectory>src/test/scala</testSourceDirectory>
         <testResources>
             <testResource>
                 <directory>src/main/webapp/WEB-INF/spring</directory>
@@ -68,27 +66,8 @@
         </testResources>
         <plugins>
             <plugin>
-                <groupId>com.mycila.maven-license-plugin</groupId>
-                <artifactId>maven-license-plugin</artifactId>
-                <version>1.8.0</version>
-                <configuration>
-                    <header>src/etc/header.txt</header>
-                    <basedir>src/main/scala</basedir>
-                    <strictCheck>true</strictCheck>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -125,6 +104,24 @@
                                 <goal>test</goal>
                             </goals>
                             <phase>test</phase>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>com.mycila.maven-license-plugin</groupId>
+                    <artifactId>maven-license-plugin</artifactId>
+                    <version>1.8.0</version>
+                    <configuration>
+                        <header>src/etc/header.txt</header>
+                        <basedir>src/main/scala</basedir>
+                        <strictCheck>true</strictCheck>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
                         </execution>
                     </executions>
                 </plugin>

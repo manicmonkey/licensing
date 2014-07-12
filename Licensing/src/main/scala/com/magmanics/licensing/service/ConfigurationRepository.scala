@@ -24,12 +24,12 @@
 
 package com.magmanics.licensing.service
 
-import com.magmanics.licensing.datalayer.dao.ConfigurationDao
-import model.{Configuration, Customer}
+import com.magmanics.auditing.Auditable
 import com.magmanics.licensing.datalayer.SerialGenerator
+import com.magmanics.licensing.datalayer.dao.ConfigurationDao
+import com.magmanics.licensing.service.model.{Configuration, Customer}
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
-import com.magmanics.auditing.Auditable
 
 /**
  * Repository for {@link com.magmanics.licensing.service.model.Configuration Configurations}. In addition to basic data

@@ -24,10 +24,12 @@
 
 package com.magmanics.licensing.service.exception
 
+import com.magmanics.licensing.datalayer.dao.exception.DataLayerException
+
 /**
  * Represents a name clash in a named entity
  *
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 26-Jul-2010
  */
-class DuplicateNameException(msg: String) extends RuntimeException(msg)
+class DuplicateNameException(msg: String) extends DataLayerException

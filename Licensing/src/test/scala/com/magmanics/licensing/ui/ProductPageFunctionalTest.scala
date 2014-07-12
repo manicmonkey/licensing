@@ -1,14 +1,9 @@
 package com.magmanics.licensing.ui
 
-import org.testng.annotations.Test
-import org.openqa.selenium.WebDriver
-import org.openqa.selenium.htmlunit.HtmlUnitDriver
-import page.ProductPage
-import org.apache.http.client.CredentialsProvider
-import org.apache.http.auth.{UsernamePasswordCredentials, Credentials}
 import com.gargoylesoftware.htmlunit.{DefaultCredentialsProvider, WebClient}
+import com.magmanics.licensing.ui.page.ProductPage
+import org.openqa.selenium.firefox.{FirefoxDriver, FirefoxProfile}
 import org.openqa.selenium.remote.RemoteWebDriver
-import org.openqa.selenium.firefox.{FirefoxProfile, FirefoxDriver}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

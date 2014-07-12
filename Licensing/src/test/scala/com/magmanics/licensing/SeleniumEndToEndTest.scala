@@ -8,5 +8,5 @@ import org.scalatest.GivenWhenThen
  */
 class SeleniumEndToEndTest extends TransactionalSpringBasedSuite with GivenWhenThen {
   //test db data against real world data
-  def contextLocation = "spring-config.xml"
+  def contextLocation = "config.xml"
 }

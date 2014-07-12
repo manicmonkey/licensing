@@ -1,0 +1,14 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <import resource="ui.xml" />
+    <import resource="services.xml" />
+    <import resource="dao.xml" />
+    <import resource="data-layer.xml" />
+    <import resource="datasource.xml" />
+
+    <import resource="audit.xml" />
+    <import resource="security.xml" />
+
+</beans>

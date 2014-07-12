@@ -1,17 +1,13 @@
 package com.magmanics.licensing.ui.content
 
-import activation.{ActivationOverviewTable, ActivationDetailTable}
-import com.vaadin.Application
-import com.vaadin.ui._
-import configuration.{ConfigurationDetailTable, ConfigurationInfo, ConfigurationOverviewTable}
-import scala.collection.JavaConversions._
-import com.vaadin.ui.Layout.MarginInfo
 import java.util.Date
-import com.vaadin.ui.AbstractLayout._
-import com.magmanics.licensing.ui.component.{FullWidth, UndefinedWidth, HtmlLabel}
-import com.magmanics.licensing.datalayer.dao.MockData
+
 import com.magmanics.licensing.service.ConfigurationRepository
-import com.magmanics.licensing.service.model.{ActivationType, Activation, Customer, Configuration}
+import com.magmanics.licensing.service.model.{Activation, ActivationType, Configuration, Customer}
+import com.magmanics.licensing.ui.component.{FullWidth, HtmlLabel, UndefinedWidth}
+import com.magmanics.licensing.ui.content.activation.{ActivationDetailTable, ActivationOverviewTable}
+import com.magmanics.licensing.ui.content.configuration.{ConfigurationDetailTable, ConfigurationInfo, ConfigurationOverviewTable}
+import com.vaadin.ui._
 
 /**
  * @author jbaxter - 06/04/11

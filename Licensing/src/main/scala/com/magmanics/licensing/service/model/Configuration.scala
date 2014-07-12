@@ -25,8 +25,10 @@
 package com.magmanics.licensing.service.model
 
 import java.util.Date
+
 import com.magmanics.licensing.service.exception.NoActivationsLeftException
-import reflect.BeanInfo
+
+import scala.reflect.BeanInfo
 /**
  * Represents a (mostly) immutable licence configuration. Although clearly related to a Customer and Product, it is not
  * directly linked at this level of the architecture. Is an aggregate root and provides the sole point of access for 
@@ -51,18 +53,11 @@ case class Configuration(id: Option[Long] = None,
                          var maxActivations: Int = 1,
                          var activations: Seq[Activation] = List()) {
 
-  /**
-   * Convenience constructor, adds a bit of type safety
-   */
-  def this(user: String, product: Product, customer: Customer) {
-    this(user = user, productId = product.id.get, customerId = customer.id.get)
-  }
-
   if(maxActivations < 1) {
     throw new IllegalStateException("maxActivations cannot be less than 1 (recieved " + maxActivations + ")")
   }
 
-  if (activations.filter(_.activationType == ActivationType.NEW).size > maxActivations) {
+  if (activations.count(_.activationType == ActivationType.NEW) > maxActivations) {
     throw new IllegalStateException("maxActivations cannot be less than the number of existing 'NEW' activations")
   }
 
@@ -72,17 +67,15 @@ case class Configuration(id: Option[Long] = None,
    */
   def addActivation(machineIdentifier: String, productVersion: String, extraInfo: Map[String, String] = Map()) {
 
-    if (!enabled) {
+    if (!enabled)
       throw new IllegalStateException("Cannot add an activation to a disabled configuration(" + this + "): machineIdentifier(" + machineIdentifier + "), extraInfo(" + extraInfo + ")")
-    }
 
     val activationType = if(activations.exists(_.machineIdentifier equalsIgnoreCase machineIdentifier)) ActivationType.UPGRADE else ActivationType.NEW
 
-    if (activationType == ActivationType.NEW && !activationsAvailable) {
+    if (activationType == ActivationType.NEW && !activationsAvailable)
       throw new NoActivationsLeftException("No activations available. Used maximum of: " + maxActivations)
-    }
 
-    activations = Activation(machineIdentifier = machineIdentifier, productVersion = productVersion, activationType = activationType, extraInfo = extraInfo) +: activations
+    activations = Activation(machineIdentifier = machineIdentifier, productVersion = productVersion, activationType = activationType, extraInfo = extraInfo, configurationId = id.get) +: activations
   }
 
   /**
@@ -97,5 +90,15 @@ case class Configuration(id: Option[Long] = None,
 }
 
 object Configuration {
-  def apply(user: String, product: Product, customer: Customer) = new Configuration(user: String, product: Product, customer: Customer)
+//  def apply(id: Option[Long] = None,
+//            user: String,
+//            productId: Long,
+//            customerId: Long,
+//            created: Date = new Date,
+//            serial: Option[String] = None,
+//            options: Map[String, String] = Map(),
+//            enabled: Boolean = true,
+//            maxActivations: Int = 1,
+//            activations: Seq[Activation] = List()) = new Configuration(id, user, productId, customerId, created, serial, options, enabled, maxActivations, activations)
+  def apply(user: String, product: Product, customer: Customer) = new Configuration(user = user, productId = product.id.get, customerId = customer.id.get)
 }

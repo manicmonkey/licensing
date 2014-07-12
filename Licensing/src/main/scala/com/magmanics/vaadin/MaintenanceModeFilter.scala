@@ -30,7 +30,7 @@ import org.springframework.jmx.export.annotation.{ManagedAttribute, ManagedOpera
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 15-Nov-2010
  */
-@ManagedResource(objectName = "efs-licensing:name=maintenance-mode")
+@ManagedResource(objectName = "magmanics-licensing:name=maintenance-mode")
 class MaintenanceModeFilter { //extends Filter
 
   var inMaintenanceMode = false

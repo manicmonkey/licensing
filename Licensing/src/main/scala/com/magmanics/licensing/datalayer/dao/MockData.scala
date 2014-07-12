@@ -24,43 +24,46 @@
 
 package com.magmanics.licensing.datalayer.dao
 
+import java.util.{Calendar, UUID}
+import javax.persistence.{EntityManager, PersistenceContext}
+
+import com.magmanics.auditing.model.{Audit, AuditCode, AuditEntity}
 import com.magmanics.licensing.datalayer.model._
 import com.magmanics.licensing.service.model.ActivationType
-import java.util.{Calendar, Date, UUID}
-import com.magmanics.auditing.model.Audit._
-import com.magmanics.auditing.model.AuditCode._
-import com.magmanics.auditing.model.{Audit, AuditCode, AuditCircumflex}
 
 /**
  * @author jbaxter - 12-Jun-2010
  */
-object MockData {
+class MockData {
 
+  @PersistenceContext
+  var em: EntityManager = _
+  
   def getUUID: String = {
     UUID.randomUUID.toString
   }
 
   def createProduct(name: String, description: String, enabled: Boolean) = {
-    val product = new ProductCircumflex
-    product.name := name
-    product.description := description
-    product.enabled := enabled
-    product.save
+    val product = new ProductEntity
+    product.name = name
+    product.description = description
+    product.enabled = enabled
+    em.persist(product)
     product
   }
 
   def insert {
-    val product = createProduct("JFinder", "Picks up files, strips hash commands and uploads to PDM", true)
+    val product = createProduct("JFinder", "Picks up files, strips hash commands and uploads to PDM", enabled = true)
     buildListProductOption(product, "Printers", List("10", "20", "40", "80", "160", "320"), "20")
-    buildRadioProductOption(product, "PDF Signing", false)
-    buildRadioProductOption(product, "Schedule and Sort", true)
+    buildRadioProductOption(product, "PDF Signing", default = false)
+    buildRadioProductOption(product, "Schedule and Sort", default = true)
 
-    val product2 = createProduct("PDM", "EFS Archive solution", true)
-    buildTextProductOption(product2, "Internal reference", "EFS_XXX")
-    buildRadioProductOption(product2, "Doc import", true)
+    val product2 = createProduct("PDM", "Magmanics Archive solution", enabled = true)
+    buildTextProductOption(product2, "Internal reference", "MAG_XXX")
+    buildRadioProductOption(product2, "Doc import", default = true)
     buildListProductOption(product2, "Users", List("1", "2", "5", "10", "25", "50", "100"), "10")
 
-    createProduct("V4", "Product Suite", false)
+    createProduct("V4", "Product Suite", enabled = false)
 
     val customer = createCustomer("Edwards")
     val customer2 = createCustomer("WD40")
@@ -74,13 +77,13 @@ object MockData {
     createCustomer("Special Metals")
     createCustomer("Jordans")
     createCustomer("Metro Bank")
-    createCustomer("OU", false)
-    createCustomer("Hendersons", false)
-    createCustomer("Gates", false)
+    createCustomer("OU", enabled = false)
+    createCustomer("Hendersons", enabled = false)
+    createCustomer("Gates", enabled = false)
 
-    val licenceConfiguration = buildConfiguration(true, 1, product, customer, "jbaxter")
-    val licenceConfiguration2 = buildConfiguration(true, 1, product2, customer2, "matth")
-    val licenceConfiguration3 = buildConfiguration(true, 2, product2, customer2, "lees")
+    val licenceConfiguration = buildConfiguration(enabled = true, 1, product, customer, "jbaxter")
+    val licenceConfiguration2 = buildConfiguration(enabled = true, 1, product2, customer2, "matth")
+    val licenceConfiguration3 = buildConfiguration(enabled = true, 2, product2, customer2, "lees")
 
     val activation = buildActivation("jbaxter", "100608", ActivationType.NEW, licenceConfiguration)
     val activation2 = buildActivation("jbaxter", "110715", ActivationType.UPGRADE, licenceConfiguration)
@@ -90,104 +93,104 @@ object MockData {
     addAudits
   }
 
-  private def addActivationInfo(activation: ActivationCircumflex, info: Map[String, String]) {
+  private def addActivationInfo(activation: ActivationEntity, info: Map[String, String]) {
     info.foreach(pair => {
-      val activationInfo = new ActivationInfoCircumflex
-      activationInfo.key := pair._1
-      activationInfo.value := pair._2
-      activationInfo.activation := activation
-      activationInfo.save
+      val activationInfo = new ActivationInfoEntity
+      activationInfo.key = pair._1
+      activationInfo.value = pair._2
+      activationInfo.activation = activation
+      em.persist(activationInfo)
     })
   }
 
-  private def createCustomer(customerName: String, enabled: Boolean = true): CustomerCircumflex = {
-    val customer = new CustomerCircumflex
-    customer.name := customerName
-    customer.enabled := enabled
-    customer.save
+  private def createCustomer(customerName: String, enabled: Boolean = true): CustomerEntity = {
+    val customer = new CustomerEntity
+    customer.name = customerName
+    customer.enabled = enabled
+    em.persist(customer)
     customer
   }
 
-  private def buildConfiguration(enabled: Boolean, maxActivations: Int, product: ProductCircumflex, customer: CustomerCircumflex, username: String): ConfigurationCircumflex = {
-    val licenceConfiguration = new ConfigurationCircumflex
-    licenceConfiguration.enabled := enabled
-    licenceConfiguration.serial := getUUID
-    licenceConfiguration.maxActivations := maxActivations
-    licenceConfiguration.product := product
-    licenceConfiguration.customer := customer
-    licenceConfiguration.user := username
-    licenceConfiguration.save
+  private def buildConfiguration(enabled: Boolean, maxActivations: Int, product: ProductEntity, customer: CustomerEntity, username: String): ConfigurationEntity = {
+    val licenceConfiguration = new ConfigurationEntity
+    licenceConfiguration.enabled = enabled
+    licenceConfiguration.serial = getUUID
+    licenceConfiguration.maxActivations = maxActivations
+    licenceConfiguration.product = product
+    licenceConfiguration.customer = customer
+    licenceConfiguration.user = username
+    em.persist(licenceConfiguration)
 
     product.getOptions.foreach(c => {
-      val po = new ConfigurationOptionCircumflex
-      po.key := c.getLabel
-      po.value := c.getDefault.toString
-      po.configuration := licenceConfiguration
-      po.save
+      val po = new ConfigurationOptionEntity
+      po.key = c.name
+      po.value = c.getDefault.toString
+      po.configuration = licenceConfiguration
+      em.persist(po)
     })
 
     licenceConfiguration
   }
 
-  private def buildActivation(machineIdentifier: String, productVersion: String, activationType: ActivationType.Value, licenceConfiguration: ConfigurationCircumflex) = {
-    val licenceActivation = new ActivationCircumflex
-    licenceActivation.machineIdentifier := machineIdentifier
-    licenceActivation.productVersion := productVersion
-    licenceActivation.activationType := activationType.toString
-    licenceActivation.configuration := licenceConfiguration
-    licenceActivation.save
+  private def buildActivation(machineIdentifier: String, productVersion: String, activationType: ActivationType.Value, licenceConfiguration: ConfigurationEntity) = {
+    val licenceActivation = new ActivationEntity()
+    licenceActivation.machineIdentifier = machineIdentifier
+    licenceActivation.productVersion = productVersion
+    licenceActivation.activationType = activationType.toString
+    licenceActivation.configuration = licenceConfiguration
+    em.persist(licenceActivation)
     licenceActivation
   }
 
-  private def buildTextProductOption(product: ProductCircumflex, name: String, default: String) {
-    val textOption = new TextProductOptionCircumflex
-    textOption.name := name
-    textOption.default := default
-    textOption.product := product
-    textOption.save
+  private def buildTextProductOption(product: ProductEntity, name: String, default: String) {
+    val textOption = new TextProductOptionEntity
+    textOption.name = name
+    textOption.default = default
+    textOption.product = product
+    em.persist(textOption)
   }
 
-  private def buildRadioProductOption(product: ProductCircumflex, name: String, default: Boolean) {
-    val radioOption = new RadioProductOptionCircumflex
-    radioOption.name := name
-    radioOption.default := default
-    radioOption.product := product
-    radioOption.save
+  private def buildRadioProductOption(product: ProductEntity, name: String, default: Boolean) {
+    val radioOption = new RadioProductOptionEntity
+    radioOption.name = name
+    radioOption.default = default
+    radioOption.product = product
+    em.persist(radioOption)
   }
 
-  private def buildListProductOption(product: ProductCircumflex, name: String, options: List[String], default: String) {
-    val listOption = new ListProductOptionCircumflex
-    listOption.name := name
-    listOption.default := default
-    listOption.product := product
-    listOption.save
+  private def buildListProductOption(product: ProductEntity, name: String, options: List[String], default: String) {
+    val listOption = new ListProductOptionEntity
+    listOption.name = name
+    listOption.default = default
+    listOption.product = product
+    em.persist(listOption)
 
     addListElements(listOption, options)
   }
 
-  private def addListElements(listOption: ListProductOptionCircumflex, listElements: List[String]) {
-    listElements.foreach(new ListProductOptionValueCircumflex(_, listOption).save)
+  private def addListElements(listOption: ListProductOptionEntity, listElements: List[String]) {
+    listElements.foreach(s => em.persist(new ListProductOptionValueEntity(s, listOption)))
   }
 
-  private def addAudits {
+  private def addAudits() {
     (0 until 1000).flatMap(i => {
       val cal = Calendar.getInstance()
       cal.add(Calendar.HOUR, i * 2)
       List(
-        Audit(cal.getTime, "jbaxter", AuditCode("audit.application.login"), "User 'jbaxter' logged in"),
-        Audit(cal.getTime, "rduke", AuditCode("audit.configuration.get"), "User 'rduke' created a document with cuk 'fear-and-loathing'"),
-        Audit(cal.getTime, "paulh", AuditCode("audit.customer.create"), "User 'paulh' modified the search 'Invoice Search'"),
-        Audit(cal.getTime, "geoffvl", AuditCode("audit.product.activation"), "User 'geoffvl' activated the product 'Value Adjustment'"),
-        Audit(cal.getTime, "mdamon", AuditCode("audit.products.getEnabled"), "User 'mdamon' retrieved all enabled products"),
-        Audit(cal.getTime, "hunterst", AuditCode("audit.product.update"), "User 'hunterst' updated the product 'PO Approval'")
+        Audit("jbaxter", AuditCode("audit.application.login"), "User 'jbaxter' logged in", cal.getTime),
+        Audit("rduke", AuditCode("audit.configuration.get"), "User 'rduke' created a document with cuk 'fear-and-loathing'"),
+        Audit("paulh", AuditCode("audit.customer.create"), "User 'paulh' modified the search 'Invoice Search'"),
+        Audit("geoffvl", AuditCode("audit.product.activation"), "User 'geoffvl' activated the product 'Value Adjustment'"),
+        Audit("mdamon", AuditCode("audit.products.getEnabled"), "User 'mdamon' retrieved all enabled products"),
+        Audit("hunterst", AuditCode("audit.product.update"), "User 'hunterst' updated the product 'PO Approval'")
       )
     }).foreach(a => {
-      val audit = new AuditCircumflex
-      audit.auditCode := a.auditCode.value
-      audit.auditMessage := a.auditMessage
-      audit.created := a.created
-      audit.username := a.username
-      audit.save
+      val audit = new AuditEntity
+      audit.auditCode = a.auditCode.value
+      audit.auditMessage = a.auditMessage
+      audit.created = a.created
+      audit.username = a.username
+      em.persist(audit)
     })
   }
 }

@@ -1,10 +1,11 @@
 package com.magmanics.licensing.ui.page
 
-import org.testng.Assert
-import org.openqa.selenium.{By, WebElement, WebDriver}
-import org.openqa.selenium.support.ui.{WebDriverWait, LoadableComponent}
 import java.util.concurrent.TimeUnit
+
 import org.openqa.selenium.remote.RemoteWebDriver
+import org.openqa.selenium.support.ui.LoadableComponent
+import org.openqa.selenium.{By, WebElement}
+import org.testng.Assert
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

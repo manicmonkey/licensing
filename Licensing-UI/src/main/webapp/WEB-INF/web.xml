@@ -3,9 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
     <display-name>VaadinTest</display-name>
-    <listener><!-- this is not guaranteed to happen in this order according to servlet spec -->
-        <listener-class>com.magmanics.circumflex.orm.web.DatabaseConfigurationListener</listener-class>
-    </listener>
     <context-param>
         <param-name>productionMode</param-name>
         <param-value>false</param-value>

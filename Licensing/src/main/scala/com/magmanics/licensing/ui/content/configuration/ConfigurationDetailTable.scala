@@ -24,10 +24,11 @@
 
 package com.magmanics.licensing.ui.content.configuration
 
-import org.slf4j.LoggerFactory
-import scala.math._
-import com.vaadin.ui.Table
 import com.magmanics.licensing.service.model.Configuration
+import com.vaadin.ui.Table
+import org.slf4j.LoggerFactory
+
+import scala.math._
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

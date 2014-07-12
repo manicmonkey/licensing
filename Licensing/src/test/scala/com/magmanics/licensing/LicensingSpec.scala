@@ -1,6 +1,6 @@
 package com.magmanics.licensing
 
-import org.scalatest.{BeforeAndAfterEach, GivenWhenThen, FeatureSpec}
+import org.scalatest.{BeforeAndAfterEach, FeatureSpec, GivenWhenThen}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

@@ -1,10 +1,11 @@
 package com.magmanics.licensing
 
+import java.net.URL
+
 import ch.qos.logback.classic.LoggerContext
+import ch.qos.logback.classic.joran.JoranConfigurator
 import ch.qos.logback.core.joran.spi.JoranException
 import ch.qos.logback.core.util.StatusPrinter
-import java.net.URL
-import ch.qos.logback.classic.joran.JoranConfigurator
 import org.slf4j.{ILoggerFactory, LoggerFactory}
 
 /**

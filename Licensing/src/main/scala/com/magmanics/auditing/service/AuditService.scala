@@ -24,12 +24,10 @@
 
 package com.magmanics.auditing.service
 
-import org.springframework.transaction.annotation.{Transactional, Propagation}
-import org.slf4j.LoggerFactory
 import com.magmanics.auditing.dao.AuditDao
-import java.util.Calendar
-import com.magmanics.auditing.model.AuditCode._
-import com.magmanics.auditing.model.{AuditCode, Audit}
+import com.magmanics.auditing.model.{Audit, AuditCode}
+import org.slf4j.LoggerFactory
+import org.springframework.transaction.annotation.{Propagation, Transactional}
 
 /**
  * AuditService allows for persisting {com.magmanics.auditing.model.Audit}s and retrieving Audits for review.
@@ -74,12 +72,12 @@ class AuditServiceImpl extends AuditService {
 
   def getAuditCodes() = { //todo language translation should happen in service layer? so we can reorder...
     log.info("Getting distinct AuditCodes")
-    auditDao.getAuditCodes()
+    auditDao.getAuditCodes
   }
 
   def getUsernames() = {
     log.info("Getting distinct usernames")
-    auditDao.getUsernames()
+    auditDao.getUsernames
   }
 
   def getAuditMessages(auditSearch: AuditSearchDto) = {

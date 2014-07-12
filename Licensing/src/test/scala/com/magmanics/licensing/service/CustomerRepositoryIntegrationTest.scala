@@ -1,9 +1,8 @@
 package com.magmanics.licensing.service
 
-import exception.DuplicateNameException
-import model.Customer
-import org.scalatest.{GivenWhenThen}
 import com.magmanics.licensing.TransactionalSpringBasedSuite
+import com.magmanics.licensing.service.model.Customer
+import org.scalatest.GivenWhenThen
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -12,28 +11,28 @@ import com.magmanics.licensing.TransactionalSpringBasedSuite
 //todo these service integration tests should help allow us to substitute the ui without changing anything downwards
 class CustomerRepositoryIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen { //focus on high level
 
-  def contextLocation = "spring-integration-test.xml"
+  def contextLocation = "spring/integration-test.xml"
 
   lazy val customerService = context.getBean(classOf[CustomerRepository])
 
   feature("Customers have unique names") {
     info("As a user I should be able to give a customer name and it should be unique")
     scenario("a customer is created with a unique name") {
-      given("a new customer")
-      when("the customer is saved")
+      Given("a new customer")
+      When("the customer is saved")
       val customer = customerService.create(Customer(name = "Customer one"))
 
-      then("it will appear in the standard listing of customers")
+      Then("it will appear in the standard listing of customers")
       val retrievedCustomer = customerService.getEnabled.find(_.name == customer.name)
       assert(retrievedCustomer.isDefined)
     }
 
     scenario("a customer is created with a duplicate name") {
-      given("two identical customers")
-      when("one customer is saved")
+      Given("two identical customers")
+      When("one customer is saved")
       customerService.create(Customer(name = "Customer one"))
 
-      then("saving the other should throw an error")
+      Then("saving the other should throw an error")
       //todo disabled as SQLException is not thrown from Circumflex - we get undeclared exception and can't catch it
 //      intercept[DuplicateNameException] {
 //        customerService.create(Customer(name = "Customer one"))
@@ -44,26 +43,26 @@ class CustomerRepositoryIntegrationTest extends TransactionalSpringBasedSuite wi
   feature("Customers can be enabled and disabled") {
     info("Customers should only appear if enabled")
     scenario("a customer is disabled") {
-      given("an existing enabled customer")
+      Given("an existing enabled customer")
       val customer = customerService.create(Customer(name = "Customer one"))
 
-      when("the customer is disabled and saved")
+      When("the customer is disabled and saved")
       customer.enabled = false
       customerService.update(customer)
 
-      then("the customer should not appear in the standard listing")
+      Then("the customer should not appear in the standard listing")
       assert(customerService.getEnabled.find(_.name == "Customer one").isEmpty)
     }
 
     scenario("a customer is enabled") {
-      given("an existing disabled customer")
+      Given("an existing disabled customer")
       val customer = customerService.create(Customer(name = "Customer one", enabled = false))
 
-      when("the customer is enabled and saved")
+      When("the customer is enabled and saved")
       customer.enabled = true
       customerService.update(customer)
 
-      then("the customer should appear in the standard listing")
+      Then("the customer should appear in the standard listing")
       val customerOption = customerService.getEnabled.find(_.name == "Customer one")
       assert(customerOption.isDefined)
       assert(customerOption.get == customer)

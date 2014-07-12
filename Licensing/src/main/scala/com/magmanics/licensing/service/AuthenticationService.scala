@@ -24,12 +24,13 @@
 
 package com.magmanics.licensing.service
 
+import com.magmanics.auditing.Auditable
+import org.slf4j.LoggerFactory
+import org.springframework.security.authentication.{AuthenticationManager, BadCredentialsException, UsernamePasswordAuthenticationToken}
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
-import org.slf4j.LoggerFactory
-import com.magmanics.auditing.Auditable
+
 import scala.collection.JavaConversions._
-import org.springframework.security.authentication.{BadCredentialsException, AuthenticationManager, UsernamePasswordAuthenticationToken}
 
 /**
  * Responsible for interfacing with the underlying authentication provider, and determining whether a user has adequate credentials

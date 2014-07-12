@@ -24,12 +24,13 @@
 
 package com.magmanics.vaadin
 
-import collection.mutable.ListBuffer
 import com.vaadin.data.Property
+import com.vaadin.data.Property.ValueChangeEvent
 import com.vaadin.event.ItemClickEvent
 import com.vaadin.event.ItemClickEvent.ItemClickListener
-import com.vaadin.data.Property.ValueChangeEvent
 import org.slf4j.{Logger, LoggerFactory}
+
+import scala.collection.mutable.ListBuffer
 
 /**
  * todo settle on an event dispatch mechanism

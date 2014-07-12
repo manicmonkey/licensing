@@ -1,0 +1,17 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <bean id="serialGenerator" class="com.magmanics.licensing.datalayer.SerialGenerator"/>
+
+    <bean id="customerDao" class="com.magmanics.licensing.datalayer.dao.CustomerDaoJPA"/>
+
+    <bean id="productDao" class="com.magmanics.licensing.datalayer.dao.ProductDaoJPA"/>
+
+    <bean id="configurationDao" class="com.magmanics.licensing.datalayer.dao.ConfigurationDaoJPA">
+        <constructor-arg ref="activationDao"/>
+    </bean>
+
+    <bean id="activationDao" class="com.magmanics.licensing.datalayer.dao.ActivationDaoJPA" />
+
+</beans>

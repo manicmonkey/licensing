@@ -1,26 +1,23 @@
 package com.magmanics.licensing.datalayer.model
 
-import com.magmanics.circumflex.orm.AutoRollbackTransaction
 import com.magmanics.licensing.service.model.Customer
-import org.testng.annotations.Test
 import org.testng.Assert._
+import org.testng.annotations.Test
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 12-Jun-2010
  */
-class CustomerTest extends AutoRollbackTransaction { //focus on extra methods
+class CustomerTest { //focus on extra methods
 
   @Test
   def enabledByDefault {
-    val customer = new Customer(name = "Edwards")
-    assertTrue(customer.enabled)
+    assertTrue(new Customer(name = "Edwards").enabled)
   }
 
   @Test
   def customerNameRetrievable {
-    val customer = new Customer(name = "Edwards")
-    assertEquals(customer.name, "Edwards")
+    assertEquals(new Customer(name = "Edwards").name, "Edwards")
   }
 
   @Test

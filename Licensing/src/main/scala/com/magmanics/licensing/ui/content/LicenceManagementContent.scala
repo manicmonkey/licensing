@@ -1,12 +1,37 @@
+/**
+ * Magmanics Licensing. This web application allows for centralized control
+ * of client application activation, with optional configuration parameters
+ * to control licensable features, and storage of supplementary information
+ * about the client machine. Client applications may interface with this
+ * central server (for activation) using libraries licenced under an
+ * alternative licence.
+ *
+ * Copyright (C) 2010 James Baxter <j.w.baxter(at)gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package com.magmanics.licensing.ui.content
 
-import activation.{ActivationOverviewTable, ActivationDetailTable}
-import com.vaadin.ui._
-import configuration.{ConfigurationDetailTable, ConfigurationInfo, ConfigurationOverviewTable}
 import java.util.Date
-import com.magmanics.vaadin.component.{FullWidth, UndefinedWidth, HtmlLabel}
+
 import com.magmanics.licensing.service.ConfigurationRepository
-import com.magmanics.licensing.service.model.{ActivationType, Activation, Customer, Configuration}
+import com.magmanics.licensing.service.model.{Activation, ActivationType, Configuration, Customer}
+import com.magmanics.licensing.ui.content.activation.{ActivationDetailTable, ActivationOverviewTable}
+import com.magmanics.licensing.ui.content.configuration.{ConfigurationDetailTable, ConfigurationInfo, ConfigurationOverviewTable}
+import com.magmanics.vaadin.component.{FullWidth, HtmlLabel, UndefinedWidth}
+import com.vaadin.ui._
 
 /**
  * @author jbaxter - 06/04/11
@@ -69,7 +94,7 @@ class MockConfigurationRepository extends ConfigurationRepository {
   def get(serial: String) = null
 
   def get(customer: Customer): Seq[Configuration] = {
-    List(new Configuration(id = Some(1), user = "jbaxter", productId = 1, customerId = 1, created = new Date, serial = Some("gew7yuhb3736yyby73rh8yugbh"), options = Map("Samba" -> "enabled", "UPnP" -> "enabled", "EXT3" -> "disabled", "Maximum user accounts" -> "9999"), enabled = true, maxActivations = 2, activations = List(Activation(id = Some(1), created = new Date, machineIdentifier = "devi8", productVersion = "6.921.5", activationType = ActivationType.NEW, extraInfo = Map("Operating system" -> "Ubuntu 10.10", "RAM" -> "12GB")))))
+    List(new Configuration(id = Some(1), user = "jbaxter", productId = 1, customerId = 1, created = new Date, serial = Some("gew7yuhb3736yyby73rh8yugbh"), options = Map("Samba" -> "enabled", "UPnP" -> "enabled", "EXT3" -> "disabled", "Maximum user accounts" -> "9999"), enabled = true, maxActivations = 2, activations = List(Activation(id = Some(1), created = new Date, machineIdentifier = "devi8", productVersion = "6.921.5", activationType = ActivationType.NEW, extraInfo = Map("Operating system" -> "Ubuntu 10.10", "RAM" -> "12GB"), configurationId = 1))))
   }
 
   def get(id: Long) = null

@@ -5,7 +5,7 @@ Functional tests with ScalaTest for services
 Integration tests with JUnit for daos (model mapped correctly etc)
 Unit tests with ScalaCheck for model
 
-add implicit conversions for circumflex model -> case class
+add implicit conversions for entities -> service case class
 
 maybe move dtos to highlight dependence and sphere of influence
 move dtos to datalayer or at least out of service as cyclic dependency between packages

@@ -24,11 +24,14 @@
 
 package com.magmanics.licensing.datalayer.dao
 
-import com.magmanics.licensing.service.model.{Customer, Configuration}
-import com.magmanics.licensing.datalayer.model.{CustomerCircumflex, ConfigurationOptionCircumflex, ConfigurationCircumflex}
-import exception.{NoSuchEntityException, DataLayerException, ConstraintException}
+import javax.persistence.{EntityManager, PersistenceContext}
+
+import com.magmanics.licensing.datalayer.dao.exception.{DataLayerException, NoSuchEntityException}
+import com.magmanics.licensing.datalayer.model._
+import com.magmanics.licensing.service.model.{Configuration, Customer}
 import org.slf4j.LoggerFactory
-import ru.circumflex.core.ValidationException
+
+import scala.collection.JavaConverters._
 
 /**
  * DAO for {@link com.magmanics.licensing.service.model.Configuration Configuration}s.
@@ -36,7 +39,7 @@ import ru.circumflex.core.ValidationException
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 27 -Jul-2010
  */
-abstract class ConfigurationDao {
+trait ConfigurationDao {
   /**
    * Persist a new Configuration. Does not persist any attached {@link com.magmanics.licensing.service.model.Activation Activations}
    * as none are expected when creating a Configuration.
@@ -74,12 +77,14 @@ abstract class ConfigurationDao {
 /**
  * Circumflex implementation of {@link com.magmanics.licensing.datalayer.dao.ConfigurationDao ConfigurationDao}
  */
-class ConfigurationDaoCircumflex(activationDao: ActivationDao) extends ConfigurationDao {
+class ConfigurationDaoJPA(activationDao: ActivationDao) extends ConfigurationDao {
 
-  val log = LoggerFactory.getLogger(classOf[ConfigurationDaoCircumflex])
+  import com.magmanics.licensing.datalayer.dao.ImplicitDataModelConversion._
 
-  import ru.circumflex.orm._
-  import com.magmanics.licensing.datalayer.dao.ImplicitCircumflexModelConversion._
+  val log = LoggerFactory.getLogger(classOf[ConfigurationDaoJPA])
+
+  @PersistenceContext
+  var em: EntityManager = _
 
   def create(configuration: Configuration): Configuration = {
 
@@ -89,27 +94,28 @@ class ConfigurationDaoCircumflex(activationDao: ActivationDao) extends Configura
       throw new IllegalArgumentException("Serial number must be specified in configuration: " + configuration)
 
     try {
-      val c = new ConfigurationCircumflex
-      c.created := configuration.created
-      c.user := configuration.user
-      c.enabled := configuration.enabled
-      c.serial := configuration.serial.get
-      c.maxActivations := configuration.maxActivations
-      c.product.field := configuration.productId
-      c.customer.field := configuration.customerId
-      c.save
+      val c = new ConfigurationEntity
+      c.created = configuration.created
+      c.user = configuration.user
+      c.enabled = configuration.enabled
+      c.serial = configuration.serial.get
+      c.maxActivations = configuration.maxActivations
+      c.productId = configuration.productId
+      c.customerId = configuration.customerId
 
       configuration.options.foreach(option => {
-        val o = new ConfigurationOptionCircumflex
-        o.configuration := c
-        o.key := option._1
-        o.value := option._2
-        o.save
+        val o = new ConfigurationOptionEntity
+        o.configuration = c
+        o.key = option._1
+        o.value = option._2
+        c.addOption(o)
       })
+
+      em.persist(c) //persist the entity
+      em.refresh(c) //refresh load associations (ie load product based on product id)
 
       c
     } catch {
-      case ve: ValidationException => throw new ConstraintException(ve)
       case e: Exception => throw new DataLayerException(e)
     }
   }
@@ -121,45 +127,51 @@ class ConfigurationDaoCircumflex(activationDao: ActivationDao) extends Configura
     val id = c.id.getOrElse(
       throw new IllegalStateException("Cannot update configuration as no id: " + c))
 
-    val configuration = getCircumflex(id).getOrElse(
+    val configuration = getEntity(id).getOrElse(
       throw new IllegalStateException("Cannot update configuration as could not find id: " + c))
 
-    configuration.maxActivations := c.maxActivations
-    configuration.enabled := c.enabled
-    configuration.save
+    configuration.maxActivations = c.maxActivations
+    configuration.enabled = c.enabled
 
-    c.activations.filter(_.id.isEmpty).foreach(activationDao.create(_, id))
+    c.activations.filter(_.id.isEmpty).foreach(activationDao.create)
+
+    em.merge(configuration)   //save changes
+    em.flush()
+    // if we don't do a refresh, a em.find won't pick up new associations such as
+    // activations (this appears to be caching issue)
+    em.refresh(configuration)
   }
 
   def get(id: Long): Configuration = {
-    getCircumflex(id).getOrElse({throw new NoSuchEntityException})
+    getEntity(id).getOrElse(throw new NoSuchEntityException)
   }
 
   def getBySerial(serial: String): Option[Configuration] = {
 
     log.debug("Looking up Configuration with serial: {}", serial)
 
-    val l = ConfigurationCircumflex AS "l"
-    SELECT(l.*) FROM(l) WHERE(l.serial EQ serial) unique match {
-      case Some(c) => Some(c) //bit of a hack unpacking and repacking Option[ConfigurationCircumflex] so it can be implicitly converted
-      case _ => None
-    }
+    val query = em.createNamedQuery[ConfigurationEntity]("Configuration.GetBySerial", classOf[ConfigurationEntity])
+    query.setParameter("serial", serial)
+    query.getResultList.asScala.headOption.map(configurationEntityToConfiguration)
   }
 
   def getByCustomer(customer: Customer): Seq[Configuration] = {
 
     log.debug("Getting Configurations for {}", customer)
 
-    val con = ConfigurationCircumflex AS "con"
-    val cus = CustomerCircumflex AS "cus"
-    SELECT(con.*) FROM (con JOIN cus) WHERE (cus.PRIMARY_KEY EQ customer.id.get) list
+    val customerEntity = new CustomerEntity
+    customerEntity.id = customer.id.get
+    customerEntity.name = customer.name
+    customerEntity.enabled = customer.enabled
+
+    val query = em.createNamedQuery[ConfigurationEntity]("Configuration.GetByCustomer", classOf[ConfigurationEntity])
+    query.setParameter("customer", customerEntity)
+    query.getResultList.asScala
   }
 
-  private def getCircumflex(id: Long): Option[ConfigurationCircumflex] = {
+  private def getEntity(id: Long): Option[ConfigurationEntity] = {
 
     log.debug("Getting Configuration with id: {}", id)
-
-    val c = ConfigurationCircumflex AS "c"
-    (SELECT(c.*) FROM (c) WHERE (c.PRIMARY_KEY EQ id)).unique
+    Option(em.find(classOf[ConfigurationEntity], id))
   }
 }

@@ -1,9 +1,10 @@
 package com.magmanics.licensing.datalayer.model
 
-import org.testng.annotations.Test
 import java.util.Date
+
+import com.magmanics.licensing.service.model.{Activation, ActivationType}
 import org.testng.Assert._
-import com.magmanics.licensing.service.model.{ActivationType, Activation}
+import org.testng.annotations.Test
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -15,7 +16,7 @@ class ActivationTest {
   @Test
   def autoCreatedDate {
     val before = new Date
-    val created: Date = Activation(machineIdentifier = "test", productVersion = "blah", activationType = ActivationType.NEW, extraInfo = Map()).created
+    val created: Date = Activation(machineIdentifier = "test", productVersion = "blah", activationType = ActivationType.NEW, extraInfo = Map(), configurationId = 1).created
     val after = new Date
 
     assertNotNull(created)

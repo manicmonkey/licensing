@@ -22,32 +22,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.magmanics.licensing.service
+package com.magmanics.licensing.datalayer.model
 
-import ru.circumflex.orm.DDLUnit
-import com.magmanics.licensing.datalayer.model._
-import org.slf4j.LoggerFactory
-import com.magmanics.auditing.model.AuditCircumflex
+import javax.persistence._
 
 /**
  * Created by IntelliJ IDEA.
  * User: James
- * Date: 08-Jun-2010
- * Time: 15:27:59
+ * Date: 28-May-2010
+ * Time: 20:28:12
  * To change this template use File | Settings | File Templates.
  */
 
-object DatabaseCreation {
+//todo http://blog.knoldus.com/2014/01/20/scala-slick-2-0-for-multi-database/
+@Entity
+@Table(name = "Customers")
+@NamedQueries(Array(
+  new NamedQuery(name = "Customer.GetByName", query = "SELECT c FROM CustomerEntity c WHERE c.name = :name"),
+  new NamedQuery(name = "Customer.GetAll", query = "SELECT c FROM CustomerEntity c"),
+  new NamedQuery(name = "Customer.GetEnabled", query = "SELECT c FROM CustomerEntity c WHERE c.enabled = true")
+))
+class CustomerEntity {
 
-  val log = LoggerFactory.getLogger("DatabaseCreation")
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  var id: Long = _
 
-  def create {
-    val ddl = new DDLUnit(CustomerCircumflex, ConfigurationCircumflex, ConfigurationOptionCircumflex, ActivationCircumflex, ActivationInfoCircumflex, ProductCircumflex, TextProductOptionCircumflex, RadioProductOptionCircumflex, ListProductOptionCircumflex, ListProductOptionValueCircumflex, AuditCircumflex)
+  @Basic
+  @Column(nullable = false, unique = true)
+  var name: String = _
 
-    ddl.CREATE()
+  @Basic
+  @Column(nullable = false)
+  var enabled: Boolean = _
 
-    for (message <- ddl.messages) {
-      log.info(message.toString)
-    }
-  }
+  @OneToMany(mappedBy = "customer", cascade = Array(CascadeType.ALL), orphanRemoval = true)
+  var configurations: java.util.Set[ConfigurationEntity] = _
 }

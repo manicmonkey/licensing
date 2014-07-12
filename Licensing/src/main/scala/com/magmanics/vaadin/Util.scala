@@ -24,8 +24,8 @@
 
 package com.magmanics.vaadin
 
-import com.vaadin.ui.Window.Notification
 import com.vaadin.ui.Button
+import com.vaadin.ui.Window.Notification
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

@@ -24,11 +24,16 @@
 
 package com.magmanics.licensing.datalayer.dao
 
-import com.magmanics.licensing.datalayer.model.CustomerCircumflex
-import com.magmanics.licensing.service.model.Customer
 import java.sql.SQLException
+import javax.persistence.{EntityManager, PersistenceContext}
+
+import com.magmanics.licensing.datalayer.dao.exception.DataLayerException
+import com.magmanics.licensing.datalayer.model.CustomerEntity
 import com.magmanics.licensing.service.exception.DuplicateNameException
+import com.magmanics.licensing.service.model.Customer
 import org.slf4j.LoggerFactory
+
+import scala.collection.JavaConverters._
 
 /**
  * Dao for {@link com.magmanics.licensing.service.model.Customer Customer}s
@@ -36,7 +41,7 @@ import org.slf4j.LoggerFactory
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 27-Jul-2010
  */
-abstract class CustomerDao {
+trait CustomerDao {
   /**
    * Persists a Customer
    * @return The newly created Customer with its id populated to facilitate further operations
@@ -69,57 +74,57 @@ abstract class CustomerDao {
 /**
  * Circumflex implementation of  {@link com.magmanics.licensing.datalayer.dao.CustomerDao CustomerDao}
  */
-class CustomerDaoCircumflex extends CustomerDao {
+class CustomerDaoJPA extends CustomerDao {
 
-  val log = LoggerFactory.getLogger(classOf[CustomerDaoCircumflex])
+  import com.magmanics.licensing.datalayer.dao.ImplicitDataModelConversion._
 
-  import ru.circumflex.orm._
-  import com.magmanics.licensing.datalayer.dao.ImplicitCircumflexModelConversion._
+  val log = LoggerFactory.getLogger(classOf[CustomerDaoJPA])
+
+  @PersistenceContext
+  var em: EntityManager = _
 
   def create(c: Customer): Customer = {
 
     log.debug("Creating {}", c)
 
-    val customerCircumflex = new CustomerCircumflex
-    customerCircumflex.name := c.name
-    customerCircumflex.enabled := c.enabled
+    val customerEntity = new CustomerEntity
+    customerEntity.name = c.name
+    customerEntity.enabled = c.enabled
 
-    try {
-      customerCircumflex.save
-    } catch {
-      case e: SQLException => {
-        val message = e.getMessage //todo replace with regex
-        if (message != null && message.contains("duplicate value(s) for column(s) NAME in statement")) {
-          throw new DuplicateNameException("Cannot create Customer as name is already is use: " + c)
-        } else {
-          throw e
-        }
+    synchronized {
+      val query = em.createNamedQuery("Customer.GetByName")
+      query.setParameter("name", customerEntity.name)
+      query.getResultList.asScala.foreach(_ => throw new DuplicateNameException("Customer with name '" + customerEntity.name + "' already exists"))
+
+      try {
+        em.persist(customerEntity)
+      } catch {
+        case e: SQLException => throw new DataLayerException("Cannot create Customer: " + c, e)
       }
     }
 
-    customerCircumflex
-  }//throws ValidationException
+    customerEntity
+  }
 
   def get(): Seq[Customer] = {
     log.debug("Getting all Customers")
-    val c = CustomerCircumflex AS "c"
-    SELECT (c.*) FROM (c) ORDER_BY (c.name) list
+    val query = em.createNamedQuery[CustomerEntity]("Customer.GetAll", classOf[CustomerEntity])
+    query.getResultList.asScala
   }
 
   def get(id: Long): Option[Customer] = {
-    getCircumflex(id)
+    getEntity(id)
   }
 
-  def getCircumflex(id: Long): Option[CustomerCircumflex] = {
+  private def getEntity(id: Long): Option[CustomerEntity] = {
     log.debug("Getting Customer with id: {}", id)
-    val c = CustomerCircumflex AS "c"
-    SELECT (c.*) FROM (c) WHERE (c.PRIMARY_KEY EQ id) unique
+    Option(em.find(classOf[CustomerEntity], id))
   }
 
   def getEnabled(): Seq[Customer] = {
     log.debug("Getting all enabled Customers")
-    val c = CustomerCircumflex AS "c"
-    SELECT (c.*) FROM (c) WHERE (c.enabled EQ true) ORDER_BY (c.name) list
+    val query = em.createNamedQuery[CustomerEntity]("Customer.GetEnabled", classOf[CustomerEntity])
+    query.getResultList.asScala
   }
 
   def update(c: Customer) {
@@ -129,11 +134,12 @@ class CustomerDaoCircumflex extends CustomerDao {
     val id = c.id.getOrElse(
       throw new IllegalStateException("Cannot update a Customer which has no id: " + c))
 
-    val customer = getCircumflex(id).getOrElse(
+    val customer = getEntity(id).getOrElse(
       throw new IllegalStateException("Cannot update Customer as id is unknown: " + c))
 
-    customer.name := c.name
-    customer.enabled := c.enabled
-    customer.save
+    customer.name = c.name
+    customer.enabled = c.enabled
+    
+    em.merge(customer)
   }
 }

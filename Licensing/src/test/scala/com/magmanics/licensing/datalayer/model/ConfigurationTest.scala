@@ -1,9 +1,9 @@
 package com.magmanics.licensing.datalayer.model
 
-import org.testng.annotations.Test
-import org.testng.Assert._
-import com.magmanics.licensing.service.model.{Activation, Configuration, ActivationType}
 import com.magmanics.licensing.service.exception.NoActivationsLeftException
+import com.magmanics.licensing.service.model.{Activation, ActivationType, Configuration}
+import org.testng.Assert._
+import org.testng.annotations.Test
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 12 -Jun-2010
@@ -18,14 +18,14 @@ class ConfigurationTest {
 
   @Test(expectedExceptions = Array(classOf[IllegalStateException]))
   def cannotCreateWithMoreActivationsThanMaxActivations() {
-    val activation1 = Activation(machineIdentifier = "dev0", productVersion = "110606", activationType = ActivationType.NEW, extraInfo = Map())
-    val activation2 = Activation(machineIdentifier = "dev1", productVersion = "110606", activationType = ActivationType.NEW, extraInfo = Map())
+    val activation1 = Activation(configurationId = 1, machineIdentifier = "dev0", productVersion = "110606", activationType = ActivationType.NEW, extraInfo = Map())
+    val activation2 = Activation(configurationId = 1, machineIdentifier = "dev1", productVersion = "110606", activationType = ActivationType.NEW, extraInfo = Map())
     Configuration(user = "jbaxter", maxActivations = 1, activations = List(activation1, activation2), productId = 1, customerId = 2L)
   }
 
   @Test(expectedExceptions = Array(classOf[IllegalStateException]))
   def cannotReduceMaxActivationsBelowCurrentNumberOfActivations() {
-    val conf = Configuration(user = "jbaxter", maxActivations = 2, productId = 1, customerId = 2L)
+    val conf = Configuration(id = Some(3), user = "jbaxter", maxActivations = 2, productId = 1, customerId = 2L)
 
     conf.addActivation(machineIdentifier = "dev0", productVersion = "110606")
     conf.addActivation(machineIdentifier = "dev1", productVersion = "110606")
@@ -37,7 +37,7 @@ class ConfigurationTest {
 
   @Test(expectedExceptions = Array(classOf[NoActivationsLeftException]))
   def cannotAddToManyActivations {
-    val conf = Configuration(user = "jbaxter", maxActivations = 1, productId = 1, customerId = 2L)
+    val conf = Configuration(id = Some(3), user = "jbaxter", maxActivations = 1, productId = 1, customerId = 2L)
 
     conf.addActivation(machineIdentifier = "dev0", productVersion = "110606")
     conf.addActivation(machineIdentifier = "dev1", productVersion = "110606")
@@ -45,7 +45,7 @@ class ConfigurationTest {
 
   @Test
   def calculatesSomeActivationsRemainingCorrectly {
-    val conf = Configuration(maxActivations = 2, user = "jbaxter", productId = 1, customerId = 2L)
+    val conf = Configuration(id = Some(3), maxActivations = 2, user = "jbaxter", productId = 1, customerId = 2L)
 
     conf.addActivation(machineIdentifier = "dev0", productVersion = "110606")
     conf.addActivation(machineIdentifier = "dev0", productVersion = "110607") //upgrade
@@ -57,7 +57,7 @@ class ConfigurationTest {
 
   @Test
   def calculatesNoActivationsRemainingCorrectly {
-    val conf = Configuration(maxActivations = 2, user = "jbaxter", productId = 1, customerId = 2L)
+    val conf = Configuration(id = Some(3), maxActivations = 2, user = "jbaxter", productId = 1, customerId = 2L)
 
     conf.addActivation(machineIdentifier = "dev0", productVersion = "110606")
     conf.addActivation(machineIdentifier = "dev1", productVersion = "110606")
@@ -68,7 +68,7 @@ class ConfigurationTest {
 
   @Test(expectedExceptions = Array(classOf[IllegalStateException]))
   def cannotAddActivationsWhenDisabled {
-    val conf = Configuration(enabled = false, user = "jbaxter", productId = 1, customerId = 2L)
+    val conf = Configuration(id = Some(3), enabled = false, user = "jbaxter", productId = 1, customerId = 2L)
     conf.addActivation(machineIdentifier = "dev0", productVersion = "110606")
   }
 

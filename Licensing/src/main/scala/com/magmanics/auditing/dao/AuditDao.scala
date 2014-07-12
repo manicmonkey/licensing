@@ -24,12 +24,13 @@
 
 package com.magmanics.auditing.dao
 
-import org.slf4j.LoggerFactory
+import javax.persistence.{EntityManager, PersistenceContext}
+
+import com.magmanics.auditing.model.{Audit, AuditCode, AuditEntity}
 import com.magmanics.auditing.service.AuditSearchDto
-import com.vaadin.ui.Select
-import com.magmanics.licensing.datalayer.model.ActivationCircumflex
-import java.util.{Date, Calendar}
-import com.magmanics.auditing.model.{Audit, AuditCode, AuditCircumflex}
+import org.slf4j.LoggerFactory
+
+import scala.collection.JavaConverters._
 
 /**
  * Dao for {@link com.magmanics.auditing.model.Audit Audit}s
@@ -46,12 +47,12 @@ trait AuditDao {
   /**
    * Get known audit codes
    */
-  def getAuditCodes(): Seq[AuditCode]
+  def getAuditCodes: Seq[AuditCode]
 
   /**
    * Get existing usernames
    */
-  def getUsernames(): Seq[String]
+  def getUsernames: Seq[String]
 
   /**
    * Search for audits meeting defined criteria
@@ -59,61 +60,69 @@ trait AuditDao {
   def getAuditMessages(auditSearch: AuditSearchDto): Seq[Audit]
 }
 
-object ImplicitCircumflexModelConversion {
-  implicit def auditCircumflexSeqToAuditSeq(audits: Seq[AuditCircumflex]): Seq[Audit] = {
-    audits.map(auditCircumflexToAudit(_))
+object ImplicitEntityModelConversion {
+  implicit def auditEntitySeqToAuditSeq(audits: Seq[AuditEntity]): Seq[Audit] = {
+    audits.map(auditEntityToAudit)
   }
-  implicit def auditCircumflexToAudit(audit: AuditCircumflex): Audit = {
-    Audit(audit.created.apply(), audit.username.apply(), AuditCode(audit.auditCode.apply()), audit.auditMessage.apply())
+  implicit def auditEntityToAudit(audit: AuditEntity): Audit = {
+    Audit(audit.username, AuditCode(audit.auditCode), audit.auditMessage, audit.created)
   }
 }
 
-class AuditDaoCircumflex extends AuditDao {
+class AuditDaoJPA extends AuditDao {
 
-  val log = LoggerFactory.getLogger(classOf[AuditDaoCircumflex])
+  import com.magmanics.auditing.dao.ImplicitEntityModelConversion._
 
-  import ru.circumflex.orm._
-  import ImplicitCircumflexModelConversion._
+  val log = LoggerFactory.getLogger(classOf[AuditDaoJPA])
+
+  @PersistenceContext
+  var em: EntityManager = _
 
   override def create(audit: Audit) {
 
     log.debug("Creating Audit({})", audit)
-    val a = new AuditCircumflex
-    a.created := audit.created
-    a.username := audit.username
-    a.auditCode := audit.auditCode.value
-    a.auditMessage := audit.auditMessage
-    a.save
+    val a = new AuditEntity
+    a.created = audit.created
+    a.username = audit.username
+    a.auditCode = audit.auditCode.value
+    a.auditMessage = audit.auditMessage
+
+    if (a.auditMessage != null && a.auditMessage.length > 2000) {
+      log.warn("Truncating auditMessage (longer than 2000 chars): {}", audit)
+      a.auditMessage = a.auditMessage.substring(0, 2000)
+    }
+
+    em.persist(a)
   }
 
-  override def getAuditCodes() = {
+  override def getAuditCodes(): Seq[AuditCode] = {
     log.debug("Getting distinct AuditCodes")
-    val a = AuditCircumflex AS "a"
-    (SELECT (a.auditCode) FROM (a) GROUP_BY (a.auditCode)).list().map(AuditCode(_))
+    val query = em.createNamedQuery[String]("Audit.GetAuditCodes", classOf[String])
+    val auditCodes = query.getResultList.asScala
+    auditCodes.map(AuditCode)
   }
 
   override def getUsernames() = {
     log.debug("Getting known usernames")
-    val a = AuditCircumflex AS "a"
-    (SELECT (a.username) FROM (a) GROUP_BY (a.username) ORDER_BY (a.username ASC)).list()
+    val query = em.createNamedQuery[String]("Audit.GetDistinctUsernames", classOf[String])
+    query.getResultList.asScala
   }
 
   override def getAuditMessages(auditSearch: AuditSearchDto) = {
     log.debug("Getting Audits with search criteria: {}", auditSearch)
-    if (auditSearch.text == "") {
-      auditMessageQuery(auditSearch.fromDate, auditSearch.toDate, auditSearch.users, auditSearch.auditCodes)
-    } else {
-      auditMessageQuery(auditSearch.fromDate, auditSearch.toDate, auditSearch.users, auditSearch.auditCodes, auditSearch.text)
-    }
-  }
+    val queryString =
+      if (auditSearch.text == "")
+        "SELECT a FROM AuditEntry a WHERE a.created GT :from AND a.created LT :to AND a.username IN :users AND a.auditCode IN :auditCodes"
+      else
+        "SELECT a FROM AuditEntry a WHERE a.created GT :from AND a.created LT :to AND a.username IN :users AND a.auditCode IN :auditCodes AND a.auditMessage LIKE %:text%"
 
-  private def auditMessageQuery(from: Date, to: Date, usernames: Seq[String], auditCodes: Seq[String]): Seq[AuditCircumflex] = {
-    val a = AuditCircumflex AS "a"
-    (SELECT (a.*) FROM a WHERE ((a.created GT from) AND (a.created LT to) AND (a.username IN usernames) AND (a.auditCode IN auditCodes))).list()
-  }
-
-  private def auditMessageQuery(from: Date, to: Date, usernames: Seq[String], auditCodes: Seq[String], filter: String): Seq[AuditCircumflex] = {
-    val a = AuditCircumflex AS "a"
-    (SELECT (a.*) FROM a WHERE ((a.created GT from) AND (a.created LT to) AND (a.username IN usernames) AND (a.auditCode IN auditCodes) AND (a.auditMessage LIKE "%" + filter + "%"))).list()
+    val query = em.createQuery[AuditEntity]("SELECT a FROM AuditEntry a WHERE a.created GT :from AND a.created LT :to AND a.username IN :users AND a.auditCode IN :auditCodes", classOf[AuditEntity])
+    query.setParameter("from", auditSearch.fromDate)
+    query.setParameter("to", auditSearch.toDate)
+    query.setParameter("users", auditSearch.users)
+    query.setParameter("auditCodes", auditSearch.auditCodes)
+    if (auditSearch.text != "")
+      query.setParameter("text", auditSearch.text)
+    query.getResultList.asScala
   }
 }

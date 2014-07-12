@@ -24,11 +24,12 @@
 
 package com.magmanics.licensing.ui.content.configuration
 
+import com.vaadin.data.Property
 import com.vaadin.data.util.BeanItemContainer
 import com.vaadin.ui.{AbstractSelect, Table}
-import scala.math._
 import org.slf4j.LoggerFactory
-import com.vaadin.data.Property
+
+import scala.math._
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

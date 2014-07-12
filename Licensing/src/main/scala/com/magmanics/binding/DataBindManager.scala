@@ -22,13 +22,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.magmanics.licensing.ui.binding
+package com.magmanics.binding
 
-import org.springframework.stereotype.Component
-import org.springframework.context.annotation.Scope
-import collection.mutable.HashMap
-import ref.WeakReference
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.Scope
+import org.springframework.stereotype.Component
+
+import scala.collection.mutable.HashMap
+import scala.ref.WeakReference
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

@@ -24,12 +24,15 @@
 
 package com.magmanics.licensing.datalayer.dao
 
-import com.magmanics.licensing.service.model.{BoolOption, ListOption, TextOption, Product}
-import exception.{DataLayerException, ConstraintException}
+import javax.persistence.{EntityManager, PersistenceContext}
+
+import com.magmanics.licensing.datalayer.dao.exception.DataLayerException
 import com.magmanics.licensing.datalayer.model._
 import com.magmanics.licensing.service.exception.DuplicateNameException
+import com.magmanics.licensing.service.model.{BoolOption, ListOption, Product, TextOption}
 import org.slf4j.LoggerFactory
-import ru.circumflex.core.ValidationException
+
+import scala.collection.JavaConverters._
 
 /**
  * DAO for {@link com.magmanics.licensing.service.model.Product Product}s
@@ -37,7 +40,7 @@ import ru.circumflex.core.ValidationException
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 31-May-2010
  */
-abstract class ProductDao {
+trait ProductDao {
   /**
    * Persists a new Product
    * @return The newly created Product with its id populated to facilitate further operations
@@ -67,12 +70,14 @@ abstract class ProductDao {
   def update(product: Product)
 }
 
-class ProductDaoCircumflex extends ProductDao {
+class ProductDaoJPA extends ProductDao {
 
-  val log = LoggerFactory.getLogger(classOf[ProductDaoCircumflex])
+  import com.magmanics.licensing.datalayer.dao.ImplicitDataModelConversion._
 
-  import ru.circumflex.orm._
-  import com.magmanics.licensing.datalayer.dao.ImplicitCircumflexModelConversion._
+  val log = LoggerFactory.getLogger(classOf[ProductDaoJPA])
+
+  @PersistenceContext
+  var em: EntityManager = _
 
   def create(p: Product): Product = {
 
@@ -82,79 +87,76 @@ class ProductDaoCircumflex extends ProductDao {
       throw new DuplicateNameException("Cannot create Product as its name is already in use: " + p)
 
     try {
-      val product = new ProductCircumflex
-      product.name := p.name
-      product.description := p.description
-      product.enabled := p.enabled
-      product.save()
+      val product = new ProductEntity
+      product.name = p.name
+      product.description = p.description
+      product.enabled = p.enabled
+
       //todo how to attach to product? cascade?? new test proj
       //todo load options and delete/recreate
 
-      p.options.foreach(o => {
-        o match {
-          case b: BoolOption => {
-            val radio = new RadioProductOptionCircumflex
-            radio.name := b.name
-            radio.default := b.default
-            radio.product := product
-            radio.save()
-          }
-          case t: TextOption => {
-            val text = new TextProductOptionCircumflex
-            text.name := t.name
-            text.default := t.default
-            text.product := product
-            text.save()
-          }
-          case l: ListOption => {
-            val list = new ListProductOptionCircumflex
-            list.name := l.name
-            list.default := l.default
-            list.product := product
-            list.save()
-            l.values.foreach(o => {
-              val option = new ListProductOptionValueCircumflex
-              option.value := o
-              option.listProductOption := list
-              option.save()
-            })
-          }
-        }
-      })
-      
+      p.options.foreach {
+        case b: BoolOption =>
+          val radio = new RadioProductOptionEntity
+          radio.name = b.name
+          radio.default = b.default
+          radio.product = product
+          product.addOption(radio)
+        case t: TextOption =>
+          val text = new TextProductOptionEntity
+          text.name = t.name
+          text.default = t.default
+          text.product = product
+          product.addOption(text)
+        case l: ListOption =>
+          val list = new ListProductOptionEntity
+          list.name = l.name
+          list.default = l.default
+          list.product = product
+          product.addOption(list)
+          l.values.foreach(o => {
+            val option = new ListProductOptionValueEntity()
+            option.value = o
+            option.listProductOption = list
+            list.addOptionValue(option)
+          })
+      }
+
+      em.persist(product)
+      em.refresh(product)
+
       product
 
     } catch {
-      case ve: ValidationException => throw new ConstraintException(ve)
+//      case ve: ValidationException => throw new ConstraintException(ve)
       case e: Exception => throw new DataLayerException(e)
     }
   }
 
   def get(): Seq[Product] = {
     log.debug("Getting all Products")
-    val p = ProductCircumflex AS "p"
-    (SELECT(p.*) FROM (p) ORDER_BY (p.name)).list()
+    em.createNamedQuery[ProductEntity]("Product.GetAll", classOf[ProductEntity]).getResultList.asScala
   }
 
   def getEnabled(): Seq[Product] = {
     log.debug("Getting all enabled Products")
-    get.filter(_.enabled)
+    em.createNamedQuery[ProductEntity]("Product.GetEnabled", classOf[ProductEntity]).getResultList.asScala
   }
 
   def get(id: Long): Option[Product] = {
-    getCircumflex(id)
+    getEntity(id)
+  }
+
+  private def getEntity(id: Long): Option[ProductEntity] = {
+    log.debug("Getting Product with id: {}", id)
+    Option(em.find(classOf[ProductEntity], id))
   }
 
   private def get(name: String): Option[Product] = {
     log.debug("Getting Product with name: {}", name)
-    val p = ProductCircumflex AS "p"
-    SELECT (p.*) FROM (p) WHERE (p.name EQ name) unique
-  }
-
-  private def getCircumflex(id: Long): Option[ProductCircumflex] = {
-    log.debug("Getting Product with id: {}", id)
-    val p = ProductCircumflex AS "p"
-    SELECT (p.*) FROM (p) WHERE (p.PRIMARY_KEY EQ id) unique
+    val query = em.createNamedQuery[ProductEntity]("Product.GetByName", classOf[ProductEntity])
+    query.setParameter("name", name)
+    query.getResultList.asScala.headOption
   }
 
   def update(p: Product) {
@@ -164,45 +166,45 @@ class ProductDaoCircumflex extends ProductDao {
     val id = p.id.getOrElse(
       throw new IllegalStateException("Cannot update Product as it does not have an id: " + p))
 
-    val product = getCircumflex(id).getOrElse(
+    val product = getEntity(id).getOrElse(
       throw new IllegalStateException("Cannot update Product as could not find existing record with same id: " + p))
 
     val existingProduct = get(p.name)
     if (existingProduct.nonEmpty && existingProduct.get.id != p.id)
       throw new DuplicateNameException("Cannot create Product as its name is already in use: " + p)
 
-    product.name := p.name
-    product.description := p.description
-    product.enabled := p.enabled
+    product.name = p.name
+    product.description = p.description
+    product.enabled = p.enabled
     //todo how to attach to product? cascade?? new test proj
     //todo load options and delete/recreate
     p.options.foreach {
       case b: BoolOption =>
-        val radio = new RadioProductOptionCircumflex
-        if (b.id.isDefined) radio.PRIMARY_KEY := b.id.get
-        radio.name := b.name
-        radio.default := b.default
-        product.radioOptions.apply :+ radio
+        val radio = new RadioProductOptionEntity
+        if (b.id.isDefined) radio.id = b.id.get
+        radio.name = b.name
+        radio.default = b.default
+        product.radioOptions.add(radio)
       case t: TextOption =>
-        val text = new TextProductOptionCircumflex
-        if (t.id.isDefined) text.PRIMARY_KEY := t.id.get
-        text.name := t.name
-        text.default := t.default
-        product.textOptions.apply :+ text
+        val text = new TextProductOptionEntity
+        if (t.id.isDefined) text.id = t.id.get
+        text.name = t.name
+        text.default = t.default
+        product.textOptions.add(text)
       case l: ListOption =>
-        val list = new ListProductOptionCircumflex
-        if (l.id.isDefined) list.PRIMARY_KEY := l.id.get
-        list.name := l.name
-        list.default := l.default
+        val list = new ListProductOptionEntity
+        if (l.id.isDefined) list.id = l.id.get
+        list.name = l.name
+        list.default = l.default
         l.values.foreach(o => {
-          val option = new ListProductOptionValueCircumflex
-          if (l.id.isDefined) option.PRIMARY_KEY := l.id.get
-          option.value := o
-          list.values.get :+ option
+          val option = new ListProductOptionValueEntity()
+          if (l.id.isDefined) option.id = l.id.get
+          option.value = o
+          list.optionValues.add(option)
         })
-        product.listOptions.get :+ list
+        product.listOptions.add(list)
     }
 
-    product.UPDATE()
+    em.merge(product)
   }
 }

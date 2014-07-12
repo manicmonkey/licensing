@@ -25,7 +25,8 @@
 package com.magmanics.auditing.model
 
 import java.util.Date
-import reflect.BeanInfo
+
+import scala.reflect.BeanInfo
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -42,6 +43,6 @@ import reflect.BeanInfo
 // create customer, modify customer
 
 @BeanInfo //generate JavaBean style accessors for ui binding
-case class Audit(created: Date = new Date(), username: String, auditCode: AuditCode, auditMessage: String)
+case class Audit(username: String, auditCode: AuditCode, auditMessage: String, created: Date = new Date())
 
 case class AuditCode(value: String)

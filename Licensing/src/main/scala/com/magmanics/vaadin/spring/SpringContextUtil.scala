@@ -24,11 +24,13 @@
 
 package com.magmanics.vaadin.spring
 
-import scala.collection.JavaConversions._
-import com.vaadin.ui.AbstractComponent
-import com.vaadin.terminal.gwt.server.WebApplicationContext
-import org.springframework.web.context.support.WebApplicationContextUtils
 import java.util.ArrayList
+
+import com.vaadin.terminal.gwt.server.WebApplicationContext
+import com.vaadin.ui.AbstractComponent
+import org.springframework.web.context.support.WebApplicationContextUtils
+
+import scala.collection.JavaConversions._
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

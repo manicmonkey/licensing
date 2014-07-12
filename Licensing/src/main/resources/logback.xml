@@ -11,7 +11,6 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="ru.circumflex" level="INFO" />
     <logger name="org.springframework" level="INFO" />
 
     <!-- log4jdbc logging -->

@@ -22,10 +22,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.magmanics.licensing.ui.binding
+package com.magmanics.binding
 
 import org.springframework.beans.factory.config.BeanPostProcessor
-import java.lang.String
 /**
  * This class post-processes classes and registers {@link DataBindSubscriber}s and {@link DataBindPublisher}s with the {@link DataBindManager}
  *

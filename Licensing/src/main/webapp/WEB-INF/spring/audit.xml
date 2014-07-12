@@ -11,6 +11,6 @@
     <bean id="auditService" class="com.magmanics.auditing.service.AuditServiceImpl"
           p:auditDao-ref="auditDao" />
 
-    <bean id="auditDao" class="com.magmanics.auditing.dao.AuditDaoCircumflex" />
+    <bean id="auditDao" class="com.magmanics.auditing.dao.AuditDaoJPA" />
 
 </beans>

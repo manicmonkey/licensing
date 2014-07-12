@@ -22,22 +22,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.magmanics.circumflex.orm.web
+package com.magmanics.auditing.model
 
-import javax.servlet.{ServletContextEvent, ServletContextListener}
-import com.magmanics.licensing.service.DatabaseCreation
-import com.magmanics.licensing.datalayer.dao.MockData
+import java.util.Date
+import javax.persistence._
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
- * @since 13-Aug-2010
+ * @since 20-Sep-2010
  */
+@Entity
+@Table(name = "audits")
+@NamedQueries(Array(
+  new NamedQuery (name = "Audit.GetAuditCodes", query = "SELECT DISTINCT a.auditCode FROM AuditEntity a GROUP BY a.auditCode ORDER BY a.auditCode ASC"),
+  new NamedQuery (name = "Audit.GetDistinctUsernames", query = "SELECT DISTINCT a.username FROM AuditEntity a GROUP BY a.username ORDER BY a.username ASC")
+))
+class AuditEntity {
+  
+  @Id
+  @GeneratedValue
+  var id: Long = _
 
-class DatabaseConfigurationListener extends ServletContextListener {
-  def contextDestroyed(sce: ServletContextEvent) = {}
+  @Temporal(TemporalType.TIMESTAMP)
+  var created: Date = _
 
-  def contextInitialized(sce: ServletContextEvent) = {
-    DatabaseCreation.create
-    MockData.insert
-  }
+  @Column(nullable = false)
+  var username: String = _
+
+  @Column(nullable = false)
+  var auditCode: String = _
+
+  @Column(nullable = false, length = 2000)
+  var auditMessage: String = _
 }

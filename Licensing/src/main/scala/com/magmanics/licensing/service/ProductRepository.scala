@@ -24,12 +24,12 @@
 
 package com.magmanics.licensing.service
 
-import com.magmanics.licensing.service.model.Product
-import com.magmanics.licensing.datalayer.dao.ProductDao
-import org.slf4j.LoggerFactory
-import org.springframework.security.access.prepost.PreAuthorize
 import com.magmanics.auditing.Auditable
 import com.magmanics.binding.DataBindPublisher
+import com.magmanics.licensing.datalayer.dao.ProductDao
+import com.magmanics.licensing.service.model.Product
+import org.slf4j.LoggerFactory
+import org.springframework.security.access.prepost.PreAuthorize
 
 /**
  * Repository for {@link com.magmanics.licensing.service.model.Product Products}. In addition to basic data

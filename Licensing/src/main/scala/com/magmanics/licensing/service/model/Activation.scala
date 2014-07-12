@@ -25,7 +25,8 @@
 package com.magmanics.licensing.service.model
 
 import java.util.Date
-import reflect.BeanInfo
+
+import scala.reflect.BeanInfo
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -36,8 +37,9 @@ case class Activation(id: Option[Long] = None,
                       created: Date = new Date,
                       machineIdentifier: String,
                       productVersion: String,
+                      configurationId: Long,
                       activationType: ActivationType.Value,
-                      extraInfo: Map[String, String])
+                      extraInfo: Map[String, String] = Map())
 
 object ActivationType extends Enumeration {
   type ActivationType = Value

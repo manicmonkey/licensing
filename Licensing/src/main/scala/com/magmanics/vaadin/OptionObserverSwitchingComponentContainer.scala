@@ -24,7 +24,7 @@
 
 package com.magmanics.vaadin
 
-import com.vaadin.ui.{Panel, Component}
+import com.vaadin.ui.{Component, Panel}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

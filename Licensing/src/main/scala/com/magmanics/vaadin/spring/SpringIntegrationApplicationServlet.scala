@@ -24,10 +24,11 @@
 
 package com.magmanics.vaadin.spring
 
-import com.vaadin.Application
-import com.vaadin.terminal.gwt.server.AbstractApplicationServlet
 import javax.servlet.ServletConfig
 import javax.servlet.http.HttpServletRequest
+
+import com.vaadin.Application
+import com.vaadin.terminal.gwt.server.AbstractApplicationServlet
 import org.springframework.web.context.support.WebApplicationContextUtils
 
 

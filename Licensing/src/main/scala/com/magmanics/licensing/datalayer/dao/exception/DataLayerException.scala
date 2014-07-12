@@ -28,9 +28,12 @@ package com.magmanics.licensing.datalayer.dao.exception
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 27-Jul-2010
  */
+class DataLayerException(msg: String, e: Exception) extends RuntimeException(msg, e) {
+  def this(e: Exception) {
+    this(null, e)
+  }
 
-class DataLayerException(e: Exception) extends RuntimeException(e) {
   def this() {
-    this(null)
+    this(null, null)
   }
 }

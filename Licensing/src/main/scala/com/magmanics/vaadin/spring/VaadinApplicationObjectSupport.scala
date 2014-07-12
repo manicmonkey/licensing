@@ -24,8 +24,8 @@
 
 package com.magmanics.vaadin.spring
 
-import org.springframework.web.context.support.WebApplicationObjectSupport
 import org.springframework.context.NoSuchMessageException
+import org.springframework.web.context.support.WebApplicationObjectSupport
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

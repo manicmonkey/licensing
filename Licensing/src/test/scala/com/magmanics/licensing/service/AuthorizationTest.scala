@@ -1,12 +1,12 @@
 package com.magmanics.licensing.service
 
-import model.Customer
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
 import com.magmanics.licensing.TransactionalSpringBasedSuite
-import org.springframework.security.authentication.{AuthenticationManager, UsernamePasswordAuthenticationToken}
+import com.magmanics.licensing.service.model.Customer
 import org.scalatest.GivenWhenThen
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.authentication.{AuthenticationManager, UsernamePasswordAuthenticationToken}
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.context.SecurityContextHolder
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -20,14 +20,14 @@ class AuthorizationTest extends TransactionalSpringBasedSuite with GivenWhenThen
   lazy val authenticationManager = context.getBean(classOf[AuthenticationManager])
   lazy val customerRepository = context.getBean(classOf[CustomerRepository])
 
-  def contextLocation = "spring-authorization-test.xml"
+  def contextLocation = "spring/authorization-test.xml"
 
   feature("Authentication is required to access certain features") {
     scenario("Trying to create a Customer") {
-      given("A new Customer")
+      Given("A new Customer")
       val c = Customer(name = "DHL")
-      when("We try to create it using different accounts")
-      then("Only the account with the correct privilege will succeed")
+      When("We try to create it using different accounts")
+      Then("Only the account with the correct privilege will succeed")
 
       users.filterNot(_.equals("createCustomer")).foreach(username => {
         login(username, "password")

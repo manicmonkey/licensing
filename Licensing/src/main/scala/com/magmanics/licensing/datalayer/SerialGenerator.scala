@@ -36,7 +36,5 @@ class SerialGenerator {
   /**
    * Generate a new unique serial
    */
-  def generateSerial(): String = {
-    UUID.randomUUID.toString
-  }
+  def generateSerial() = UUID.randomUUID.toString
 }

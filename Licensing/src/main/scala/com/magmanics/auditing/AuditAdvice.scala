@@ -24,14 +24,15 @@
 
 package com.magmanics.auditing
 
-import model.{Audit, AuditCode}
+import java.util.Arrays
+
+import com.magmanics.auditing.model.{Audit, AuditCode}
+import com.magmanics.auditing.service.AuditService
 import org.aspectj.lang.JoinPoint
 import org.aspectj.lang.annotation._
 import org.slf4j.LoggerFactory
 import org.springframework.security.core.context.SecurityContextHolder
-import com.magmanics.auditing.service.AuditService
 import org.springframework.security.core.userdetails.User
-import java.util.Arrays
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -73,7 +74,7 @@ class AuditAdvice {
                    }
 
     try {
-      auditService.create(Audit(username = username, auditCode = auditCode, auditMessage = auditMessage))
+      auditService.create(Audit(username, auditCode, auditMessage))
     } catch {
       case e: Exception => log.error("Exception attempting to store Audit", e)
     }

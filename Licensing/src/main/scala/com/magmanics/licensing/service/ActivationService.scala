@@ -24,9 +24,9 @@
 
 package com.magmanics.licensing.service
 
-import exception._
-import org.slf4j.LoggerFactory
 import com.magmanics.auditing.Auditable
+import com.magmanics.licensing.service.exception._
+import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 
 /**
@@ -50,7 +50,7 @@ class ActivationServiceImpl(configurationRepository: ConfigurationRepository, cu
   @Auditable("audit.activation")
   def activate(licenceActivationRequest: ActivationRequest): ActivationResponse = { //todo auditing
 
-    log.debug("Recieved ActivationRequest: {}", licenceActivationRequest)
+    log.debug("Received ActivationRequest: {}", licenceActivationRequest)
 
     val configuration = configurationRepository.get(licenceActivationRequest.serial)
             .getOrElse(throw new NoSuchLicenceException(licenceActivationRequest.serial))
