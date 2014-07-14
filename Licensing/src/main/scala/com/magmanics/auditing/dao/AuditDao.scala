@@ -112,17 +112,17 @@ class AuditDaoJPA extends AuditDao {
     log.debug("Getting Audits with search criteria: {}", auditSearch)
     val queryString =
       if (auditSearch.text == "")
-        "SELECT a FROM AuditEntry a WHERE a.created GT :from AND a.created LT :to AND a.username IN :users AND a.auditCode IN :auditCodes"
+        "SELECT a FROM AuditEntity a WHERE a.created > :from AND a.created < :to AND a.username IN :users AND a.auditCode IN :auditCodes"
       else
-        "SELECT a FROM AuditEntry a WHERE a.created GT :from AND a.created LT :to AND a.username IN :users AND a.auditCode IN :auditCodes AND a.auditMessage LIKE %:text%"
+        "SELECT a FROM AuditEntity a WHERE a.created > :from AND a.created < :to AND a.username IN :users AND a.auditCode IN :auditCodes AND a.auditMessage LIKE :text"
 
-    val query = em.createQuery[AuditEntity]("SELECT a FROM AuditEntry a WHERE a.created GT :from AND a.created LT :to AND a.username IN :users AND a.auditCode IN :auditCodes", classOf[AuditEntity])
+    val query = em.createQuery[AuditEntity](queryString, classOf[AuditEntity])
     query.setParameter("from", auditSearch.fromDate)
     query.setParameter("to", auditSearch.toDate)
-    query.setParameter("users", auditSearch.users)
-    query.setParameter("auditCodes", auditSearch.auditCodes)
+    query.setParameter("users", auditSearch.users.asJava)
+    query.setParameter("auditCodes", auditSearch.auditCodes.asJava)
     if (auditSearch.text != "")
-      query.setParameter("text", auditSearch.text)
+      query.setParameter("text", "%" + auditSearch.text + "%")
     query.getResultList.asScala
   }
 }

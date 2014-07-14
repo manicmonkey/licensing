@@ -47,7 +47,7 @@ class SpringIntegrationApplicationServlet extends AbstractApplicationServlet {
 
     super.init(config)
 
-    val wac = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext())
+    val wac = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext)
     val application = wac.getBean(classOf[Application])
     clazz = application.getClass.asInstanceOf[Class[_ <: Application]]
   }

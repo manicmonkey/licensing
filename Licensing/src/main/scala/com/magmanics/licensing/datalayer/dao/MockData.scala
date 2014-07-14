@@ -25,43 +25,39 @@
 package com.magmanics.licensing.datalayer.dao
 
 import java.util.{Calendar, UUID}
-import javax.persistence.{EntityManager, PersistenceContext}
 
-import com.magmanics.auditing.model.{Audit, AuditCode, AuditEntity}
-import com.magmanics.licensing.datalayer.model._
-import com.magmanics.licensing.service.model.ActivationType
+import com.magmanics.auditing.dao.AuditDao
+import com.magmanics.auditing.model.{Audit, AuditCode}
+import com.magmanics.licensing.service.model.{Product => LicencedProduct, _}
+import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author jbaxter - 12-Jun-2010
  */
 class MockData {
 
-  @PersistenceContext
-  var em: EntityManager = _
+  @Autowired
+  var productDao: ProductDao = _
+
+  @Autowired
+  var customerDao: CustomerDao = _
+
+  @Autowired
+  var configurationDao: ConfigurationDao = _
+
+  @Autowired
+  var auditDao: AuditDao = _
   
   def getUUID: String = {
     UUID.randomUUID.toString
   }
 
-  def createProduct(name: String, description: String, enabled: Boolean) = {
-    val product = new ProductEntity
-    product.name = name
-    product.description = description
-    product.enabled = enabled
-    em.persist(product)
-    product
-  }
-
   def insert {
-    val product = createProduct("JFinder", "Picks up files, strips hash commands and uploads to PDM", enabled = true)
-    buildListProductOption(product, "Printers", List("10", "20", "40", "80", "160", "320"), "20")
-    buildRadioProductOption(product, "PDF Signing", default = false)
-    buildRadioProductOption(product, "Schedule and Sort", default = true)
+    val options = List(buildListProductOption("Printers", List("10", "20", "40", "80", "160", "320"), "20"), buildRadioProductOption("PDF Signing", default = false), buildRadioProductOption("Schedule and Sort", default = true))
+    val product = createProduct("JFinder", "Picks up files, strips hash commands and uploads to PDM", options = options, enabled = true)
 
-    val product2 = createProduct("PDM", "Magmanics Archive solution", enabled = true)
-    buildTextProductOption(product2, "Internal reference", "MAG_XXX")
-    buildRadioProductOption(product2, "Doc import", default = true)
-    buildListProductOption(product2, "Users", List("1", "2", "5", "10", "25", "50", "100"), "10")
+    val options2 = List(buildTextProductOption("Internal reference", "MAG_XXX"), buildRadioProductOption("Doc import", default = true), buildListProductOption("Users", List("1", "2", "5", "10", "25", "50", "100"), "10"))
+    val product2 = createProduct("PDM", "Magmanics Archive solution", options = options2, enabled = true)
 
     createProduct("V4", "Product Suite", enabled = false)
 
@@ -85,91 +81,44 @@ class MockData {
     val licenceConfiguration2 = buildConfiguration(enabled = true, 1, product2, customer2, "matth")
     val licenceConfiguration3 = buildConfiguration(enabled = true, 2, product2, customer2, "lees")
 
-    val activation = buildActivation("jbaxter", "100608", ActivationType.NEW, licenceConfiguration)
-    val activation2 = buildActivation("jbaxter", "110715", ActivationType.UPGRADE, licenceConfiguration)
-    addActivationInfo(activation, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
-    addActivationInfo(activation2, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
+    buildActivation("jbaxter", "100608", licenceConfiguration, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
+    buildActivation("jbaxter", "110715", licenceConfiguration, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
 
-    addAudits
+    addAudits()
   }
 
-  private def addActivationInfo(activation: ActivationEntity, info: Map[String, String]) {
-    info.foreach(pair => {
-      val activationInfo = new ActivationInfoEntity
-      activationInfo.key = pair._1
-      activationInfo.value = pair._2
-      activationInfo.activation = activation
-      em.persist(activationInfo)
-    })
+  def createProduct(name: String, description: String, options: Seq[ProductOption[_]] = List(), enabled: Boolean): LicencedProduct = {
+    val product = new LicencedProduct(name = name, description = description, options = options, enabled = enabled)
+    productDao.create(product)
   }
 
-  private def createCustomer(customerName: String, enabled: Boolean = true): CustomerEntity = {
-    val customer = new CustomerEntity
-    customer.name = customerName
-    customer.enabled = enabled
-    em.persist(customer)
-    customer
+  private def buildTextProductOption(name: String, default: String) = {
+    new TextOption(name = name, default = default)
   }
 
-  private def buildConfiguration(enabled: Boolean, maxActivations: Int, product: ProductEntity, customer: CustomerEntity, username: String): ConfigurationEntity = {
-    val licenceConfiguration = new ConfigurationEntity
-    licenceConfiguration.enabled = enabled
-    licenceConfiguration.serial = getUUID
-    licenceConfiguration.maxActivations = maxActivations
-    licenceConfiguration.product = product
-    licenceConfiguration.customer = customer
-    licenceConfiguration.user = username
-    em.persist(licenceConfiguration)
-
-    product.getOptions.foreach(c => {
-      val po = new ConfigurationOptionEntity
-      po.key = c.name
-      po.value = c.getDefault.toString
-      po.configuration = licenceConfiguration
-      em.persist(po)
-    })
-
-    licenceConfiguration
+  private def buildRadioProductOption(name: String, default: Boolean) = {
+    new BoolOption(name = name, default = default)
   }
 
-  private def buildActivation(machineIdentifier: String, productVersion: String, activationType: ActivationType.Value, licenceConfiguration: ConfigurationEntity) = {
-    val licenceActivation = new ActivationEntity()
-    licenceActivation.machineIdentifier = machineIdentifier
-    licenceActivation.productVersion = productVersion
-    licenceActivation.activationType = activationType.toString
-    licenceActivation.configuration = licenceConfiguration
-    em.persist(licenceActivation)
-    licenceActivation
+  private def buildListProductOption(name: String, options: List[String], default: String) = {
+    new ListOption(name = name, default = default, values = options)
   }
 
-  private def buildTextProductOption(product: ProductEntity, name: String, default: String) {
-    val textOption = new TextProductOptionEntity
-    textOption.name = name
-    textOption.default = default
-    textOption.product = product
-    em.persist(textOption)
+  private def createCustomer(customerName: String, enabled: Boolean = true): Customer = {
+    val customer = new Customer(name = customerName, enabled = enabled)
+    customerDao.create(customer)
   }
 
-  private def buildRadioProductOption(product: ProductEntity, name: String, default: Boolean) {
-    val radioOption = new RadioProductOptionEntity
-    radioOption.name = name
-    radioOption.default = default
-    radioOption.product = product
-    em.persist(radioOption)
+  private def buildConfiguration(enabled: Boolean, maxActivations: Int, product: LicencedProduct, customer: Customer, username: String): Configuration = {
+    val licenceConfiguration = new Configuration(enabled = enabled, maxActivations = maxActivations,
+      productId =  product.id.get, customerId = customer.id.get, user = username, serial = Some(getUUID),
+      options = product.options.map(c => c.name -> c.default.toString).toMap)
+    configurationDao.create(licenceConfiguration)
   }
 
-  private def buildListProductOption(product: ProductEntity, name: String, options: List[String], default: String) {
-    val listOption = new ListProductOptionEntity
-    listOption.name = name
-    listOption.default = default
-    listOption.product = product
-    em.persist(listOption)
-
-    addListElements(listOption, options)
-  }
-
-  private def addListElements(listOption: ListProductOptionEntity, listElements: List[String]) {
-    listElements.foreach(s => em.persist(new ListProductOptionValueEntity(s, listOption)))
+  private def buildActivation(machineIdentifier: String, productVersion: String, licenceConfiguration: Configuration, info: Map[String, String]) = {
+    licenceConfiguration.addActivation(machineIdentifier = machineIdentifier, productVersion = productVersion, extraInfo = info)
+    configurationDao.update(licenceConfiguration)
   }
 
   private def addAudits() {
@@ -184,13 +133,6 @@ class MockData {
         Audit("mdamon", AuditCode("audit.products.getEnabled"), "User 'mdamon' retrieved all enabled products"),
         Audit("hunterst", AuditCode("audit.product.update"), "User 'hunterst' updated the product 'PO Approval'")
       )
-    }).foreach(a => {
-      val audit = new AuditEntity
-      audit.auditCode = a.auditCode.value
-      audit.auditMessage = a.auditMessage
-      audit.created = a.created
-      audit.username = a.username
-      em.persist(audit)
-    })
+    }).foreach(auditDao.create)
   }
 }

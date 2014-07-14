@@ -59,8 +59,8 @@ class LicensingApplication @Autowired() (auditLogContent: AuditLogContent) exten
 
 //    container.updateContent(initialContent)
 //    container.updateContent(new HomeContent)
-//    container.updateContent(new LicenceManagementContent)
-    container.updateContent(auditLogContent)
+    container.updateContent(new LicenceManagementContent)
+//    container.updateContent(auditLogContent)
     crumbTrail.updateDisplay(List(""))
   }
 

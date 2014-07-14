@@ -7,6 +7,8 @@
 
     <context:mbean-export />
 
+    <bean class="com.magmanics.licensing.datalayer.dao.MockData" init-method="insert" />
+
     <!--<bean class="com.magmanics.licensing.ui.ContentPanelButton"-->
           <!--p:label="menu.button.licences"-->
           <!--p:contentPanel-ref="licenceContentPanel" />-->
