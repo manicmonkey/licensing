@@ -25,6 +25,7 @@
 package com.magmanics.licensing.ui.content.activation
 
 import com.magmanics.licensing.service.model.Activation
+import com.vaadin.data.Property
 import com.vaadin.ui.Table
 import org.slf4j.LoggerFactory
 
@@ -49,10 +50,10 @@ class ActivationDetailTable extends Table {
     log.debug("Model clicked: {}", activation)
     activation.extraInfo.foreach(info => {
       val item = addItem(info._1)
-      item.getItemProperty("name").setValue(info._1)
-      item.getItemProperty("value").setValue(info._2)
+      item.getItemProperty("name").asInstanceOf[Property[String]].setValue(info._1)
+      item.getItemProperty("value").asInstanceOf[Property[String]].setValue(info._2)
     })
-    requestRepaint()
+    markAsDirty()
     setPageLength(min(size, 8))
   }
 }

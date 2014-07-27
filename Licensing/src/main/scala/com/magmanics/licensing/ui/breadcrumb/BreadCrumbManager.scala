@@ -25,23 +25,24 @@
 package com.magmanics.licensing.ui.breadcrumb
 
 import com.magmanics.licensing.ui.LicensingApplication
-import com.vaadin.ui.UriFragmentUtility
-import com.vaadin.ui.UriFragmentUtility._
+import com.vaadin.navigator.Navigator
+import com.vaadin.server.Page.{UriFragmentChangedEvent, UriFragmentChangedListener}
 
 /**
  * This class is responsible for listening to fragment change events and walking the screen graph to display the relevant view
  *
  * @author jbaxter - 07/04/11
  */
-class BreadCrumbListener extends UriFragmentUtility with FragmentChangedListener {
+class BreadCrumbListener extends Navigator(null, null, null) with UriFragmentChangedListener {
 
-  addListener(this)
-  
-  def fragmentChanged(source: UriFragmentUtility#FragmentChangedEvent) {
-    Console.println("Got fragment: " + getFragment)
+//  addListener(this)
+//todo as per below, this is not at all correct - to be implemented
 
-    val frags = getCleanFragments(getFragment)
-    frags.foldLeft(getApplication.asInstanceOf[CrumbWalkableComponent])((crumbTrail, fragment) => crumbTrail.walkTo(fragment))
+  override def uriFragmentChanged(event: UriFragmentChangedEvent) {
+    Console.println("Got fragment: " + getState)
+
+    val frags = getCleanFragments(getState)
+    frags.foldLeft(getLicensingApplication.asInstanceOf[CrumbWalkableComponent])((crumbTrail, fragment) => crumbTrail.walkTo(fragment))
     getLicensingApplication.crumbTrail.updateDisplay(frags)
   } //todo unit test
 
@@ -52,7 +53,7 @@ class BreadCrumbListener extends UriFragmentUtility with FragmentChangedListener
   }
 
   def getLicensingApplication: LicensingApplication = {
-    getApplication.asInstanceOf[LicensingApplication]
+    getUI.asInstanceOf[LicensingApplication]
   }
 }
 
@@ -61,19 +62,20 @@ class BreadCrumbListener extends UriFragmentUtility with FragmentChangedListener
  *
  * @author jbaxter - 13/04/11
  */
-class BreadCrumbFragmentManager extends UriFragmentUtility {
+class BreadCrumbFragmentManager(navigator: Navigator) {
 
+  //todo this has all need to be completely reworked for vaadin 7
   def walkTo(path: String) {
     if (path.startsWith("/")) {
       //full path
-      setFragment(path)
+      navigator.navigateTo(path)
     } else {
       //relative path
-      val frag = getFragment
+      val frag = navigator.getState
       if (frag == null || frag == "") {
-        setFragment(path)
+        navigator.navigateTo(path)
       } else {
-        setFragment(frag.stripSuffix("/") + "/" + path)
+        navigator.navigateTo(frag.stripSuffix("/") + "/" + path)
       }
     }
   }

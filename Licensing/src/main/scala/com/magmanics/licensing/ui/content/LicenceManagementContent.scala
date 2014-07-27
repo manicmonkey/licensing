@@ -56,12 +56,12 @@ class LicenceManagementContent extends MainContent {
   addComponent(new HorizontalLayout {
     setSizeUndefined()
     setSpacing(true)
-    addComponent(new Panel with UndefinedWidth {
-      getContent.setWidth(null)
-      addComponent(new Button("Disable configuration") with UndefinedWidth)
-      addComponent(new Button("Increase activations") with FullWidth)
-      addComponent(new Button("Decrease activations") with FullWidth)
-    })
+    addComponent(new VerticalLayout {
+        setWidth(null)
+        addComponent(new Button("Disable configuration") with UndefinedWidth)
+        addComponent(new Button("Increase activations") with FullWidth)
+        addComponent(new Button("Decrease activations") with FullWidth)}
+    )
     addComponent(new GridLayout(2, 7) {
       setSizeUndefined()
       setSpacing(true)

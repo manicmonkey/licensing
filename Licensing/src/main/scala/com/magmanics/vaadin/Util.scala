@@ -24,8 +24,8 @@
 
 package com.magmanics.vaadin
 
-import com.vaadin.ui.Button
-import com.vaadin.ui.Window.Notification
+import com.vaadin.ui.Notification.Type
+import com.vaadin.ui.{Notification, Button}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -34,6 +34,6 @@ import com.vaadin.ui.Window.Notification
 
 object Util {
   def showNotImplemented: Button.ClickListener = {
-    new ClickHandler(e => { e.getComponent.getWindow.showNotification("Sorry this function is not implemented yet", Notification.TYPE_WARNING_MESSAGE) })
+    new ClickHandler(_ => Notification.show("Sorry this function is not implemented yet", Type.WARNING_MESSAGE))
   }
 }

@@ -26,7 +26,8 @@ package com.magmanics.licensing.ui.content.configuration
 
 import com.vaadin.data.Property
 import com.vaadin.data.util.BeanItemContainer
-import com.vaadin.ui.{AbstractSelect, Table}
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode
+import com.vaadin.ui.Table
 import org.slf4j.LoggerFactory
 
 import scala.math._
@@ -42,9 +43,9 @@ class ConfigurationOverviewTable extends Table {
   val container = new BeanItemContainer[ConfigurationInfo](classOf[ConfigurationInfo])
   setContainerDataSource(container)
 
-  setVisibleColumns(Array("product", "created", "user", "activations", "serial"))
-  setColumnHeaders(Array("Product", "Created", "User", "Activations", "Serial"))
-  setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY)
+  setVisibleColumns("product", "created", "user", "activations", "serial")
+  setColumnHeaders("Product", "Created", "User", "Activations", "Serial")
+  setItemCaptionMode(ItemCaptionMode.PROPERTY)
 
   setSelectable(true)
   setNullSelectionAllowed(false)
@@ -54,7 +55,7 @@ class ConfigurationOverviewTable extends Table {
 
     container.removeAllItems()
 
-    c.foreach(container.addBean(_))
+    c.foreach(container.addBean)
 
     if (container.size > 0) {
         setPageLength(min(container.size, 4))
@@ -63,7 +64,7 @@ class ConfigurationOverviewTable extends Table {
   }
 
   def addListener(configurationSelectedListener: ConfigurationInfo => Unit) {
-    addListener(new Property.ValueChangeListener() {
+    addValueChangeListener(new Property.ValueChangeListener() {
       override def valueChange(event: Property.ValueChangeEvent) {
         val configuration = event.getProperty.getValue.asInstanceOf[ConfigurationInfo]
         assert(configuration != null, "Null selection not allowed")
@@ -73,18 +74,18 @@ class ConfigurationOverviewTable extends Table {
   }
 
   setCellStyleGenerator(new Table.CellStyleGenerator {
-      def getStyle(itemId: Any, propertyId: Any): String = {
+      def getStyle(source: Table, itemId: Any, propertyId: Any): String = {
           if (propertyId == null) {
               // no propertyId, styling row
 //                    if (markedRows.contains(itemId))
 //                      return "marked"
 //                    else
-                return null;
+                return null
 //                } else if (ExampleUtil.iso3166_PROPERTY_NAME.equals(propertyId)) {
 //                    return "bold";
           } else {
               // no style
-              return null;
+              return null
           }
       }
   })

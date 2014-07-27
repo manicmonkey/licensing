@@ -35,9 +35,6 @@ class HomeContent extends MainContent {
 
   val messageResource = new CrumbTrailMessageResource
 
-  setContent(new HorizontalLayout {
-    setWidth("100%")
-  })
   addComponent(new HorizontalLayout {
     addComponent(new HtmlLabel("Please select an option...") with UndefinedWidth)
     List("licence-activation", "licence-management", "administration").foreach(l => addComponent(new LinkButton(messageResource.getMessage(l), l)))

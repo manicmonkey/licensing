@@ -25,21 +25,17 @@
 package com.magmanics.vaadin
 
 import com.vaadin.ui.Button
+import com.vaadin.ui.Button.ClickEvent
 import org.slf4j.LoggerFactory
 
 /**
- * Created by IntelliJ IDEA.
- * User: James
- * Date: 04-Jun-2010
- * Time: 23:06:38
- * To change this template use File | Settings | File Templates.
+ * @author James Baxter - 04-Jun-2010
  */
-
-class ClickHandler(eventHandler:Button#ClickEvent => Unit) extends Button.ClickListener {
+class ClickHandler(eventHandler: ClickEvent => Unit) extends Button.ClickListener {
 
   val log = LoggerFactory.getLogger(classOf[ClickHandler])
 
-  def buttonClick(event: Button#ClickEvent) {
+  def buttonClick(event: ClickEvent) {
     log.debug("{} button pressed", event.getButton.getCaption)
     eventHandler(event)
   }

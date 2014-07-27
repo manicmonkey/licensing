@@ -1,11 +1,11 @@
 package com.magmanics.licensing.ui.breadcrumb
 
-import org.testng.annotations.Test
 import com.magmanics.licensing.ui.MessageResource
-import org.testng.Assert._
+import com.magmanics.vaadin.component.LinkButton
 import com.vaadin.data.util.ObjectProperty
-import com.vaadin.ui.{Button, Component, Label}
-import com.magmanics.licensing.ui.component.LinkButton
+import com.vaadin.ui.{Component, Label}
+import org.testng.Assert._
+import org.testng.annotations.Test
 
 /**
  * @author jbaxter - 13/04/11

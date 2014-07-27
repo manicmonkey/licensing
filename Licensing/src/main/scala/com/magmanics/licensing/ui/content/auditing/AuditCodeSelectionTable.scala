@@ -50,9 +50,9 @@ class AuditCodeSelectionTable @Autowired() (auditService: AuditService, messageS
   override def itemRows = auditService.getAuditCodes().map(u => (Array(messageSource.getMessage(u.value)), u.value))
 
   //select all
-  setValue(getItemIds)
+  setValue(getItemIds())
 
-  def getAuditCodes() = {
+  def getAuditCodes = {
     val codes = getValue.asInstanceOf[java.util.Set[String]]
     codes.toSeq.sortBy(s => s)
   }

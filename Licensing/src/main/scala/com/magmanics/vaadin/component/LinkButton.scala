@@ -24,8 +24,8 @@
 
 package com.magmanics.vaadin.component
 
-import com.magmanics.licensing.ui.LicensingApplication
 import com.vaadin.ui.Button
+import com.vaadin.ui.Button.ClickEvent
 import com.vaadin.ui.themes.BaseTheme
 
 /**
@@ -35,9 +35,11 @@ import com.vaadin.ui.themes.BaseTheme
  */
 class LinkButton(val caption: String, val path: String) extends Button(caption) {
   setStyleName(BaseTheme.BUTTON_LINK)
-  addListener(new Button.ClickListener {
-    def buttonClick(event: Button#ClickEvent) {
-      getApplication.asInstanceOf[LicensingApplication].breadCrumbFragmentManager.walkTo(path)
+  addClickListener(new Button.ClickListener {
+
+    override def buttonClick(p1: ClickEvent) {
+      //todo this seems nasty
+//      getUI.asInstanceOf[LicensingApplication].breadCrumbFragmentManager.walkTo(path)
     }
   })
 }

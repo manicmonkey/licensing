@@ -27,7 +27,8 @@ package com.magmanics.licensing.ui.content.activation
 import com.magmanics.licensing.service.model.Activation
 import com.vaadin.data.Property
 import com.vaadin.data.util.BeanItemContainer
-import com.vaadin.ui.{AbstractSelect, Table}
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode
+import com.vaadin.ui.Table
 import org.slf4j.LoggerFactory
 
 import scala.math._
@@ -43,9 +44,9 @@ class ActivationOverviewTable extends Table {
   val container = new BeanItemContainer[Activation](classOf[Activation])
   setContainerDataSource(container)
 
-  setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY)
-  setVisibleColumns(Array("created", "machineIdentifier", "productVersion", "activationType"))
-  setColumnHeaders(Array("Created", "Machine Identifier", "Product version", "Activation type"))
+  setItemCaptionMode(ItemCaptionMode.PROPERTY)
+  setVisibleColumns("created", "machineIdentifier", "productVersion", "activationType")
+  setColumnHeaders("Created", "Machine Identifier", "Product version", "Activation type")
 
   setSelectable(true)
   setNullSelectionAllowed(false)
@@ -56,7 +57,7 @@ class ActivationOverviewTable extends Table {
 
     container.removeAllItems()
 
-    activations.foreach(container.addBean(_))
+    activations.foreach(container.addBean)
 
     if (container.size > 0) {
       select(firstItemId)

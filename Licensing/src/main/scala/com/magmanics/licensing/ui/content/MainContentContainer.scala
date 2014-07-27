@@ -32,12 +32,12 @@ import com.vaadin.ui._
  *
  * @author jbaxter - 06/04/11
  */
-class MainContentContainer extends HorizontalLayout with CrumbWalkableComponent {
+class MainContentContainer extends Panel with CrumbWalkableComponent {
 
   setHeight(null) //shrink height to fit content
   setWidth("100%") //stretch to fill screen
 //  setSizeFull()
-  setDebugId("MainContentContainerId")
+  setId("MainContentContainerId")
 
   var currentContent: MainContent = _
 
@@ -59,8 +59,7 @@ class MainContentContainer extends HorizontalLayout with CrumbWalkableComponent 
   }
 
   def updateContent(mainContent: MainContent) {
-    removeAllComponents()
-    addComponent(mainContent)
+    setContent(mainContent)
   }
 
   lazy val homeContent = new HomeContent

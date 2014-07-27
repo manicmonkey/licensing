@@ -24,17 +24,17 @@
 
 package com.magmanics.vaadin
 
-import com.vaadin.ui.{Component, Label, Panel}
+import com.vaadin.ui.{Component, Label, VerticalLayout}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 04-Jul-2010
  */
 
-class HeadedHidingComponentContainer(header: Label, component: Component) extends Panel {
+class HeadedHidingComponentContainer(header: Label, component: Component) extends VerticalLayout {
 
   addComponent(header)
   addComponent(component)
 
-  header.addListener(new ValueChangeListener[AnyRef](_ => component.setVisible(!component.isVisible)))
+  header.addValueChangeListener(new ValueChangeListener[AnyRef](_ => component.setVisible(!component.isVisible)))
 }

@@ -24,16 +24,16 @@
 
 package com.magmanics.vaadin
 
-import com.vaadin.ui.{Component, Panel}
+import com.vaadin.ui.{VerticalLayout, Panel, Component}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 03-Jul-2010
  */
-class OptionObserverSwitchingComponentContainer[T](none: Component, some: Component) extends Panel with Observer[T] {
+class OptionObserverSwitchingComponentContainer[T](none: Component, some: Component) extends VerticalLayout with Observer[T] {
 
   def receiveUpdate(value: Option[T]) {
-    removeAllComponents
+    removeAllComponents()
     value match {
       case Some(_) => addComponent(some)
       case None => addComponent(none)

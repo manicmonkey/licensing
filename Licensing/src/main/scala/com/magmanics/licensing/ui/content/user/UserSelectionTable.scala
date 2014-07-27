@@ -29,7 +29,8 @@ import com.magmanics.vaadin.ValueChangeListener
 import com.magmanics.vaadin.spring.VaadinComponent
 import com.vaadin.data.Property
 import com.vaadin.data.Property.ValueChangeEvent
-import com.vaadin.terminal.Resource
+import com.vaadin.server.Resource
+import com.vaadin.ui.Table.Align
 import com.vaadin.ui.{CheckBox, Table}
 import org.springframework.beans.factory.annotation.Autowired
 
@@ -41,7 +42,8 @@ trait TableWithCheckboxes extends Table {
 
   addContainerProperty("checkbox", classOf[CheckBox], new CheckBox(), "", null, null)
   
-  def containerProperties: Seq[(Any, Class[_], Any, String, Resource, String)]
+  def containerProperties: Seq[(Any, Class[_], Any, String, Resource, Align)]
+
   containerProperties.foreach(i => addContainerProperty(i._1, i._2, i._3, i._4, i._5, i._6))
 
   val checkboxes: Map[Any, CheckBox] = itemRows.map(item => {
@@ -58,7 +60,7 @@ trait TableWithCheckboxes extends Table {
   checkboxes.keySet.foreach(i => {
     val checkbox = checkboxes(i)
     checkbox.setImmediate(true)
-    checkbox.addListener(new Property.ValueChangeListener {
+    checkbox.addValueChangeListener(new Property.ValueChangeListener {
       def valueChange(event: ValueChangeEvent) {
         checkbox.getValue.asInstanceOf[Boolean] match {
           case true => select(i)
@@ -85,13 +87,13 @@ class UserSelectionTable @Autowired() (auditService: AuditService) extends Table
   override def itemRows = auditService.getUsernames().map(u => Array(u) -> u)
 
   //select all
-  setValue(getItemIds)
+  setValue(getItemIds())
   
   def setUsers(usernames: Seq[String]) {
     usernames.foreach(u => addItem(Array(new CheckBox, u), u))
   }
 
-  def getUsers() = {
+  def getUsers = {
     val users = getValue.asInstanceOf[java.util.Set[String]]
     users.toSeq.sortBy(s => s)
   }

@@ -32,7 +32,8 @@ import com.magmanics.licensing.ui.content.user.UserSelectionTable
 import com.magmanics.vaadin.component.{HtmlLabel, UndefinedWidth}
 import com.magmanics.vaadin.spring.VaadinComponent
 import com.vaadin.data.util.ObjectProperty
-import com.vaadin.ui.Button.ClickListener
+import com.vaadin.shared.ui.datefield.Resolution
+import com.vaadin.ui.Button.{ClickEvent, ClickListener}
 import com.vaadin.ui._
 import org.joda.time.DateMidnight
 import org.slf4j.LoggerFactory
@@ -52,12 +53,12 @@ class AuditLogContent @Autowired() (auditTable: AuditTable, auditService: AuditS
 
   fromDate.setDateFormat("dd/MMM/yy")
   toDate.setDateFormat("dd/MMM/yy")
-  fromDate.setResolution(DateField.RESOLUTION_DAY)
-  toDate.setResolution(DateField.RESOLUTION_DAY)
+  fromDate.setResolution(Resolution.DAY)
+  toDate.setResolution(Resolution.DAY)
 
   val filterButton = new Button("Filter")
-  filterButton.addListener(new ClickListener() {
-    def buttonClick(event: Button#ClickEvent) {
+  filterButton.addClickListener(new ClickListener() {
+    def buttonClick(event: ClickEvent) {
       updateAudits()
     }
   })
@@ -92,11 +93,11 @@ class AuditLogContent @Autowired() (auditTable: AuditTable, auditService: AuditS
 
   def updateAudits() {
     val searchDto = AuditSearchDto(
-      fromDate.getValue.asInstanceOf[Date],
-      toDate.getValue.asInstanceOf[Date],
-      userSelectionTable.getUsers(),
-      auditCodeSelectionTable.getAuditCodes(),
-      textSearchField.getValue.asInstanceOf[String])
+      fromDate.getValue,
+      toDate.getValue,
+      userSelectionTable.getUsers,
+      auditCodeSelectionTable.getAuditCodes,
+      textSearchField.getValue)
     val audits = auditService.getAuditMessages(searchDto)
     auditTable.setAudits(audits)
   }

@@ -26,6 +26,7 @@ package com.magmanics.licensing.ui.breadcrumb
 
 import com.magmanics.licensing.ui.{CrumbTrailMessageResource, MessageResource}
 import com.magmanics.vaadin.component.{LinkButton, UndefinedWidth}
+import com.vaadin.shared.ui.label.ContentMode
 import com.vaadin.ui.{Component, Label}
 
 import scala.collection.immutable.List
@@ -58,13 +59,13 @@ class BreadCrumbDesigner(messageResource: MessageResource = new CrumbTrailMessag
     val reversed: List[String] = ("/" :: links).reverse
     val linkAndDividerLists: List[List[Component]] = reversed.tail.map(l => List(divider, getLink(l)))
     val linksAndDividers: List[Component] = linkAndDividerLists.flatMap(s => s)
-    val currentLocation: Component = new Label(reversed.head, Label.CONTENT_TEXT) with UndefinedWidth
+    val currentLocation: Component = new Label(reversed.head, ContentMode.TEXT) with UndefinedWidth
     val mapped = currentLocation :: linksAndDividers
     mapped.reverse
   }
 
   private def divider = {
-    val divider = new Label(">", Label.CONTENT_TEXT)
+    val divider = new Label(">", ContentMode.TEXT)
     divider.setWidth(null)
     divider
   }

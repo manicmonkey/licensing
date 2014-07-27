@@ -24,7 +24,7 @@
 
 package com.magmanics.vaadin
 
-import com.vaadin.ui.Panel
+import com.vaadin.ui.VerticalLayout
 
 /**
  * Component container which {@link Observer observes} a particular event. Once an event is received, it displays
@@ -33,7 +33,7 @@ import com.vaadin.ui.Panel
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 03-Jul-2010
  */
-class OptionHidingComponentContainer[T](some: ObserverComponent[T]) extends Panel with Observer[T] {
+class OptionHidingComponentContainer[T](some: ObserverComponent[T]) extends VerticalLayout with Observer[T] {
 
   addComponent(some)
 

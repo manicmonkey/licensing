@@ -30,12 +30,7 @@ import com.vaadin.ui._
 /**
  * @author jbaxter - 06/04/11
  */
-class MainContent extends Panel with CrumbWalkableComponent {
-  setContent(new VerticalLayout {
-    setWidth(null)
-    setSpacing(true)
-    setMargin(true)
-  })
+class MainContent extends VerticalLayout with CrumbWalkableComponent {
   setWidth("100%")
   setHeight(null)
 

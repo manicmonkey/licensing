@@ -1,6 +1,6 @@
 Need to flesh out tests...
 
-End-to-end integration tests with Selenium for UI / whole stack
+End-to-end integration tests with Selenium for UI / whole stack (ScalaTest can drive)
 Functional tests with ScalaTest for services
 Integration tests with JUnit for daos (model mapped correctly etc)
 Unit tests with ScalaCheck for model

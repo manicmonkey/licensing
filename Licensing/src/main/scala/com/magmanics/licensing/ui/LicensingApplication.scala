@@ -27,35 +27,40 @@ package com.magmanics.licensing.ui
 import com.magmanics.licensing.ui.breadcrumb._
 import com.magmanics.licensing.ui.content._
 import com.magmanics.vaadin.component.HtmlLabel
-import com.magmanics.vaadin.spring.VaadinComponent
-import com.vaadin.Application
+import com.vaadin.server.VaadinRequest
+import com.vaadin.shared.ui.MarginInfo
 import com.vaadin.ui._
-import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * @author jbaxter - 06/04/11
  */
-@VaadinComponent
-class LicensingApplication @Autowired() (auditLogContent: AuditLogContent) extends Application with CrumbWalkableComponent {
+//@VaadinComponent
+//class LicensingApplication @Autowired() (auditLogContent: AuditLogContent) extends UI with CrumbWalkableComponent {
+class LicensingApplication extends UI with CrumbWalkableComponent {
 
-  val breadCrumbFragmentManager = new BreadCrumbFragmentManager
-  val breadCrumbManager = new BreadCrumbListener
+  var breadCrumbFragmentManager: BreadCrumbFragmentManager = _
+//  val breadCrumbManager = new BreadCrumbListener
 
   val crumbTrail = new BreadCrumbPanel
   val container = new MainContentContainer
 
-  def init() {
-    val window = new Window("Licensing application")
-    window.setContent(new VerticalLayout {
+  override def init(request: VaadinRequest) {
+//    val window = new Window("Licensing application")
+    val layout = new VerticalLayout {
       setMargin(true)
       setSpacing(true)
-    })
-    window.addComponent(breadCrumbManager)
-    window.addComponent(new Header)
-    window.addComponent(crumbTrail)
-    window.addComponent(container)
-    window.setSizeFull()
-    setMainWindow(window)
+//      addComponent(breadCrumbManager)
+      addComponent(new Header)
+//      addComponent(crumbTrail)
+      addComponent(container)
+    }
+//    window.setContent(layout)
+//    window.setSizeFull()
+//    addWindow(window)
+
+    setContent(layout)
+
+//    breadCrumbFragmentManager = new BreadCrumbFragmentManager(new Navigator(getUI, layout))
 
 //    container.updateContent(initialContent)
 //    container.updateContent(new HomeContent)
@@ -77,10 +82,10 @@ class LicensingApplication @Autowired() (auditLogContent: AuditLogContent) exten
 class Header extends HorizontalLayout {
   addComponent(new Panel {
     setContent(new HorizontalLayout {
-      setMargin(false, false, false, true) //indent text slightly
+      setMargin(new MarginInfo(false, false, false, true)) //indent text slightly
       setWidth("100%") //stretch to fill screen
+      addComponent(new HtmlLabel("<h1>Product Licensing</h1>"))
     })
-    addComponent(new HtmlLabel("<h1>Product Licensing</h1>"))
   })
   setHeight(null) //shrink height to fit content
   setWidth("100%") //stretch to fill screen
@@ -96,7 +101,7 @@ class BreadCrumbPanel extends HorizontalLayout {
 
   addComponent(new Panel {
     setContent(new HorizontalLayout {
-      setMargin(true, false, true, true) //padding to sides and beneath
+      setMargin(new MarginInfo(true, false, true, true)) //padding to sides and beneath
       setWidth("100%") //stretch to fit screen
     })
     addComponent(breadCrumbContainer)
@@ -109,6 +114,6 @@ class BreadCrumbPanel extends HorizontalLayout {
     breadCrumbContainer.addComponent(new Label("You are here:") {
       setWidth(null)
     })
-    breadCrumbDesigner.build(crumbs).foreach(breadCrumbContainer.addComponent(_))
+    breadCrumbDesigner.build(crumbs).foreach(breadCrumbContainer.addComponent)
   }
 }
