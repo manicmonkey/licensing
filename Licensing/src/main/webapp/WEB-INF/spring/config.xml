@@ -2,7 +2,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 
-    <import resource="ui.xml" />
+    <bean class="com.magmanics.licensing.datalayer.dao.MockData" init-method="insert" />
+
     <import resource="services.xml" />
     <import resource="dao.xml" />
     <import resource="data-layer.xml" />

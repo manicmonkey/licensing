@@ -36,7 +36,6 @@ import scala.math._
 /**
  * @author jbaxter - 22/04/11
  */
-
 class ActivationOverviewTable extends Table {
 
   val log = LoggerFactory.getLogger(classOf[ActivationOverviewTable])

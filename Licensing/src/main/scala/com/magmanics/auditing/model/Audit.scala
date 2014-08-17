@@ -26,7 +26,7 @@ package com.magmanics.auditing.model
 
 import java.util.Date
 
-import scala.reflect.BeanInfo
+import scala.beans.BeanInfo
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

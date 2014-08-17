@@ -29,10 +29,11 @@ import java.util.Date
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.magmanics.licensing.service.exception.NoActivationsLeftException
 
-import scala.reflect.BeanInfo
+import scala.beans.BeanInfo
+
 /**
  * Represents a (mostly) immutable licence configuration. Although clearly related to a Customer and Product, it is not
- * directly linked at this level of the architecture. Is an aggregate root and provides the sole point of access for 
+ * directly linked at this level of the architecture. Is an aggregate root and provides the sole point of access for
  * licence activations.
  *
  * @author James Baxter <j.w.baxter@gmail.com>

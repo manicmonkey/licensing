@@ -26,7 +26,7 @@ package com.magmanics.licensing.ws.model
 
 import javax.xml.bind.annotation._
 
-import scala.reflect.BeanProperty
+import scala.beans.BeanProperty
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

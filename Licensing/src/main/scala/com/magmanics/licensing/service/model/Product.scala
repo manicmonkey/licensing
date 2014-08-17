@@ -24,7 +24,7 @@
 
 package com.magmanics.licensing.service.model
 
-import scala.reflect.BeanInfo
+import scala.beans.BeanInfo
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

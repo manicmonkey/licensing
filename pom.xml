@@ -17,7 +17,7 @@
 
     <modules>
         <module>Licensing</module>
-        <!--<module>Licensing-UI</module>-->
+        <module>Licensing-UI</module>
     </modules>
 
     <dependencyManagement>
@@ -68,6 +68,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.1</version>
                 <executions>
                     <execution>
                         <id>attach-sources</id>
@@ -108,9 +109,9 @@
                     </executions>
                 </plugin>
                 <plugin>
-                    <groupId>com.mycila.maven-license-plugin</groupId>
-                    <artifactId>maven-license-plugin</artifactId>
-                    <version>1.8.0</version>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>2.3</version>
                     <configuration>
                         <header>src/etc/header.txt</header>
                         <basedir>src/main/scala</basedir>
@@ -124,6 +125,11 @@
                             </goals>
                         </execution>
                     </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.mortbay.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>8.1.15.v20140411</version>
                 </plugin>
             </plugins>
         </pluginManagement>

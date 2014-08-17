@@ -26,7 +26,7 @@ package com.magmanics.licensing.ui.content.configuration
 
 import java.util.Date
 
-import scala.reflect.BeanInfo
+import scala.beans.BeanInfo
 
 /**
  * @author jbaxter - 20/04/11
