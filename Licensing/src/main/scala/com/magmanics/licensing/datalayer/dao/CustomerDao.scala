@@ -55,20 +55,25 @@ trait CustomerDao {
   def get(): Seq[Customer]
 
   /**
+   *  Gets all enabled Customers within the system
+   */
+  def getEnabled: Seq[Customer]
+
+  /**
    * Gets a Customer by the given id
    */
   def get(id: Long): Option[Customer]
-
-  /**
-   *  Gets all enabled Customers within the system
-   */
-  def getEnabled(): Seq[Customer]
 
   /**
    * Update the given Customer
    * @throws DuplicateNameException If a Customer with the same name already exists
    */
   def update(customer: Customer)
+
+  /**
+   * Delete the Customer with the given id. Ignores missing entities
+   */
+  def delete(id: Long)
 }
 
 /**
@@ -112,19 +117,14 @@ class CustomerDaoJPA extends CustomerDao {
     query.getResultList.asScala
   }
 
-  def get(id: Long): Option[Customer] = {
-    getEntity(id)
-  }
-
-  private def getEntity(id: Long): Option[CustomerEntity] = {
-    log.debug("Getting Customer with id: {}", id)
-    Option(em.find(classOf[CustomerEntity], id))
-  }
-
   def getEnabled(): Seq[Customer] = {
     log.debug("Getting all enabled Customers")
     val query = em.createNamedQuery[CustomerEntity]("Customer.GetEnabled", classOf[CustomerEntity])
     query.getResultList.asScala
+  }
+
+  def get(id: Long): Option[Customer] = {
+    getEntity(id)
   }
 
   def update(c: Customer) {
@@ -141,5 +141,18 @@ class CustomerDaoJPA extends CustomerDao {
     customer.enabled = c.enabled
     
     em.merge(customer)
+  }
+
+  def delete(id: Long) {
+    log.debug("Deleting Customer with id: {}", id)
+    getEntity(id).foreach(c => {
+      log.debug("Deleting Customer: {}", c)
+      em.remove(c)
+    })
+  }
+
+  private def getEntity(id: Long): Option[CustomerEntity] = {
+    log.debug("Getting Customer with id: {}", id)
+    Option(em.find(classOf[CustomerEntity], id))
   }
 }

@@ -33,6 +33,10 @@ class DataLayerException(msg: String, e: Exception) extends RuntimeException(msg
     this(null, e)
   }
 
+  def this(msg: String) {
+    this(msg, null)
+  }
+
   def this() {
     this(null, null)
   }

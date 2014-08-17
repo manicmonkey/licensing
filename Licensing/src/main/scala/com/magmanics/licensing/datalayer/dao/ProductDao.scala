@@ -68,6 +68,11 @@ trait ProductDao {
    * @throws DuplicateNameException If a Product with the same name already exists
    */
   def update(product: Product)
+
+  /**
+   * Deletes the Product with the given id. Ignores missing entities
+   */
+  def delete(id: Long)
 }
 
 class ProductDaoJPA extends ProductDao {
@@ -206,5 +211,13 @@ class ProductDaoJPA extends ProductDao {
     }
 
     em.merge(product)
+  }
+
+  def delete(id: Long) {
+    log.debug("Deleting Product with id: {}", id)
+    getEntity(id).foreach(p => {
+      log.debug("Deleting Product: {}", p)
+      em.remove(p)
+    })
   }
 }

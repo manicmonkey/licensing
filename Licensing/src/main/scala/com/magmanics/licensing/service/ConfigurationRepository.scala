@@ -27,7 +27,7 @@ package com.magmanics.licensing.service
 import com.magmanics.auditing.Auditable
 import com.magmanics.licensing.datalayer.SerialGenerator
 import com.magmanics.licensing.datalayer.dao.ConfigurationDao
-import com.magmanics.licensing.service.model.{Configuration, Customer}
+import com.magmanics.licensing.service.model.Configuration
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 
@@ -46,11 +46,6 @@ trait ConfigurationRepository {
   def create(configuration: Configuration): Configuration
 
   /**
-   * Updates a configuration
-   */
-  def update(configuration: Configuration)
-
-  /**
    * Lookup a Configuration by its id
    * @throws NoSuchEntityException If a configuration with the given id cannot be found
    */
@@ -59,12 +54,17 @@ trait ConfigurationRepository {
   /**
    * Get configurations for a particular customer. Returns an empty list if none are found.
    */
-  def get(customer: Customer): Seq[Configuration]
+  def getByCustomer(customer: String): Seq[Configuration]
 
   /**
    * Try to get a configuration given a serial.
    */
-  def get(serial: String): Option[Configuration]
+  def getBySerial(serial: String): Option[Configuration]
+
+  /**
+   * Updates a configuration
+   */
+  def update(configuration: Configuration)
 }
 
 @PreAuthorize("isAuthenticated()")
@@ -81,13 +81,6 @@ class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGene
     configurationDao.create(newConfiguration)
   }
 
-  @PreAuthorize("hasRole('UPDATE_CONFIGURATION')")
-  @Auditable("audit.configuration.update")
-  def update(configuration: Configuration) {
-    log.debug("Updating {}", configuration)
-    configurationDao.update(configuration)
-  }
-
   @Auditable("audit.configuration.get")
   def get(id: Long): Configuration = {
     log.debug("Getting Configuration#{}", id)
@@ -97,7 +90,7 @@ class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGene
   }
 
   @Auditable("audit.configurations.getByCustomer")
-  def get(customer: Customer): Seq[Configuration] = {
+  def getByCustomer(customer: String): Seq[Configuration] = {
     log.debug("Getting Configurations for {}", customer)
     val configurations = configurationDao.getByCustomer(customer)
     log.debug("Got configurations for customer({}): {}", customer, configurations)
@@ -105,8 +98,15 @@ class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGene
   }
 
   @Auditable("audit.configuration.getBySerial")
-  def get(serial: String): Option[Configuration] = {
+  def getBySerial(serial: String): Option[Configuration] = {
     log.debug("Getting Configuration with serial: {}", serial)
     configurationDao.getBySerial(serial)
+  }
+
+  @PreAuthorize("hasRole('UPDATE_CONFIGURATION')")
+  @Auditable("audit.configuration.update")
+  def update(configuration: Configuration) {
+    log.debug("Updating {}", configuration)
+    configurationDao.update(configuration)
   }
 }

@@ -30,15 +30,24 @@ class ActivationDaoJPATest extends AbstractTransactionalTestNGSpringContextTests
   @Autowired
   var activationDao: ActivationDao = _
 
+  var customer: Customer = _
+  var product: Product = _
   var configuration: ConfigurationModel = _
 
   @BeforeClass
   def setupTestData {
-    val customer = customerDao.create(Customer(name = "WD40", enabled = true))
-    val product = productDao.create(Product(name = "PDM", description = "PDM Archive", enabled = true))
+    customer = customerDao.create(Customer(name = "WD40", enabled = true))
+    product = productDao.create(Product(name = "PDM", description = "PDM Archive", enabled = true))
     configuration = configurationDao.create(ConfigurationModel(user = "jbaxter",
       productId = product.id.get, customerId = customer.id.get,
       serial = Some("12345-12345-12345-12345"), enabled = true, maxActivations = 1))
+  }
+
+  @AfterClass
+  def removeTestData {
+    configurationDao.delete(configuration.id.get)
+    customerDao.delete(customer.id.get)
+    productDao.delete(product.id.get)
   }
 
   @Test

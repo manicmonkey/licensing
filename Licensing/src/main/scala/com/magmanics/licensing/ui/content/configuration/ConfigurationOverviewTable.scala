@@ -30,8 +30,6 @@ import com.vaadin.ui.AbstractSelect.ItemCaptionMode
 import com.vaadin.ui.Table
 import org.slf4j.LoggerFactory
 
-import scala.math._
-
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 17-Jun-2010
@@ -58,7 +56,7 @@ class ConfigurationOverviewTable extends Table {
     c.foreach(container.addBean)
 
     if (container.size > 0) {
-        setPageLength(min(container.size, 4))
+//        setPageLength(min(container.size + 1, 4))
         select(firstItemId)
     }
   }
@@ -80,12 +78,12 @@ class ConfigurationOverviewTable extends Table {
 //                    if (markedRows.contains(itemId))
 //                      return "marked"
 //                    else
-                return null
+                null
 //                } else if (ExampleUtil.iso3166_PROPERTY_NAME.equals(propertyId)) {
 //                    return "bold";
           } else {
               // no style
-              return null
+              null
           }
       }
   })

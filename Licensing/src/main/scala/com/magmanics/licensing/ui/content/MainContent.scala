@@ -33,6 +33,7 @@ import com.vaadin.ui._
 class MainContent extends VerticalLayout with CrumbWalkableComponent {
   setWidth("100%")
   setHeight(null)
+  setMargin(true)
 
   def walkTo(path: String) = null
 }

@@ -36,7 +36,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       configurationRepository.create(Configuration("mattf", product, customer2))
 
       When("the list of customers is acquired")
-      val configurations = configurationRepository.get(customer)
+      val configurations = configurationRepository.getByCustomer(customer.name)
 
       Then("only the relevant configurations will be found")
       assert(configurations.nonEmpty)
@@ -49,7 +49,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       configurationRepository.create(Configuration("andrewc", product, customer2))
 
       When("the list of configurations for another customer is acquired")
-      val configurations = configurationRepository.get(customer)
+      val configurations = configurationRepository.getByCustomer(customer.name)
 
       Then("the list will not contain any of the defined configurations")
       assert(configurations.isEmpty)
@@ -65,7 +65,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       val savedConfiguration = configurationRepository.create(configuration)
 
       Then("it should be retrievable and still have the given options")
-      val retrievedConfiguration = configurationRepository.get(customer).find(_.id.get == savedConfiguration.id.get)
+      val retrievedConfiguration = configurationRepository.getByCustomer(customer.name).find(_.id.get == savedConfiguration.id.get)
       assert(retrievedConfiguration.isDefined)
       assert(retrievedConfiguration.get.options.nonEmpty)
       assert(retrievedConfiguration.get.options.size == 2)
@@ -80,7 +80,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       val savedConfiguration = configurationRepository.create(configuration)
 
       Then("it should be retrievable and still have no options")
-      val retrievedConfiguration = configurationRepository.get(customer).find(_.id.get == savedConfiguration.id.get)
+      val retrievedConfiguration = configurationRepository.getByCustomer(customer.name).find(_.id.get == savedConfiguration.id.get)
       assert(retrievedConfiguration.isDefined)
       assert(retrievedConfiguration.get.options.isEmpty)
     }
@@ -95,7 +95,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       configurationRepository.update(configuration copy (maxActivations = 3))
 
       Then("the retrieved configuration will show the change is persistent")
-      val retrievedConfiguration = configurationRepository.get(customer).find(_.id.get == configuration.id.get)
+      val retrievedConfiguration = configurationRepository.getByCustomer(customer.name).find(_.id.get == configuration.id.get)
       assert(retrievedConfiguration.isDefined)
       assert(retrievedConfiguration.get.maxActivations == 3)
     }
@@ -107,7 +107,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       configurationRepository.update(configuration copy (enabled = false))
 
       Then("the retrieved configuration will still be disabled")
-      val retrievedConfiguration = configurationRepository.get(customer).find(_.id.get == configuration.id.get)
+      val retrievedConfiguration = configurationRepository.getByCustomer(customer.name).find(_.id.get == configuration.id.get)
       assert(retrievedConfiguration.isDefined)
       assert(!retrievedConfiguration.get.enabled)
     }

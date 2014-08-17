@@ -32,4 +32,4 @@ package com.magmanics.licensing.service.exception
  * To change this template use File | Settings | File Templates.
  */
 
-class NoActivationsLeftException(msg: String) extends RuntimeException
+class NoActivationsLeftException(msg: String) extends RuntimeException(msg)

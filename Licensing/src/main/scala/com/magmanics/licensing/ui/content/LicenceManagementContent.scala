@@ -24,12 +24,10 @@
 
 package com.magmanics.licensing.ui.content
 
-import java.util.Date
-
-import com.magmanics.licensing.service.ConfigurationRepository
-import com.magmanics.licensing.service.model.{Activation, ActivationType, Configuration, Customer}
+import com.magmanics.licensing.client.ConfigurationClient
 import com.magmanics.licensing.ui.content.activation.{ActivationDetailTable, ActivationOverviewTable}
 import com.magmanics.licensing.ui.content.configuration.{ConfigurationDetailTable, ConfigurationInfo, ConfigurationOverviewTable}
+import com.magmanics.licensing.ui.content.customer.CustomerDropdown
 import com.magmanics.vaadin.component.{FullWidth, HtmlLabel, UndefinedWidth}
 import com.vaadin.ui._
 
@@ -38,29 +36,37 @@ import com.vaadin.ui._
  */
 class LicenceManagementContent extends MainContent {
 
-  val configurationRepository = new MockConfigurationRepository
-
   val configurationOverviewTable = new ConfigurationOverviewTable
   val configurationDetailTable = new ConfigurationDetailTable
   val activationOverviewTable = new ActivationOverviewTable
   val activationDetailTable = new ActivationDetailTable
 
+  val customerDropdown = new CustomerDropdown
+
+  customerDropdown.onCustomerChanged(customer => {
+    val configurations = ConfigurationClient.client.getByCustomer(customer.name)
+    configurationOverviewTable.setConfigurations(
+      configurations.map(c => {
+        //todo get real product name
+        ConfigurationInfo(c.id.get, "product", c.created, c.user, c.activations.length.toString, c.serial.get)
+      }))
+  })
+
   addComponent(new HorizontalLayout {
     setSpacing(true)
-    addComponent(new ComboBox() {
-      setInputPrompt("Select a customer...")
-    })
-    addComponent(new Button("Create new licence configuraton"))
+    addComponent(customerDropdown)
+    addComponent(new Button("Create new licence configuration"))
   })
   addComponent(new HtmlLabel("<hr/>"))
   addComponent(new HorizontalLayout {
     setSizeUndefined()
     setSpacing(true)
     addComponent(new VerticalLayout {
-        setWidth(null)
-        addComponent(new Button("Disable configuration") with UndefinedWidth)
-        addComponent(new Button("Increase activations") with FullWidth)
-        addComponent(new Button("Decrease activations") with FullWidth)}
+      setWidth(null)
+      setSpacing(true)
+      addComponent(new Button("Disable configuration") with UndefinedWidth)
+      addComponent(new Button("Increase activations") with FullWidth)
+      addComponent(new Button("Decrease activations") with FullWidth)}
     )
     addComponent(new GridLayout(2, 7) {
       setSizeUndefined()
@@ -79,27 +85,12 @@ class LicenceManagementContent extends MainContent {
     })
   })
 
-  configurationOverviewTable.setConfigurations(List(ConfigurationInfo(1, "Ubuntu 10.10", new Date, "jbaxter", "1/2", "gew7yuhb3736yyby73rh8yugbh`"), ConfigurationInfo(1, "Ubuntu 11.04", new Date, "jbaxter", "1/1", "47fr8e473yedf43e")))
+//  configurationOverviewTable.setConfigurations(List(ConfigurationInfo(1, "Ubuntu 10.10", new Date, "jbaxter", "1/2", "gew7yuhb3736yyby73rh8yugbh`"), ConfigurationInfo(1, "Ubuntu 11.04", new Date, "jbaxter", "1/1", "47fr8e473yedf43e")))
 //  configurationOverviewTable.setConfigurations(List(ConfigurationInfo(1, "Ubuntu 10.10", new Date, "jbaxter", "1/2", "gew7yuhb3736yyby73rh8yugbhyugyuhbf7f76g67gf76fg76yt5rfd65dy56td65fy6t5fd6tdtrdjhf"), ConfigurationInfo(1, "Ubuntu 11.04", new Date, "jbaxter", "1/1", "47fr8e473yedf43e")))
 //  configurationDetailTable.setConfiguration(new Configuration(user = "jbaxter", productId = 1, customerId = 1, options = Map("Samba" -> "enabled", "UPnP" -> "enabled", "EXT3" -> "disabled", "Maximum user accounts" -> "9999")))
   //  activationOverviewTable.setActivations()
   //  activationDetailTable.setActivation()
-  override def attach() {
+//  override def attach() {
 //    configurationOverviewTable.setConfigurations(configurationRepository.get(Customer(name = "Google")))
-  }
-}
-
-class MockConfigurationRepository extends ConfigurationRepository {
-
-  def get(serial: String) = null
-
-  def get(customer: Customer): Seq[Configuration] = {
-    List(new Configuration(id = Some(1), user = "jbaxter", productId = 1, customerId = 1, created = new Date, serial = Some("gew7yuhb3736yyby73rh8yugbh"), options = Map("Samba" -> "enabled", "UPnP" -> "enabled", "EXT3" -> "disabled", "Maximum user accounts" -> "9999"), enabled = true, maxActivations = 2, activations = List(Activation(id = Some(1), created = new Date, machineIdentifier = "devi8", productVersion = "6.921.5", activationType = ActivationType.NEW, extraInfo = Map("Operating system" -> "Ubuntu 10.10", "RAM" -> "12GB"), configurationId = 1))))
-  }
-
-  def get(id: Long) = null
-
-  def update(configuration: Configuration) {}
-
-  def create(configuration: Configuration) = null
+//  }
 }

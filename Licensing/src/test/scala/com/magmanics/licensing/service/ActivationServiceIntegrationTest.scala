@@ -121,7 +121,7 @@ class ActivationServiceIntegrationTest extends TransactionalSpringBasedSuite wit
       activationService.activate(licenceActivationRequest)
 
       Then("the additional information should be retrievable")
-      val retrievedConfiguration = configurationRepository.get(customer).find(_.id.get == configuration.id.get)
+      val retrievedConfiguration = configurationRepository.getByCustomer(customer.name).find(_.id.get == configuration.id.get)
       assert(retrievedConfiguration.isDefined)
       assert(retrievedConfiguration.get.activations.size == 1)
       assert(retrievedConfiguration.get.activations.head.extraInfo.contains("ram"))
@@ -135,7 +135,7 @@ class ActivationServiceIntegrationTest extends TransactionalSpringBasedSuite wit
       activationService.activate(licenceActivationRequest)
 
       Then("the saved activation should reflect that")
-      val retrievedConfiguration = configurationRepository.get(customer).find(_.id.get == configuration.id.get)
+      val retrievedConfiguration = configurationRepository.getByCustomer(customer.name).find(_.id.get == configuration.id.get)
       assert(retrievedConfiguration.isDefined)
       assert(retrievedConfiguration.get.activations.size === 1)
       assert(retrievedConfiguration.get.activations.head.extraInfo.isEmpty)

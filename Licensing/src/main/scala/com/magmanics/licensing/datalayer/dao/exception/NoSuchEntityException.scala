@@ -25,11 +25,6 @@
 package com.magmanics.licensing.datalayer.dao.exception
 
 /**
- * Created by IntelliJ IDEA.
- * User: james
- * Date: 07-Oct-2010
- * Time: 15:36:39
- * To change this template use File | Settings | File Templates.
+ * @author James Baxter - 07-Oct-2010
  */
-
-class NoSuchEntityException extends RuntimeException
+class NoSuchEntityException(msg: String) extends DataLayerException(msg)

@@ -38,7 +38,7 @@ import javax.persistence._
 @Entity
 @Table(name = "Configurations")
 @NamedQueries(Array(
-  new NamedQuery(name = "Configuration.GetByCustomer", query = "SELECT c FROM ConfigurationEntity c WHERE c.customer = :customer"),
+  new NamedQuery(name = "Configuration.GetByCustomer", query = "SELECT c FROM ConfigurationEntity c WHERE c.customer.name = :customer"),
   new NamedQuery(name = "Configuration.GetBySerial", query = "SELECT c FROM ConfigurationEntity c WHERE c.serial = :serial")
 ))
 class ConfigurationEntity {

@@ -28,7 +28,7 @@ import javax.persistence.{EntityManager, PersistenceContext}
 
 import com.magmanics.licensing.datalayer.dao.exception.{DataLayerException, NoSuchEntityException}
 import com.magmanics.licensing.datalayer.model._
-import com.magmanics.licensing.service.model.{Configuration, Customer}
+import com.magmanics.licensing.service.model.Configuration
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._
@@ -48,16 +48,6 @@ trait ConfigurationDao {
   def create(configuration: Configuration): Configuration //throws ValidationException
 
   /**
-   * Updates the given Configuration, but is limited to:
-   * <ul>
-   * <li>Changing the maximum number of activations</li>
-   * <li>Changing the enabled/disabled status</li>
-   * <li>Adding new {@link com.magmanics.licensing.service.model.Activation Activations}s.</li>
-   * </ul>
-   */
-  def update(configuration: Configuration)
-
-  /**
    * Get a Configuration by its id
    * @throws NoSuchEntityException if a Configuration with the given id does not exist
    */
@@ -71,7 +61,22 @@ trait ConfigurationDao {
   /**
    * Gets all Configurations for a given Customer
    */
-  def getByCustomer(customer: Customer): Seq[Configuration]
+  def getByCustomer(customer: String): Seq[Configuration]
+
+  /**
+   * Updates the given Configuration, but is limited to:
+   * <ul>
+   * <li>Changing the maximum number of activations</li>
+   * <li>Changing the enabled/disabled status</li>
+   * <li>Adding new {@link com.magmanics.licensing.service.model.Activation Activations}s.</li>
+   * </ul>
+   */
+  def update(configuration: Configuration)
+
+  /**
+   * Deletes the Configuration with the given id. Ignores missing entities
+   */
+  def delete(id: Long)
 }
 
 /**
@@ -120,30 +125,8 @@ class ConfigurationDaoJPA(activationDao: ActivationDao) extends ConfigurationDao
     }
   }
 
-  def update(c: Configuration) {
-
-    log.debug("Updating {}", c)
-
-    val id = c.id.getOrElse(
-      throw new IllegalStateException("Cannot update configuration as no id: " + c))
-
-    val configuration = getEntity(id).getOrElse(
-      throw new IllegalStateException("Cannot update configuration as could not find id: " + c))
-
-    configuration.maxActivations = c.maxActivations
-    configuration.enabled = c.enabled
-
-    c.activations.filter(_.id.isEmpty).foreach(activationDao.create)
-
-    em.merge(configuration)   //save changes
-    em.flush()
-    // if we don't do a refresh, a em.find won't pick up new associations such as
-    // activations (this appears to be caching issue)
-    em.refresh(configuration)
-  }
-
   def get(id: Long): Configuration = {
-    getEntity(id).getOrElse(throw new NoSuchEntityException)
+    getEntity(id).getOrElse(throw new NoSuchEntityException("Configuration not found with id: " + id))
   }
 
   def getBySerial(serial: String): Option[Configuration] = {
@@ -155,22 +138,46 @@ class ConfigurationDaoJPA(activationDao: ActivationDao) extends ConfigurationDao
     query.getResultList.asScala.headOption.map(configurationEntityToConfiguration)
   }
 
-  def getByCustomer(customer: Customer): Seq[Configuration] = {
+  def getByCustomer(customer: String): Seq[Configuration] = {
 
     log.debug("Getting Configurations for {}", customer)
 
-    val customerEntity = new CustomerEntity
-    customerEntity.id = customer.id.get
-    customerEntity.name = customer.name
-    customerEntity.enabled = customer.enabled
-
     val query = em.createNamedQuery[ConfigurationEntity]("Configuration.GetByCustomer", classOf[ConfigurationEntity])
-    query.setParameter("customer", customerEntity)
+    query.setParameter("customer", customer)
     query.getResultList.asScala
   }
 
-  private def getEntity(id: Long): Option[ConfigurationEntity] = {
+  def update(c: Configuration) {
 
+    log.debug("Updating {}", c)
+
+    val id = c.id.getOrElse(
+      throw new IllegalStateException("Cannot update configuration as no id: " + c))
+
+    val configuration = getEntity(id).getOrElse(
+      throw new NoSuchEntityException("Cannot update configuration as could not find id: " + c))
+
+    configuration.maxActivations = c.maxActivations
+    configuration.enabled = c.enabled
+
+    c.activations.filter(_.id.isEmpty).foreach(activationDao.create)
+
+    em.merge(configuration)   //save changes
+    em.flush()
+    // if we don't do a refresh, an em.find won't pick up new associations such as
+    // activations (this appears to be caching issue)
+    em.refresh(configuration)
+  }
+
+  def delete(id: Long) {
+    log.debug("Deleting Configuration with id: {}", id)
+    getEntity(id).foreach(c => {
+      log.debug("Deleting Configuration: {}", c)
+      em.remove(c)
+    })
+  }
+
+  private def getEntity(id: Long): Option[ConfigurationEntity] = {
     log.debug("Getting Configuration with id: {}", id)
     Option(em.find(classOf[ConfigurationEntity], id))
   }

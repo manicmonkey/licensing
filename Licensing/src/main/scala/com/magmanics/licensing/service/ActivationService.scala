@@ -52,7 +52,7 @@ class ActivationServiceImpl(configurationRepository: ConfigurationRepository, cu
 
     log.debug("Received ActivationRequest: {}", licenceActivationRequest)
 
-    val configuration = configurationRepository.get(licenceActivationRequest.serial)
+    val configuration = configurationRepository.getBySerial(licenceActivationRequest.serial)
             .getOrElse(throw new NoSuchLicenceException(licenceActivationRequest.serial))
 
     if (!configuration.enabled)

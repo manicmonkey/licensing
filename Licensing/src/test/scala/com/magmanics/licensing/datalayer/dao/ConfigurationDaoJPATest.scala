@@ -10,7 +10,7 @@ import org.springframework.test.context.testng.AbstractTransactionalTestNGSpring
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
 import org.testng.Assert._
-import org.testng.annotations.{BeforeClass, Test}
+import org.testng.annotations.{AfterClass, BeforeClass, Test}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -41,6 +41,12 @@ class ConfigurationDaoJPATest extends AbstractTransactionalTestNGSpringContextTe
     product = productDao.create(Product(name = "JFinder V3"))
   }
 
+  @AfterClass
+  def removeTestData {
+    customerDao.delete(customer.id.get)
+    productDao.delete(product.id.get)
+  }
+
   @Test
   def newConfigurationsAreGivenAnId {
     val transientConfiguration = new Configuration(user = "jbaxter", serial = Some("fake-serial"), productId = product.id.get, customerId = customer.id.get)
@@ -60,7 +66,7 @@ class ConfigurationDaoJPATest extends AbstractTransactionalTestNGSpringContextTe
 
   @Test
   def addActivations {
-    val conf = configurationDao.create(newConfiguration.copy(maxActivations = 2))
+    val conf = configurationDao.create(Configuration(None, "jbaxter", product.id.get, customer.id.get, serial = Some(UUID.randomUUID().toString), maxActivations = 2))
 
     conf.addActivation("prod1", "1.0")
     conf.addActivation("dev1", "1.1")
@@ -68,10 +74,6 @@ class ConfigurationDaoJPATest extends AbstractTransactionalTestNGSpringContextTe
     configurationDao.update(conf)
 
     assertEquals(configurationDao.get(conf.id.get).activations.size, 2)
-  }
-
-  def newConfiguration = {
-    new Configuration(None, "jbaxter", product.id.get, customer.id.get, serial = Some("12345-12345-12345-12345"))
   }
 
   //
@@ -91,13 +93,6 @@ class ConfigurationDaoJPATest extends AbstractTransactionalTestNGSpringContextTe
   //    log.debug("Entites created")
   //  }
   //
-  //  @AfterClass
-  //  def removeEntities {
-  //    log.debug("Removing entities")
-  //    new CustomerDaoCircumflex().delete(customer)
-  //    ProductDaoCircumflex.delete(product)
-  //  }
-
   //  @Test
   //  def saveLicenceConfiguration {
   //    using(tx) {

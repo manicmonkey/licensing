@@ -31,7 +31,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
     </context-param>
 
     <servlet>
-        <servlet-name>LicensingApplication</servlet-name>
+        <servlet-name>Licensing Frontend</servlet-name>
         <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
         <init-param>
             <param-name>UI</param-name>
@@ -39,8 +39,21 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>LicensingApplication</servlet-name>
+        <servlet-name>Licensing Frontend</servlet-name>
         <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>Licensing REST API</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/spring/rest.xml</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Licensing REST API</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

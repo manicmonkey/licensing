@@ -26,6 +26,7 @@ package com.magmanics.licensing.service.model
 
 import java.util.Date
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.magmanics.licensing.service.exception.NoActivationsLeftException
 
 import scala.reflect.BeanInfo
@@ -37,12 +38,12 @@ import scala.reflect.BeanInfo
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 02-Aug-2010
  */
-//todo investigate circumflex versioning / optimistic locking
+//todo investigate versioning / optimistic locking
 //todo add logging/auditing of events
 //todo getting lots of Options here - consider NewConfiguration class (altho must bear in mind client/ui)
 //todo proper encapsulation of activations possible?
 @BeanInfo
-case class Configuration(id: Option[Long] = None,
+case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id: Option[Long] = None, //annotation communicates generic type to jackson
                          user: String,
                          productId: Long,
                          customerId: Long,

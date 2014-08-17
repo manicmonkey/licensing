@@ -44,24 +44,24 @@ trait CustomerRepository {
   def create(customer: Customer): Customer
 
   /**
-   * Update the given Customer
-   */
-  def update(customer: Customer)
-
-  /**
-   * Get enabled Customers
-   */
-  def getEnabled(): Seq[Customer]
-
-  /**
    * Get all Customers within the system
    */
   def get(): Seq[Customer]
 
   /**
+   * Get enabled Customers
+   */
+  def getEnabled: Seq[Customer]
+
+  /**
    * Gets a Customer given the specified id
    */
   def get(id: Long): Option[Customer]
+
+  /**
+   * Update the given Customer
+   */
+  def update(customer: Customer)
 }
 
 @PreAuthorize("isAuthenticated()")
@@ -79,25 +79,25 @@ class CustomerRepositoryImpl(customerDao: CustomerDao) extends CustomerRepositor
     customerDao.create(customer)
   }
 
-  @PreAuthorize("hasRole('UPDATE_CUSTOMER')")
-  @Auditable("audit.customer.update")
-  def update(customer: Customer) {
-    log.debug("Updating {}", customer)
-    customerDao.update(customer)
+  @Auditable("audit.customers.get")
+  def get(): Seq[Customer] = {
+    customerDao.get()
   }
 
   @Auditable("audit.customers.getEnabled")
-  def getEnabled(): Seq[Customer] = {
+  def getEnabled: Seq[Customer] = {
     customerDao.getEnabled
-  }
-
-  @Auditable("audit.customers.get")
-  def get(): Seq[Customer] = {
-    customerDao.get
   }
 
   @Auditable("audit.customer.getById")
   def get(id: Long): Option[Customer] = {
     customerDao.get(id)
+  }
+
+  @PreAuthorize("hasRole('UPDATE_CUSTOMER')")
+  @Auditable("audit.customer.update")
+  def update(customer: Customer) {
+    log.debug("Updating {}", customer)
+    customerDao.update(customer)
   }
 }
