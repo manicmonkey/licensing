@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.JavaConverters._
 
 /**
- * Dao for {@link com.magmanics.auditing.model.Audit Audit}s
+ * Dao for [[com.magmanics.auditing.model.Audit Audits]]
  *
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 20-Sep-2010

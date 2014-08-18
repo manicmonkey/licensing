@@ -27,7 +27,7 @@ package com.magmanics.vaadin
 import com.vaadin.ui.VerticalLayout
 
 /**
- * Component container which {@link Observer observes} a particular event. Once an event is received, it displays
+ * Component container which [[com.magmanics.vaadin.Observer observes]] a particular event. Once an event is received, it displays
  * the child Component depending on the Option value, and passes the event to the child.
  *
  * @author James Baxter <j.w.baxter@gmail.com>

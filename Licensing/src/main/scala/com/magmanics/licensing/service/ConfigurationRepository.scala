@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 
 /**
- * Repository for {@link com.magmanics.licensing.service.model.Configuration Configurations}. In addition to basic data
+ * Repository for [[com.magmanics.licensing.service.model.Configuration Configurations]]. In addition to basic data
  * access, implementations will add method level authentication and auditing.
  *
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -47,7 +47,7 @@ trait ConfigurationRepository {
 
   /**
    * Lookup a Configuration by its id
-   * @throws NoSuchEntityException If a configuration with the given id cannot be found
+   * todo catch NoSuchEntityException and return 404
    */
   def get(id: Long): Configuration
 

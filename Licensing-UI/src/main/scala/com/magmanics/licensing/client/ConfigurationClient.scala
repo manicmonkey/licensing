@@ -30,7 +30,7 @@ trait ConfigurationClient {
 
   /**
    * Lookup a Configuration by its id
-   * @throws NoSuchEntityException If a configuration with the given id cannot be found
+   * todo wrap 404 in an option
    */
   @GET
   @Path("/id/{id}")

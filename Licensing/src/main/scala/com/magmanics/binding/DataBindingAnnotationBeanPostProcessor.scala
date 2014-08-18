@@ -26,7 +26,7 @@ package com.magmanics.binding
 
 import org.springframework.beans.factory.config.BeanPostProcessor
 /**
- * This class post-processes classes and registers {@link DataBindSubscriber}s and {@link DataBindPublisher}s with the {@link DataBindManager}
+ * This class post-processes classes and registers [[com.magmanics.binding.DataBindSubscriber subscribers]] and [[com.magmanics.binding.DataBindPublisher publishers]] with the [[com.magmanics.binding.DataBindManager manager]]
  *
  * todo move into higher package.
  * @author James Baxter <j.w.baxter@gmail.com>

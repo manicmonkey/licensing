@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.transaction.annotation.{Propagation, Transactional}
 
 /**
- * AuditService allows for persisting {com.magmanics.auditing.model.Audit}s and retrieving Audits for review.
+ * AuditService allows for persisting [[com.magmanics.auditing.model.Audit Audits]] and retrieving Audits for review.
  *
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 18-Sep-2010
@@ -52,7 +52,7 @@ trait AuditService {
   def getAuditCodes(): Seq[AuditCode]
 
   /**
-   * @return a sequence of {@link Audit}s which conform to the given search criteria
+   * @return a sequence of [[com.magmanics.auditing.model.Audit Audits]] which conform to the given search criteria
    */
   def getAuditMessages(auditSearch: AuditSearchDto): Seq[Audit]
 

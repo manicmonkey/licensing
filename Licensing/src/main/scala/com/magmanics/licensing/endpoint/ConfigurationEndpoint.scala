@@ -50,7 +50,7 @@ class ConfigurationEndpoint {
 
   /**
    * Lookup a Configuration by its id
-   * @throws NoSuchEntityException If a configuration with the given id cannot be found
+   * todo catch NoSuchEntityException and return 404
    */
   @RequestMapping(value = Array("/id/{id}"), method = Array(RequestMethod.GET))
   def get(@PathVariable id: Long): Configuration = configurationRepository.get(id)

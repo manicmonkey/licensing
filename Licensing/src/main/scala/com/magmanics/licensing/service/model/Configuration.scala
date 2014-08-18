@@ -64,9 +64,9 @@ case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id:
   }
 
   /**
-   * Adds an {@link Activation} to this Configuration
-   * @throws NoActivationsLeftException If the activation limit has been reached
+   * Adds an [[com.magmanics.licensing.service.model.Activation Activation]] to this Configuration
    */
+  @throws[NoActivationsLeftException]("If the activation limit has been reached")
   def addActivation(machineIdentifier: String, productVersion: String, extraInfo: Map[String, String] = Map()) {
 
     if (!enabled)
@@ -81,7 +81,7 @@ case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id:
   }
 
   /**
-   * @return The number of {@link ActivationType.NEW} Activations against this Configuration
+   * @return The number of [[com.magmanics.licensing.service.model.ActivationType new]] Activations against this Configuration
    */
   def totalActivations: Int = activations.filter(_.activationType == ActivationType.NEW).size
 

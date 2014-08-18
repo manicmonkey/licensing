@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.JavaConverters._
 
 /**
- * Dao for {@link com.magmanics.licensing.service.model.Customer Customer}s
+ * Dao for [[com.magmanics.licensing.service.model.Customer Customer]]s
  *
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 27-Jul-2010
@@ -45,8 +45,8 @@ trait CustomerDao {
   /**
    * Persists a Customer
    * @return The newly created Customer with its id populated to facilitate further operations
-   * @throws DuplicateNameException If a Customer with the same name already exists
    */
+  @throws[DuplicateNameException]("If a Customer with the same name already exists")
   def create(customer: Customer): Customer
 
   /**
@@ -66,8 +66,8 @@ trait CustomerDao {
 
   /**
    * Update the given Customer
-   * @throws DuplicateNameException If a Customer with the same name already exists
    */
+  @throws[DuplicateNameException]("If a Customer with the same name already exists")
   def update(customer: Customer)
 
   /**
@@ -77,7 +77,7 @@ trait CustomerDao {
 }
 
 /**
- * Circumflex implementation of  {@link com.magmanics.licensing.datalayer.dao.CustomerDao CustomerDao}
+ * Circumflex implementation of  [[com.magmanics.licensing.datalayer.dao.CustomerDao CustomerDao]]
  */
 class CustomerDaoJPA extends CustomerDao {
 
