@@ -88,7 +88,7 @@ class ConfigurationDaoJPA(activationDao: ActivationDao) extends ConfigurationDao
 
   val log = LoggerFactory.getLogger(classOf[ConfigurationDaoJPA])
 
-  @PersistenceContext
+  @PersistenceContext(unitName = "licensingPersistenceUnit")
   var em: EntityManager = _
 
   def create(configuration: Configuration): Configuration = {

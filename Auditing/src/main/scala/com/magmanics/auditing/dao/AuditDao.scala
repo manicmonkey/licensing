@@ -75,7 +75,7 @@ class AuditDaoJPA extends AuditDao {
 
   val log = LoggerFactory.getLogger(classOf[AuditDaoJPA])
 
-  @PersistenceContext
+  @PersistenceContext(unitName = "auditingPersistenceUnit")
   var em: EntityManager = _
 
   override def create(audit: Audit) {

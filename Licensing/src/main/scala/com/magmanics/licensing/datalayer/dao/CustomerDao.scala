@@ -85,7 +85,7 @@ class CustomerDaoJPA extends CustomerDao {
 
   val log = LoggerFactory.getLogger(classOf[CustomerDaoJPA])
 
-  @PersistenceContext
+  @PersistenceContext(unitName = "licensingPersistenceUnit")
   var em: EntityManager = _
 
   def create(c: Customer): Customer = {

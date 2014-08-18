@@ -31,7 +31,7 @@ import com.magmanics.licensing.model.Activation
 import org.slf4j.LoggerFactory
 
 /**
- * DAO for creating [[com.magmanics.licensing.service.model.Activation Activations]]. Retrieval is facilitated through the association 'activations' on [[com.magmanics.licensing.service.model.Configuration Configuration]].
+ * DAO for creating [[com.magmanics.licensing.model.Activation Activations]]. Retrieval is facilitated through the association 'activations' on [[com.magmanics.licensing.service.model.Configuration Configuration]].
  *
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 28-Jul-2010
@@ -47,7 +47,7 @@ class ActivationDaoJPA extends ActivationDao {
 
   val log = LoggerFactory.getLogger(classOf[ActivationDaoJPA])
 
-  @PersistenceContext
+  @PersistenceContext(unitName = "licensingPersistenceUnit")
   var em: EntityManager = _
 
   override def create(activation: Activation) {

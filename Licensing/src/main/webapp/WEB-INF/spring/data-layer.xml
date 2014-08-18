@@ -18,6 +18,16 @@
         </property>
     </bean>
 
+    <bean id="auditingPersistenceUnit" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceUnitName" value="auditingPersistenceUnit" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
+                <property name="showSql" value="true"/>
+            </bean>
+        </property>
+    </bean>
+
     <!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean below) -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <!-- the transactional semantics... -->
