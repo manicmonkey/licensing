@@ -24,7 +24,7 @@
 
 package com.magmanics.licensing.ui.content.configuration
 
-import com.magmanics.licensing.service.model.Configuration
+import com.magmanics.licensing.model.Configuration
 import com.vaadin.ui.Table
 import org.slf4j.LoggerFactory
 

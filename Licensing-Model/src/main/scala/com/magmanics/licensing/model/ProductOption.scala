@@ -22,7 +22,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.magmanics.licensing.service.model
+package com.magmanics.licensing.model
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

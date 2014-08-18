@@ -28,7 +28,7 @@ import javax.persistence.{EntityManager, PersistenceContext}
 
 import com.magmanics.licensing.datalayer.dao.exception.{DataLayerException, NoSuchEntityException}
 import com.magmanics.licensing.datalayer.model._
-import com.magmanics.licensing.service.model.Configuration
+import com.magmanics.licensing.model.Configuration
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._

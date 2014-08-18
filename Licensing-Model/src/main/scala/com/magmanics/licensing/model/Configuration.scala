@@ -22,12 +22,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.magmanics.licensing.service.model
+package com.magmanics.licensing.model
 
 import java.util.Date
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.magmanics.licensing.service.exception.NoActivationsLeftException
+import com.magmanics.licensing.model.exception.NoActivationsLeftException
 
 import scala.beans.BeanInfo
 

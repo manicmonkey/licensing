@@ -1,7 +1,7 @@
 package com.magmanics.licensing.service
 
 import com.magmanics.licensing.TransactionalSpringBasedSuite
-import com.magmanics.licensing.service.model.{BoolOption, ListOption, Product, TextOption}
+import com.magmanics.licensing.model.{BoolOption, ListOption, Product, TextOption}
 import org.scalatest.GivenWhenThen
 
 /**

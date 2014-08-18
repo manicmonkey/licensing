@@ -25,7 +25,7 @@ package com.magmanics.licensing.datalayer.dao
  */
 
 import com.magmanics.licensing.datalayer.model._
-import com.magmanics.licensing.service.model._
+import com.magmanics.licensing.model._
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._

@@ -26,7 +26,7 @@ package com.magmanics.licensing.service
 
 import com.magmanics.auditing.Auditable
 import com.magmanics.licensing.datalayer.dao.CustomerDao
-import com.magmanics.licensing.service.model.Customer
+import com.magmanics.licensing.model.Customer
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 

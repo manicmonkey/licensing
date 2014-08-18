@@ -28,7 +28,7 @@ import java.util.{Calendar, UUID}
 
 import com.magmanics.auditing.dao.AuditDao
 import com.magmanics.auditing.model.{Audit, AuditCode}
-import com.magmanics.licensing.service.model.{Product => LicencedProduct, _}
+import com.magmanics.licensing.model.{Product => LicencedProduct, _}
 import org.springframework.beans.factory.annotation.Autowired
 
 /**

@@ -3,7 +3,7 @@ package com.magmanics.licensing.client
 import javax.ws.rs._
 import javax.ws.rs.core.MediaType
 
-import com.magmanics.licensing.service.model.Configuration
+import com.magmanics.licensing.model.Configuration
 import org.jboss.resteasy.client.jaxrs.{BasicAuthentication, ResteasyClientBuilder}
 
 /**

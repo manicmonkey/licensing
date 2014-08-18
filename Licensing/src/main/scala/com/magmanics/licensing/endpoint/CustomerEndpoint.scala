@@ -24,7 +24,7 @@
 package com.magmanics.licensing.endpoint
 
 import com.magmanics.licensing.service.CustomerRepository
-import com.magmanics.licensing.service.model.Customer
+import com.magmanics.licensing.model.Customer
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation._
 

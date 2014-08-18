@@ -23,7 +23,7 @@
  */
 package com.magmanics.licensing.endpoint
 
-import com.magmanics.licensing.service.model.Configuration
+import com.magmanics.licensing.model.Configuration
 import com.magmanics.licensing.service.{ConfigurationRepository, CustomerRepository}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.{PathVariable, RequestMapping, RequestMethod, RestController}

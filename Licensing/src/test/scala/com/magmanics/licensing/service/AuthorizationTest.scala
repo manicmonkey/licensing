@@ -1,7 +1,7 @@
 package com.magmanics.licensing.service
 
 import com.magmanics.licensing.TransactionalSpringBasedSuite
-import com.magmanics.licensing.service.model.Customer
+import com.magmanics.licensing.model.Customer
 import org.scalatest.GivenWhenThen
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.{AuthenticationManager, UsernamePasswordAuthenticationToken}

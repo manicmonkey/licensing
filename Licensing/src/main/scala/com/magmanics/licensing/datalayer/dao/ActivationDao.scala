@@ -27,7 +27,7 @@ package com.magmanics.licensing.datalayer.dao
 import javax.persistence.{EntityManager, PersistenceContext}
 
 import com.magmanics.licensing.datalayer.model.{ActivationEntity, ActivationInfoEntity}
-import com.magmanics.licensing.service.model.Activation
+import com.magmanics.licensing.model.Activation
 import org.slf4j.LoggerFactory
 
 /**

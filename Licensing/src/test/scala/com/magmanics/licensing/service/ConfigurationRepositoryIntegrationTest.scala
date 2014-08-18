@@ -1,7 +1,7 @@
 package com.magmanics.licensing.service
 
 import com.magmanics.licensing.TransactionalSpringBasedSuite
-import com.magmanics.licensing.service.model.{Configuration, Customer, Product}
+import com.magmanics.licensing.model.{Configuration, Customer, Product}
 import org.scalatest.GivenWhenThen
 import org.slf4j.LoggerFactory
 

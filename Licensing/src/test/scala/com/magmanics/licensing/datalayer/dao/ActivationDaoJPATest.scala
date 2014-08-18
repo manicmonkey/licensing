@@ -1,6 +1,6 @@
 package com.magmanics.licensing.datalayer.dao
 
-import com.magmanics.licensing.service.model.{Configuration => ConfigurationModel, _}
+import com.magmanics.licensing.model.{Configuration => ConfigurationModel, _}
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests

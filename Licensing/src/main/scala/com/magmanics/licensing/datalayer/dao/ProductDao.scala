@@ -29,7 +29,7 @@ import javax.persistence.{EntityManager, PersistenceContext}
 import com.magmanics.licensing.datalayer.dao.exception.DataLayerException
 import com.magmanics.licensing.datalayer.model._
 import com.magmanics.licensing.service.exception.DuplicateNameException
-import com.magmanics.licensing.service.model.{BoolOption, ListOption, Product, TextOption}
+import com.magmanics.licensing.model.{BoolOption, ListOption, Product, TextOption}
 import org.slf4j.LoggerFactory
 
 import scala.collection.JavaConverters._

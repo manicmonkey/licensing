@@ -2,7 +2,7 @@ package com.magmanics.licensing.datalayer.model
 
 import java.util.Date
 
-import com.magmanics.licensing.service.model.{Activation, ActivationType}
+import com.magmanics.licensing.model.{Activation, ActivationType}
 import org.testng.Assert._
 import org.testng.annotations.Test
 

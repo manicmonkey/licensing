@@ -1,6 +1,6 @@
 package com.magmanics.licensing.datalayer.model
 
-import com.magmanics.licensing.service.model.Customer
+import com.magmanics.licensing.model.Customer
 import org.testng.Assert._
 import org.testng.annotations.Test
 

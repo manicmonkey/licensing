@@ -1,6 +1,6 @@
 package com.magmanics.licensing.datalayer.model
 
-import com.magmanics.licensing.service.model.{BoolOption, ListOption, Product, TextOption}
+import com.magmanics.licensing.model.{BoolOption, ListOption, Product, TextOption}
 import org.testng.annotations.Test
 
 /**

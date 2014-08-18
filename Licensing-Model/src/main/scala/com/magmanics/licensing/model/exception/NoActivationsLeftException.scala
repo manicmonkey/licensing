@@ -22,14 +22,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.magmanics.licensing.service.exception
+package com.magmanics.licensing.model.exception
 
 /**
- * Created by IntelliJ IDEA.
- * User: James
- * Date: 31-May-2010
- * Time: 18:10:46
- * To change this template use File | Settings | File Templates.
+ * @author James Baxter - 31-May-2010
  */
-
 class NoActivationsLeftException(msg: String) extends RuntimeException(msg)

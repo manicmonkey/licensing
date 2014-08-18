@@ -1,7 +1,7 @@
 package com.magmanics.licensing.ui.content.customer
 
 import com.magmanics.licensing.client.CustomerClient
-import com.magmanics.licensing.service.model.Customer
+import com.magmanics.licensing.model.Customer
 import com.vaadin.data.Property.{ValueChangeEvent, ValueChangeListener}
 import com.vaadin.data.util.BeanItemContainer
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode

@@ -1,7 +1,7 @@
 package com.magmanics.licensing.datalayer.model
 
-import com.magmanics.licensing.service.exception.NoActivationsLeftException
-import com.magmanics.licensing.service.model.{Activation, ActivationType, Configuration}
+import com.magmanics.licensing.model.exception.NoActivationsLeftException
+import com.magmanics.licensing.model.{Activation, ActivationType, Configuration}
 import org.testng.Assert._
 import org.testng.annotations.Test
 /**

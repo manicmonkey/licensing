@@ -17,6 +17,7 @@
 
     <modules>
         <module>Licensing</module>
+        <module>Licensing-Model</module>
         <module>Licensing-UI</module>
     </modules>
 

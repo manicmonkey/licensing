@@ -1,8 +1,9 @@
 package com.magmanics.licensing.service
 
 import com.magmanics.licensing.TransactionalSpringBasedSuite
+import com.magmanics.licensing.model.exception.NoActivationsLeftException
 import com.magmanics.licensing.service.exception._
-import com.magmanics.licensing.service.model.{Configuration, Customer, Product}
+import com.magmanics.licensing.model.{Configuration, Customer, Product}
 import org.scalatest.GivenWhenThen
 /**
  * @author James Baxter <j.w.baxter@gmail.com>

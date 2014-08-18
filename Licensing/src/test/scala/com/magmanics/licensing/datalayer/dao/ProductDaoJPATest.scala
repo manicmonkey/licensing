@@ -1,7 +1,7 @@
 package com.magmanics.licensing.datalayer.dao
 
 import com.magmanics.licensing.datalayer.dao.exception.DataLayerException
-import com.magmanics.licensing.service.model.Product
+import com.magmanics.licensing.model.Product
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests
