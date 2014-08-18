@@ -9,7 +9,7 @@
     <import resource="data-layer.xml" />
     <import resource="datasource.xml" />
 
-    <import resource="audit.xml" />
+    <import resource="classpath:audit.xml" />
     <import resource="security.xml" />
 
 </beans>

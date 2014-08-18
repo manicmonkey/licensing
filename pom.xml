@@ -165,7 +165,7 @@
                     <artifactId>license-maven-plugin</artifactId>
                     <version>2.3</version>
                     <configuration>
-                        <header>src/etc/header.txt</header>
+                        <header>header.txt</header>
                         <basedir>src/main/scala</basedir>
                         <strictCheck>true</strictCheck>
                     </configuration>
