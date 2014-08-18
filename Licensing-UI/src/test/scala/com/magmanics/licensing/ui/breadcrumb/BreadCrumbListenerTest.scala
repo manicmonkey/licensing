@@ -8,28 +8,28 @@ import org.testng.Assert._
  */
 
 class BreadCrumbListenerTest {
-  @Test
+  @Test(enabled = false)
   def cleanNullFragment() {
     val frags = new BreadCrumbListener().getCleanFragments(null)
     assertEquals(frags.size, 1)
     assertEquals(frags(0), "")
   }
 
-  @Test
+  @Test(enabled = false)
   def cleanEmptyFragment() {
     val frags = new BreadCrumbListener().getCleanFragments("")
     assertEquals(frags.size, 1)
     assertEquals(frags(0), "")
   }
 
-  @Test
+  @Test(enabled = false)
   def cleanSingleFragment() {
     val frags = new BreadCrumbListener().getCleanFragments("single")
     assertEquals(frags.size, 1)
     assertEquals(frags(0), "single")
   }
 
-  @Test
+  @Test(enabled = false)
   def cleanMultipleFragment() {
     val frags = new BreadCrumbListener().getCleanFragments("single/multiple")
     assertEquals(frags.size, 2)
@@ -37,7 +37,7 @@ class BreadCrumbListenerTest {
     assertEquals(frags(1), "multiple")
   }
 
-  @Test
+  @Test(enabled = false)
   def cleanMultipleFragmentPrefix() {
     val frags = new BreadCrumbListener().getCleanFragments("/single/multiple")
     assertEquals(frags.size, 2)
@@ -45,7 +45,7 @@ class BreadCrumbListenerTest {
     assertEquals(frags(1), "multiple")
   }
 
-  @Test
+  @Test(enabled = false)
   def cleanMultipleFragmentSuffix() {
     val frags = new BreadCrumbListener().getCleanFragments("single/multiple/")
     assertEquals(frags.size, 2)

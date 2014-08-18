@@ -18,6 +18,7 @@
 
     <properties>
         <jackson.version>2.4.1</jackson.version>
+        <selenium.version>2.0a7</selenium.version>
         <spring.version>4.0.5.RELEASE</spring.version>
         <vaadin.version>7.2.5</vaadin.version>
         <resteasy.version>3.0.7.Final</resteasy.version>
@@ -28,6 +29,12 @@
         <dependency>
             <groupId>com.magmanics.licensing</groupId>
             <artifactId>licensing-model</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <!-- Auditing -->
+        <dependency>
+            <groupId>com.magmanics.licensing</groupId>
+            <artifactId>auditing</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <!-- Language -->
@@ -153,6 +160,24 @@
             <version>1.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>${selenium.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.seleniumhq.selenium.client-drivers</groupId>-->
+        <!--<artifactId>selenium-java-testng-helper</artifactId>-->
+        <!--<version>1.0.1</version>-->
+        <!--<scope>test</scope>-->
+        <!--</dependency>-->
     </dependencies>
 
     <build>
@@ -209,6 +234,31 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--<plugin>-->
+            <!--<groupId>org.codehaus.mojo</groupId>-->
+            <!--<artifactId>selenium-maven-plugin</artifactId>-->
+            <!--<version>1.0.1</version>-->
+            <!--<executions>-->
+            <!--<execution>-->
+            <!--<id>start</id>-->
+            <!--<phase>pre-integration-test</phase>-->
+            <!--<goals>-->
+            <!--<goal>start-server</goal>-->
+            <!--</goals>-->
+            <!--<configuration>-->
+            <!--<background>true</background>-->
+            <!--<logOutput>true</logOutput>-->
+            <!--</configuration>-->
+            <!--</execution>-->
+            <!--<execution>-->
+            <!--<id>stop</id>-->
+            <!--<phase>post-integration-test</phase>-->
+            <!--<goals>-->
+            <!--<goal>stop-server</goal>-->
+            <!--</goals>-->
+            <!--</execution>-->
+            <!--</executions>-->
+            <!--</plugin>-->
         </plugins>
     </build>
 

@@ -11,7 +11,6 @@ import org.springframework.transaction.support.AbstractPlatformTransactionManage
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 15 -Aug-2010
  */
-
 trait TransactionalSpringBasedSuite extends FeatureSpec with BeforeAndAfterAll with BeforeAndAfterEach {
 
   val logger = LoggerFactory.getLogger(classOf[TransactionalSpringBasedSuite])

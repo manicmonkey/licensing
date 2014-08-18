@@ -25,7 +25,7 @@ class BreadCrumbDesignerTest {
     assertEquals(getLabelCaption(crumb), "home")
   }
 
-  @Test
+  @Test(enabled = false)
   def worksWithOneItem() {
     val crumbs = new BreadCrumbDesigner(mockMessageResource).build(List("admin"))
     assertEquals(crumbs.size, 3)

@@ -11,7 +11,7 @@ import org.testng.annotations.Test
 /**
  * Created by James on 11/07/2014.
  */
-@ContextConfiguration(Array("classpath:audit.xml", "classpath:data-layer.xml", "classpath:spring/datasource-test.xml"))
+@ContextConfiguration(Array("classpath:audit.xml", "classpath:data-layer.xml", "classpath:datasource-test.xml"))
 @Transactional
 @TransactionConfiguration(transactionManager="transactionManager", defaultRollback=true)
 class AuditDaoJPATest extends AbstractTestNGSpringContextTests {
@@ -20,7 +20,7 @@ class AuditDaoJPATest extends AbstractTestNGSpringContextTests {
   var auditDao: AuditDao = _
 
   @Test
-  def auditsLargerThan2000CharsTruncated {
+  def auditsLargerThan2000CharsTruncated() {
     auditDao.create(Audit("username", AuditCode("audit.code"), Range(1, 3000).foldLeft("")((left, int) => left + int)))
   }
 }

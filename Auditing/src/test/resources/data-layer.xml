@@ -10,7 +10,6 @@
 
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <property name="persistenceUnitName" value="licensingPersistenceUnit" />
         <property name="jpaVendorAdapter">
             <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">
                 <property name="showSql" value="true"/>
@@ -32,7 +31,7 @@
     <!-- ensure that the above transactional advice runs for any execution
       of an operation defined by the FooService interface -->
     <aop:config>
-        <aop:pointcut id="daoPackage" expression="execution(* com.magmanics.licensing.datalayer.dao.*.*(..))"/>
+        <aop:pointcut id="daoPackage" expression="execution(* com.magmanics.auditing.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="daoPackage"/>
     </aop:config>
 
