@@ -79,7 +79,7 @@ class MockData {
     createCustomer("Hendersons", enabled = false)
     createCustomer("Gates", enabled = false)
 
-    val licenceConfiguration = buildConfiguration(true, 1, product, customer, "jbaxter")
+    val licenceConfiguration = buildConfiguration(true, 2, product, customer, "jbaxter")
     val licenceConfiguration2 = buildConfiguration(true, 1, product2, customer2, "matth")
     val licenceConfiguration3 = buildConfiguration(true, 2, product2, customer2, "lees", Map("Users" -> "5"))
 

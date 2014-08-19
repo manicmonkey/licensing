@@ -58,7 +58,10 @@ class LicenceManagementContent extends MainContent {
   configurationOverviewTable.onConfigurationChanged(configuration => {
     val c = configurationClient.get(configuration.configurationId)
     configurationDetailTable.setConfiguration(c)
+    activationOverviewTable.setActivations(c.activations)
   })
+  
+  activationOverviewTable.onActivationChanged(activationDetailTable.setActivation)
 
   addComponent(new HorizontalLayout {
     setSpacing(true)

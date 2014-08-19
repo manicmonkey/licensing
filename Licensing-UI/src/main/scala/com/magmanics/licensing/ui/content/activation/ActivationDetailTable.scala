@@ -48,7 +48,8 @@ class ActivationDetailTable extends Table {
 
   def setActivation(activation: Activation) {
     log.debug("Model clicked: {}", activation)
-    activation.extraInfo.foreach(info => {
+    removeAllItems()
+    activation.extraInfo.toList.sortBy(_._1).foreach(info => {
       val item = addItem(info._1)
       item.getItemProperty("name").asInstanceOf[Property[String]].setValue(info._1)
       item.getItemProperty("value").asInstanceOf[Property[String]].setValue(info._2)

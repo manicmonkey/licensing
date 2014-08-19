@@ -31,8 +31,6 @@ import com.vaadin.ui.AbstractSelect.ItemCaptionMode
 import com.vaadin.ui.Table
 import org.slf4j.LoggerFactory
 
-import scala.math._
-
 /**
  * @author jbaxter - 22/04/11
  */
@@ -60,16 +58,16 @@ class ActivationOverviewTable extends Table {
 
     if (container.size > 0) {
       select(firstItemId)
-      setPageLength(min(container.size, 4))
+//      setPageLength(min(container.size, 4))
     }
   }
 
-  def addListener(activationSelectionListener: Activation => Unit) {
+  def onActivationChanged(handler: Activation => Unit) {
     addListener(new Property.ValueChangeListener() {
       override def valueChange(event: Property.ValueChangeEvent) {
         val activation = event.getProperty.getValue.asInstanceOf[Activation]
         assert(activation != null, "Null selection not allowed")
-        activationSelectionListener(activation)
+        handler(activation)
       }
     })
   }

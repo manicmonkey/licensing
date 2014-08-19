@@ -60,7 +60,7 @@ case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id:
   }
 
   if (activations.count(_.activationType == ActivationType.NEW) > maxActivations) {
-    throw new IllegalStateException("maxActivations cannot be less than the number of existing 'NEW' activations")
+    throw new IllegalStateException("The number of 'NEW' activations can't be greater than maxActivations")
   }
 
   /**
