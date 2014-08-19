@@ -55,6 +55,11 @@ class LicenceManagementContent extends MainContent {
       }))
   })
 
+  configurationOverviewTable.onConfigurationChanged(configuration => {
+    val c = configurationClient.get(configuration.configurationId)
+    configurationDetailTable.setConfiguration(c)
+  })
+
   addComponent(new HorizontalLayout {
     setSpacing(true)
     addComponent(customerDropdown)
@@ -88,9 +93,6 @@ class LicenceManagementContent extends MainContent {
     })
   })
 
-//  configurationOverviewTable.setConfigurations(List(ConfigurationInfo(1, "Ubuntu 10.10", new Date, "jbaxter", "1/2", "gew7yuhb3736yyby73rh8yugbh`"), ConfigurationInfo(1, "Ubuntu 11.04", new Date, "jbaxter", "1/1", "47fr8e473yedf43e")))
-//  configurationOverviewTable.setConfigurations(List(ConfigurationInfo(1, "Ubuntu 10.10", new Date, "jbaxter", "1/2", "gew7yuhb3736yyby73rh8yugbhyugyuhbf7f76g67gf76fg76yt5rfd65dy56td65fy6t5fd6tdtrdjhf"), ConfigurationInfo(1, "Ubuntu 11.04", new Date, "jbaxter", "1/1", "47fr8e473yedf43e")))
-//  configurationDetailTable.setConfiguration(new Configuration(user = "jbaxter", productId = 1, customerId = 1, options = Map("Samba" -> "enabled", "UPnP" -> "enabled", "EXT3" -> "disabled", "Maximum user accounts" -> "9999")))
   //  activationOverviewTable.setActivations()
   //  activationDetailTable.setActivation()
 //  override def attach() {

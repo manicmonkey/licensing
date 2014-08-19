@@ -28,8 +28,6 @@ import com.magmanics.licensing.model.Configuration
 import com.vaadin.ui.Table
 import org.slf4j.LoggerFactory
 
-import scala.math._
-
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 22 -Jun-2010
@@ -49,6 +47,6 @@ class ConfigurationDetailTable extends Table {
 
     c.options.foreach(o => addItem(Array(o._1, o._2), o._1))
 
-    setPageLength(min(size, 8))
+//    setPageLength(min(size, 8))
   }
 }

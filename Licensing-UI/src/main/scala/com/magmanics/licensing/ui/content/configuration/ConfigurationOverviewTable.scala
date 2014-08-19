@@ -61,12 +61,12 @@ class ConfigurationOverviewTable extends Table {
     }
   }
 
-  def addListener(configurationSelectedListener: ConfigurationInfo => Unit) {
+  def onConfigurationChanged(handler: ConfigurationInfo => Unit) {
     addValueChangeListener(new Property.ValueChangeListener() {
       override def valueChange(event: Property.ValueChangeEvent) {
         val configuration = event.getProperty.getValue.asInstanceOf[ConfigurationInfo]
         assert(configuration != null, "Null selection not allowed")
-        configurationSelectedListener(configuration)
+        handler(configuration)
       }
     })
   }

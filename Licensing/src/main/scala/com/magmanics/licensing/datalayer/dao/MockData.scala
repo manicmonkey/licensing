@@ -31,6 +31,8 @@ import com.magmanics.auditing.model.{Audit, AuditCode}
 import com.magmanics.licensing.model.{Product => LicencedProduct, _}
 import org.springframework.beans.factory.annotation.Autowired
 
+import scala.collection.immutable
+
 /**
  * @author jbaxter - 12-Jun-2010
  */
@@ -77,9 +79,9 @@ class MockData {
     createCustomer("Hendersons", enabled = false)
     createCustomer("Gates", enabled = false)
 
-    val licenceConfiguration = buildConfiguration(enabled = true, 1, product, customer, "jbaxter")
-    val licenceConfiguration2 = buildConfiguration(enabled = true, 1, product2, customer2, "matth")
-    val licenceConfiguration3 = buildConfiguration(enabled = true, 2, product2, customer2, "lees")
+    val licenceConfiguration = buildConfiguration(true, 1, product, customer, "jbaxter")
+    val licenceConfiguration2 = buildConfiguration(true, 1, product2, customer2, "matth")
+    val licenceConfiguration3 = buildConfiguration(true, 2, product2, customer2, "lees", Map("Users" -> "5"))
 
     buildActivation("jbaxter", "100608", licenceConfiguration, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
     buildActivation("jbaxter", "110715", licenceConfiguration, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
@@ -109,10 +111,12 @@ class MockData {
     customerDao.create(customer)
   }
 
-  private def buildConfiguration(enabled: Boolean, maxActivations: Int, product: LicencedProduct, customer: Customer, username: String): Configuration = {
+  private def buildConfiguration(enabled: Boolean, maxActivations: Int, product: LicencedProduct, customer: Customer, username: String, options: Map[String, String] = immutable.Map.empty): Configuration = {
     val licenceConfiguration = new Configuration(enabled = enabled, maxActivations = maxActivations,
       productId =  product.id.get, customerId = customer.id.get, user = username, serial = Some(getUUID),
-      options = product.options.map(c => c.name -> c.default.toString).toMap)
+      options = product.options.map(c => {
+        c.name -> options.getOrElse(c.name, c.default.toString)
+      }).toMap)
     configurationDao.create(licenceConfiguration)
   }
 
