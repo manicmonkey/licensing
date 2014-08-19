@@ -47,7 +47,7 @@ class CustomerEndpoint {
   /**
    * Get enabled Customers
    */
-  @RequestMapping(value = Array("/enabled"), method = Array(RequestMethod.GET))
+  @RequestMapping(method = Array(RequestMethod.GET), params = Array("enabled=true"))
   def getEnabled: Seq[Customer] = customerRepository.getEnabled
 
   /**
@@ -59,8 +59,8 @@ class CustomerEndpoint {
   /**
    * Gets a Customer given the specified id
    */
-  @RequestMapping(value = Array("/{id}"), method = Array(RequestMethod.GET))
-  def get(@PathVariable id: Long): Option[Customer] = customerRepository.get(id)
+  @RequestMapping(method = Array(RequestMethod.GET), params = Array("id"))
+  def get(@RequestParam id: Long): Option[Customer] = customerRepository.get(id)
 
   /**
    * Update the given Customer

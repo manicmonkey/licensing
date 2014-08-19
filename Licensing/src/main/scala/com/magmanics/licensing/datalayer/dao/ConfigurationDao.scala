@@ -34,14 +34,14 @@ import org.slf4j.LoggerFactory
 import scala.collection.JavaConverters._
 
 /**
- * DAO for [[com.magmanics.licensing.service.model.Configuration Configuration]]s.
+ * DAO for [[com.magmanics.licensing.model.Configuration Configuration]]s.
  *
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 27 -Jul-2010
  */
 trait ConfigurationDao {
   /**
-   * Persist a new Configuration. Does not persist any attached [[com.magmanics.licensing.service.model.Activation Activations]]
+   * Persist a new Configuration. Does not persist any attached [[com.magmanics.licensing.model.Activation Activations]]
    * as none are expected when creating a Configuration.
    * @return The newly created Configuration with its id populated to facilitate future operations
    */
@@ -68,7 +68,7 @@ trait ConfigurationDao {
    * <ul>
    * <li>Changing the maximum number of activations</li>
    * <li>Changing the enabled/disabled status</li>
-   * <li>Adding new [[com.magmanics.licensing.service.model.Activation Activations]].</li>
+   * <li>Adding new [[com.magmanics.licensing.model.Activation Activations]].</li>
    * </ul>
    */
   def update(configuration: Configuration)

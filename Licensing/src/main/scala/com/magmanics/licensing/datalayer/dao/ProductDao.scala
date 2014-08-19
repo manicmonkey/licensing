@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory
 import scala.collection.JavaConverters._
 
 /**
- * DAO for [[com.magmanics.licensing.service.model.Product Product]]s
+ * DAO for [[com.magmanics.licensing.model.Product Product]]s
  *
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 31-May-2010

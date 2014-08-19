@@ -24,7 +24,7 @@
 
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.client.ConfigurationClient
+import com.magmanics.licensing.client.{ProductClient, ConfigurationClient}
 import com.magmanics.licensing.ui.content.activation.{ActivationDetailTable, ActivationOverviewTable}
 import com.magmanics.licensing.ui.content.configuration.{ConfigurationDetailTable, ConfigurationInfo, ConfigurationOverviewTable}
 import com.magmanics.licensing.ui.content.customer.CustomerDropdown
@@ -36,6 +36,9 @@ import com.vaadin.ui._
  */
 class LicenceManagementContent extends MainContent {
 
+  val configurationClient = ConfigurationClient.client
+  val productClient = ProductClient.client
+
   val configurationOverviewTable = new ConfigurationOverviewTable
   val configurationDetailTable = new ConfigurationDetailTable
   val activationOverviewTable = new ActivationOverviewTable
@@ -44,11 +47,11 @@ class LicenceManagementContent extends MainContent {
   val customerDropdown = new CustomerDropdown
 
   customerDropdown.onCustomerChanged(customer => {
-    val configurations = ConfigurationClient.client.getByCustomer(customer.name)
+    val configurations = configurationClient.getByCustomer(customer.name)
     configurationOverviewTable.setConfigurations(
       configurations.map(c => {
-        //todo get real product name
-        ConfigurationInfo(c.id.get, "product", c.created, c.user, c.activations.length.toString, c.serial.get)
+        val product = productClient.get(c.productId).getOrElse(throw new IllegalStateException("Unknown productId " + c.productId + " in configuration: " + c))
+        ConfigurationInfo(c.id.get, product.name, c.created, c.user, c.activations.length.toString, c.serial.get)
       }))
   })
 

@@ -22,12 +22,11 @@ trait CustomerClient {
   def get(): Seq[Customer]
 
   @GET
-  @Path("/enabled")
+  @Path("?enabled=true")
   def getEnabled: Seq[Customer]
 
   @GET
-  @Path("/{id}")
-  def get(@PathParam("id") id: Long): Customer
+  def get(@QueryParam("id") id: Long): Customer
 
   @PUT
   def update(customer: Customer)

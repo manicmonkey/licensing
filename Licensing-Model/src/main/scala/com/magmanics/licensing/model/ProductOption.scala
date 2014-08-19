@@ -24,6 +24,10 @@
 
 package com.magmanics.licensing.model
 
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type
+import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
+import com.fasterxml.jackson.annotation.JsonTypeInfo.{As, Id}
+
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 02-Aug-2010
@@ -32,6 +36,16 @@ package com.magmanics.licensing.model
 //abstract class ProductOption[T](val id: Option[Long],
 //                                var name: String,
 //                                var default: T)
+@JsonTypeInfo(
+  use = Id.NAME,
+  include = As.PROPERTY,
+  property = "type"
+)
+@JsonSubTypes(Array(
+  new Type(value = classOf[TextOption], name = "text"),
+  new Type(value = classOf[BoolOption], name = "bool"),
+  new Type(value = classOf[ListOption], name = "list")
+))
 trait ProductOption[T] {
   val id: Option[Long]
   var name: String
@@ -39,8 +53,8 @@ trait ProductOption[T] {
 }
 
 case class TextOption(id: Option[Long] = None, var name: String, var default: String) extends ProductOption[String]
-case class BoolOption(id:Option[Long] = None, var name: String, var default: Boolean) extends ProductOption[Boolean]
-case class ListOption(id:Option[Long] = None, var name: String, var default: String, values: Seq[String]) extends ProductOption[String]
+case class BoolOption(id: Option[Long] = None, var name: String, var default: Boolean) extends ProductOption[Boolean]
+case class ListOption(id: Option[Long] = None, var name: String, var default: String, values: Seq[String]) extends ProductOption[String]
 
 //case class TextOption(_id:Option[Long] = None,
 //                      _name: String,

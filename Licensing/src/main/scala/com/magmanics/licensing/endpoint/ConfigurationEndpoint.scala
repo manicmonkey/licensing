@@ -26,7 +26,7 @@ package com.magmanics.licensing.endpoint
 import com.magmanics.licensing.model.Configuration
 import com.magmanics.licensing.service.{ConfigurationRepository, CustomerRepository}
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.{PathVariable, RequestMapping, RequestMethod, RestController}
+import org.springframework.web.bind.annotation._
 
 /**
  * @author James Baxter - 16/08/2014.
@@ -52,20 +52,20 @@ class ConfigurationEndpoint {
    * Lookup a Configuration by its id
    * todo catch NoSuchEntityException and return 404
    */
-  @RequestMapping(value = Array("/id/{id}"), method = Array(RequestMethod.GET))
-  def get(@PathVariable id: Long): Configuration = configurationRepository.get(id)
+  @RequestMapping(method = Array(RequestMethod.GET), params = Array("id"))
+  def get(@RequestParam id: Long): Configuration = configurationRepository.get(id)
 
   /**
    * Get configurations for a particular customer. Returns an empty list if none are found.
    */
-  @RequestMapping(value = Array("/customer/{customer}"), method = Array(RequestMethod.GET))
-  def getByCustomer(@PathVariable customer: String): Seq[Configuration] = configurationRepository.getByCustomer(customer)
+  @RequestMapping(method = Array(RequestMethod.GET), params = Array("customer"))
+  def getByCustomer(@RequestParam customer: String): Seq[Configuration] = configurationRepository.getByCustomer(customer)
 
   /**
    * Try to get a configuration given a serial.
    */
-  @RequestMapping(value = Array("/serial/{serial}"), method = Array(RequestMethod.GET))
-  def getBySerial(@PathVariable serial: String): Option[Configuration] = configurationRepository.getBySerial(serial)
+  @RequestMapping(method = Array(RequestMethod.GET), params = Array("serial"))
+  def getBySerial(@RequestParam serial: String): Option[Configuration] = configurationRepository.getBySerial(serial)
 
   /**
    * Updates a configuration

@@ -33,22 +33,19 @@ trait ConfigurationClient {
    * todo wrap 404 in an option
    */
   @GET
-  @Path("/id/{id}")
-  def get(@PathParam("id") id: Long): Configuration
+  def get(@QueryParam("id") id: Long): Configuration
 
   /**
    * Get configurations for a particular customer. Returns an empty list if none are found.
    */
   @GET
-  @Path("/customer/{customer}")
-  def getByCustomer(@PathParam("customer") customer: String): Seq[Configuration]
+  def getByCustomer(@QueryParam("customer") customer: String): Seq[Configuration]
 
   /**
    * Try to get a configuration given a serial.
    */
   @GET
-  @Path("/serial/{serial}")
-  def getBySerial(@PathParam("serial") serial: String): Option[Configuration]
+  def getBySerial(@QueryParam("serial") serial: String): Option[Configuration]
 }
 
 object ConfigurationClient {

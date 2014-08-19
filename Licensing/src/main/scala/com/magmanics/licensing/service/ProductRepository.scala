@@ -32,7 +32,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.access.prepost.PreAuthorize
 
 /**
- * Repository for [[com.magmanics.licensing.service.model.Product Products]]. In addition to basic data
+ * Repository for [[com.magmanics.licensing.model.Product Products]]. In addition to basic data
  * access, implementations will add method level authentication and auditing.
  *
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -52,7 +52,7 @@ trait ProductRepository {
   /**
    * Returns enabled Products
    */
-  def getEnabled(): Seq[Product]
+  def getEnabled: Seq[Product]
 
   /**
    * Returns all Products
