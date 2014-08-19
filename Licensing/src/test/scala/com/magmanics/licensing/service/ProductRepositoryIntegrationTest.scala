@@ -31,7 +31,7 @@ class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite wit
       val product = productRepository.create(Product(name = "Ubuntu 10.10", description = "Maverick Meercat"))
 
       Then("it will appear in the standard listing of products")
-      val retrievedProduct = productRepository.getEnabled().find(_.name == product.name).get
+      val retrievedProduct = productRepository.getEnabled.find(_.name == product.name).get
       assert(retrievedProduct.description == product.description)
     }
 
@@ -78,7 +78,7 @@ class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite wit
       productRepository.update(product)
 
       Then("it will not appear in the standard listing")
-      assert(productRepository.getEnabled().find(_.name == product.name).isEmpty)
+      assert(productRepository.getEnabled.find(_.name == product.name).isEmpty)
       assert(productRepository.get().exists(_.name == product.name))
     }
   }
@@ -86,7 +86,7 @@ class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite wit
   scenario("a product can be updated") {
     Given("an existing product")
     val product = productRepository.create(Product(name = "Ubuntu 10.04", description = "Lucid Lynx"))
-    assert(productRepository.getEnabled().exists(_.name == product.name))
+    assert(productRepository.getEnabled.exists(_.name == product.name))
 
     When("the products name and description is changed and saved")
     product.name = "Ubuntu 10.10" //todo document not using copy as vaadin wont (doc design decisions)
@@ -94,7 +94,7 @@ class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite wit
     productRepository.update(product)
 
     Then("the product should have the same name and description when is it next retrieved")
-    val retrievedProduct = productRepository.getEnabled().find(_.name == product.name).get
+    val retrievedProduct = productRepository.getEnabled.find(_.name == product.name).get
     assert(retrievedProduct.description == product.description)
   }
 }
