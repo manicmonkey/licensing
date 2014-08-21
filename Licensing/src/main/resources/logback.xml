@@ -13,12 +13,9 @@
 
     <logger name="org.springframework" level="INFO" />
 
-    <!-- log4jdbc logging -->
-    <logger name="jdbc.sqlonly" level="INFO"/>
-    <logger name="jdbc.sqltiming" level="ERROR"/>
-    <logger name="jdbc.audit" level="ERROR"/>
-    <logger name="jdbc.resultset" level="ERROR"/>
-    <logger name="jdbc.resultsettable" level="DEBUG"/>
-    <logger name="jdbc.connection" level="ERROR"/>
+    <!-- log4jdbc.log4j2 logging -->
+    <logger name="log4jdbc.log4j2" level="DEBUG">
+        <MarkerFilter marker="LOG4JDBC_JDBC" onMatch="DENY" onMismatch="NEUTRAL"/>
+    </logger>
 
 </configuration>
