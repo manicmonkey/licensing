@@ -36,7 +36,7 @@ import javax.persistence._
 
 //todo http://blog.knoldus.com/2014/01/20/scala-slick-2-0-for-multi-database/
 @Entity
-@Table(name = "Customers")
+@Table(name = "customers")
 @NamedQueries(Array(
   new NamedQuery(name = "Customer.GetByName", query = "SELECT c FROM CustomerEntity c WHERE c.name = :name"),
   new NamedQuery(name = "Customer.GetAll", query = "SELECT c FROM CustomerEntity c"),

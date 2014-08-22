@@ -36,7 +36,7 @@ import javax.persistence._
  * To change this template use File | Settings | File Templates.
  */
 @Entity
-@Table(name = "Configurations")
+@Table(name = "configurations")
 @NamedQueries(Array(
   new NamedQuery(name = "Configuration.GetByCustomer", query = "SELECT c FROM ConfigurationEntity c WHERE c.customer.name = :customer"),
   new NamedQuery(name = "Configuration.GetBySerial", query = "SELECT c FROM ConfigurationEntity c WHERE c.serial = :serial")
