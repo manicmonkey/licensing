@@ -83,8 +83,9 @@ class MockData {
     val licenceConfiguration2 = buildConfiguration(true, 1, product2, customer2, "matth")
     val licenceConfiguration3 = buildConfiguration(true, 2, product2, customer2, "lees", Map("Users" -> "5"))
 
-    buildActivation("jbaxter", "100608", licenceConfiguration, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
-    buildActivation("jbaxter", "110715", licenceConfiguration, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
+    buildActivation("jbaxter", "100608", licenceConfiguration, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
+    buildActivation("jbaxter", "110715", licenceConfiguration, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
+    configurationDao.update(licenceConfiguration)
 
     addAudits()
   }
@@ -122,7 +123,6 @@ class MockData {
 
   private def buildActivation(machineIdentifier: String, productVersion: String, licenceConfiguration: Configuration, info: Map[String, String]) = {
     licenceConfiguration.addActivation(machineIdentifier = machineIdentifier, productVersion = productVersion, extraInfo = info)
-    configurationDao.update(licenceConfiguration)
   }
 
   private def addAudits() {
