@@ -32,4 +32,4 @@ import com.magmanics.licensing.datalayer.dao.exception.DataLayerException
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 26-Jul-2010
  */
-class DuplicateNameException(msg: String) extends DataLayerException
+class DuplicateNameException(msg: String) extends DataLayerException(msg)
