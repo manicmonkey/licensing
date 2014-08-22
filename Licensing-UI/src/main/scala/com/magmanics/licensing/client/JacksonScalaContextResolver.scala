@@ -44,4 +44,5 @@ class JacksonScalaContextResolver extends JacksonJaxbJsonProvider(ScalaObjectMap
 
 object ScalaObjectMapper extends ObjectMapper {
   registerModule(DefaultScalaModule)
+  //enableDefaultTyping() might tidy up model - remove jsontypeinfo
 }
