@@ -126,7 +126,9 @@ class ConfigurationDaoJPA(activationDao: ActivationDao) extends ConfigurationDao
   }
 
   def get(id: Long): Configuration = {
-    getEntity(id).getOrElse(throw new NoSuchEntityException("Configuration not found with id: " + id))
+    val c = getEntity(id).getOrElse(throw new NoSuchEntityException("Configuration not found with id: " + id))
+    em.refresh(c) //refresh load associations (ie because activations could have been saved directly using the activation dao)
+    c
   }
 
   def getBySerial(serial: String): Option[Configuration] = {
