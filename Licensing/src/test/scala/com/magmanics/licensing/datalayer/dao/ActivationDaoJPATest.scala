@@ -63,7 +63,7 @@ class ActivationDaoJPATest extends AbstractTransactionalTestNGSpringContextTests
     product = productDao.create(Product(name = "PDM", description = "PDM Archive", enabled = true))
     configuration = configurationDao.create(ConfigurationModel(user = "jbaxter",
       productId = product.id.get, customerId = customer.id.get,
-      serial = Some("12345-12345-12345-12345"), enabled = true, maxActivations = 1))
+      serial = Some("12345-12345-12345-12345"), enabled = true, maxActivations = 2))
   }
 
   @AfterClass
@@ -75,9 +75,11 @@ class ActivationDaoJPATest extends AbstractTransactionalTestNGSpringContextTests
 
   @Test
   def saveActivation {
-    val activation = new Activation(machineIdentifier = "myHardwareId", productVersion = "product version",
-      configurationId = configuration.id.get, activationType = ActivationType.NEW)
-    activationDao.create(activation)
+    assert(configurationDao.get(configuration.id.get).activations.isEmpty)
+    activationDao.create(new Activation(machineIdentifier = "myHardwareId", productVersion = "product version", configurationId = configuration.id.get, activationType = ActivationType.NEW))
+    activationDao.create(new Activation(machineIdentifier = "myHardwareId", productVersion = "product version", configurationId = configuration.id.get, activationType = ActivationType.NEW))
+    val configuration1 = configurationDao.get(configuration.id.get)
+    assertEquals(configuration1.activations.size, 2)
   }
 
   @Test
