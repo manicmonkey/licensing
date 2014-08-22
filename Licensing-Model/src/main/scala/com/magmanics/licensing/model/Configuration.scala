@@ -56,7 +56,7 @@ case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id:
                          var activations: Seq[Activation] = List()) {
 
   if(maxActivations < 1) {
-    throw new IllegalStateException("maxActivations cannot be less than 1 (recieved " + maxActivations + ")")
+    throw new IllegalStateException("maxActivations cannot be less than 1 (received " + maxActivations + ")")
   }
 
   if (activations.count(_.activationType == ActivationType.NEW) > maxActivations) {
