@@ -29,5 +29,4 @@
     <logger name="jdbc.sqltiming" level="DEBUG" />
     <logger name="jdbc.resultsettable" level="DEBUG" />
 
-
 </configuration>

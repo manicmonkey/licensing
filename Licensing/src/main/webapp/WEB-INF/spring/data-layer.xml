@@ -40,10 +40,8 @@
     <!-- ensure that the above transactional advice runs for any execution
       of an operation defined by the FooService interface -->
     <aop:config>
-        <aop:pointcut id="daoPackage" expression="execution(* com.magmanics.licensing.datalayer.dao.*.*(..))"/>
-        <aop:pointcut id="daoPackage2" expression="execution(* com.magmanics.auditing.dao.*.*(..))"/>
+        <aop:pointcut id="daoPackage" expression="execution(* com.magmanics..dao.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="daoPackage"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="daoPackage2"/>
     </aop:config>
 
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
