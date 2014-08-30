@@ -46,12 +46,6 @@ trait ConfigurationClient {
   def create(configuration: Configuration): Configuration
 
   /**
-   * Updates a configuration
-   */
-  @PUT
-  def update(configuration: Configuration)
-
-  /**
    * Lookup a Configuration by its id
    * todo wrap 404 in an option
    */
@@ -69,6 +63,12 @@ trait ConfigurationClient {
    */
   @GET
   def getBySerial(@QueryParam("serial") serial: String): Option[Configuration]
+
+  /**
+   * Updates a configuration
+   */
+  @PUT
+  def update(configuration: Configuration)
 }
 
 object ConfigurationClient {

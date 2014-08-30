@@ -31,4 +31,6 @@ import java.util.Date
  *
  * @author jbaxter - 27/06/11
  */
-case class AuditSearchDto(fromDate: Date, toDate: Date, users: Seq[String], auditCodes: Seq[String], text: String)
+case class AuditSearchDto(fromDate: Date, toDate: Date, users: Seq[String], auditCodes: Seq[String], text: String) {
+  def this() = this(null, null, null, null, null)
+}

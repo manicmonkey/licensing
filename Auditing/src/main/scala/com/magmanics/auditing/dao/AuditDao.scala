@@ -75,7 +75,7 @@ class AuditDaoJPA extends AuditDao {
 
   val log = LoggerFactory.getLogger(classOf[AuditDaoJPA])
 
-  @PersistenceContext(unitName = "auditingPersistenceUnit")
+  @PersistenceContext
   var em: EntityManager = _
 
   override def create(audit: Audit) {
@@ -93,16 +93,17 @@ class AuditDaoJPA extends AuditDao {
     }
 
     em.persist(a)
+    em.flush()
   }
 
-  override def getAuditCodes(): Seq[AuditCode] = {
+  override def getAuditCodes: Seq[AuditCode] = {
     log.debug("Getting distinct AuditCodes")
     val query = em.createNamedQuery[String]("Audit.GetAuditCodes", classOf[String])
     val auditCodes = query.getResultList.asScala
     auditCodes.map(AuditCode)
   }
 
-  override def getUsernames() = {
+  override def getUsernames = {
     log.debug("Getting known usernames")
     val query = em.createNamedQuery[String]("Audit.GetDistinctUsernames", classOf[String])
     query.getResultList.asScala

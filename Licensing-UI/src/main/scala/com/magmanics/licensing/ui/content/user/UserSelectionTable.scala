@@ -24,15 +24,13 @@
 
 package com.magmanics.licensing.ui.content.user
 
-import com.magmanics.auditing.service.AuditService
+import com.magmanics.licensing.client.AuditClient
 import com.magmanics.vaadin.ValueChangeListener
-import com.magmanics.vaadin.spring.VaadinComponent
 import com.vaadin.data.Property
 import com.vaadin.data.Property.ValueChangeEvent
 import com.vaadin.server.Resource
 import com.vaadin.ui.Table.Align
 import com.vaadin.ui.{CheckBox, Table}
-import org.springframework.beans.factory.annotation.Autowired
 
 import scala.collection.JavaConversions._
 
@@ -74,8 +72,8 @@ trait TableWithCheckboxes extends Table {
 /**
  * @author jbaxter - 18/06/11
  */
-@VaadinComponent
-class UserSelectionTable @Autowired() (auditService: AuditService) extends TableWithCheckboxes {
+//@VaadinComponent
+class UserSelectionTable extends TableWithCheckboxes {
 
   setSelectable(true)
   setMultiSelect(true)
@@ -84,7 +82,7 @@ class UserSelectionTable @Autowired() (auditService: AuditService) extends Table
 
   override def containerProperties = List(("username", classOf[String], "", "Username", null, null))
 
-  override def itemRows = auditService.getUsernames().map(u => Array(u) -> u)
+  override def itemRows = AuditClient.client.getUsernames.map(u => Array(u) -> u)
 
   //select all
   setValue(getItemIds())

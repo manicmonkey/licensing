@@ -41,6 +41,8 @@ class LicensingApplication extends UI with CrumbWalkableComponent {
   var breadCrumbFragmentManager: BreadCrumbFragmentManager = _
 //  val breadCrumbManager = new BreadCrumbListener
 
+  var auditLogContent: AuditLogContent = _
+
   val crumbTrail = new BreadCrumbPanel
   val container = new MainContentContainer
 

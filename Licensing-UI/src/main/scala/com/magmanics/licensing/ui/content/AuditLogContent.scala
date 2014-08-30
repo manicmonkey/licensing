@@ -26,11 +26,11 @@ package com.magmanics.licensing.ui.content
 
 import java.util.Date
 
-import com.magmanics.auditing.service.{AuditSearchDto, AuditService}
+import com.magmanics.auditing.service.AuditSearchDto
+import com.magmanics.licensing.client.AuditClient
 import com.magmanics.licensing.ui.content.auditing.{AuditCodeSelectionTable, AuditTable}
 import com.magmanics.licensing.ui.content.user.UserSelectionTable
 import com.magmanics.vaadin.component.{HtmlLabel, UndefinedWidth}
-import com.magmanics.vaadin.spring.VaadinComponent
 import com.vaadin.data.util.ObjectProperty
 import com.vaadin.shared.ui.datefield.Resolution
 import com.vaadin.ui.Button.{ClickEvent, ClickListener}
@@ -42,8 +42,8 @@ import org.springframework.beans.factory.annotation.Autowired
 /**
  * @author jbaxter - 17/06/11
  */
-@VaadinComponent
-class AuditLogContent @Autowired() (auditTable: AuditTable, auditService: AuditService, userSelectionTable: UserSelectionTable, auditCodeSelectionTable: AuditCodeSelectionTable) extends MainContent {
+//@VaadinComponent
+class AuditLogContent @Autowired() (auditTable: AuditTable, userSelectionTable: UserSelectionTable, auditCodeSelectionTable: AuditCodeSelectionTable) extends MainContent {
 
   val log = LoggerFactory.getLogger(classOf[AuditLogContent])
 
@@ -98,7 +98,7 @@ class AuditLogContent @Autowired() (auditTable: AuditTable, auditService: AuditS
       userSelectionTable.getUsers,
       auditCodeSelectionTable.getAuditCodes,
       textSearchField.getValue)
-    val audits = auditService.getAuditMessages(searchDto)
+    val audits = AuditClient.client.getAuditMessages(searchDto)
     auditTable.setAudits(audits)
   }
 

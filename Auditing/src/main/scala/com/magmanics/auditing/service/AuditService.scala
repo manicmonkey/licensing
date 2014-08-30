@@ -44,18 +44,17 @@ trait AuditService {
   /**
    * @return a list of the distinct usernames for which there are audit entries
    */
-  def getUsernames(): Seq[String]
+  def getUsernames: Seq[String]
 
   /**
    * @return a sequence of the distinct audit codes for which there are audit entries
    */
-  def getAuditCodes(): Seq[AuditCode]
+  def getAuditCodes: Seq[AuditCode]
 
   /**
    * @return a sequence of [[com.magmanics.auditing.model.Audit Audits]] which conform to the given search criteria
    */
   def getAuditMessages(auditSearch: AuditSearchDto): Seq[Audit]
-
 }
 
 class AuditServiceImpl extends AuditService {
@@ -70,12 +69,12 @@ class AuditServiceImpl extends AuditService {
     auditDao.create(audit)
   }
 
-  def getAuditCodes() = { //todo language translation should happen in service layer? so we can reorder...
+  def getAuditCodes = { //todo language translation should happen in service layer? so we can reorder...
     log.info("Getting distinct AuditCodes")
     auditDao.getAuditCodes
   }
 
-  def getUsernames() = {
+  def getUsernames = {
     log.info("Getting distinct usernames")
     auditDao.getUsernames
   }

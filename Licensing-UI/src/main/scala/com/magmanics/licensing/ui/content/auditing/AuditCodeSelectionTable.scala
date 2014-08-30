@@ -47,7 +47,7 @@ class AuditCodeSelectionTable @Autowired() (auditService: AuditService, messageS
 
   override def containerProperties = List(("auditcode", classOf[String], "", "Audit code", null, null))
 
-  override def itemRows = auditService.getAuditCodes().map(u => (Array(messageSource.getMessage(u.value)), u.value))
+  override def itemRows = auditService.getAuditCodes.map(u => (Array(messageSource.getMessage(u.value)), u.value))
 
   //select all
   setValue(getItemIds())

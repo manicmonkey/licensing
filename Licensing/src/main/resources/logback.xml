@@ -22,9 +22,12 @@
 
     <logger name="org.springframework" level="INFO" />
 
-    <!-- log4jdbc.log4j2 logging -->
-    <logger name="log4jdbc.log4j2" level="DEBUG">
-        <MarkerFilter marker="LOG4JDBC_JDBC" onMatch="DENY" onMismatch="NEUTRAL"/>
-    </logger>
+    <logger name="org.hibernate" level="INFO" />
+
+    <logger name="jdbc" level="ERROR" />
+    <logger name="jdbc.sqlonly" level="DEBUG" />
+    <logger name="jdbc.sqltiming" level="DEBUG" />
+    <logger name="jdbc.resultsettable" level="DEBUG" />
+
 
 </configuration>
