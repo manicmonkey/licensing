@@ -29,10 +29,11 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests
 import org.springframework.test.context.transaction.TransactionConfiguration
 import org.springframework.transaction.annotation.Transactional
+import org.testng.Assert.assertEquals
 import org.testng.annotations.Test
 
 /**
- * Created by James on 11/07/2014.
+ * @author James Baxter - 11/07/2014.
  */
 @ContextConfiguration(Array("classpath:audit.xml", "classpath:data-layer.xml", "classpath:datasource-test.xml"))
 @Transactional
@@ -44,6 +45,8 @@ class AuditDaoJPATest extends AbstractTestNGSpringContextTests {
 
   @Test
   def auditsLargerThan2000CharsTruncated() {
+    assertEquals(auditDao.getAuditCodes.size, 0)
     auditDao.create(Audit("username", AuditCode("audit.code"), Range(1, 3000).foldLeft("")((left, int) => left + int)))
+    assertEquals(auditDao.getAuditCodes.size, 1)
   }
 }

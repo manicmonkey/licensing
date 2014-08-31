@@ -28,10 +28,8 @@
         </tx:attributes>
     </tx:advice>
 
-    <!-- ensure that the above transactional advice runs for any execution
-      of an operation defined by the FooService interface -->
     <aop:config>
-        <aop:pointcut id="daoPackage" expression="execution(* com.magmanics.auditing.*.*(..))"/>
+        <aop:pointcut id="daoPackage" expression="execution(* com.magmanics.auditing.dao.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice" pointcut-ref="daoPackage"/>
     </aop:config>
 
