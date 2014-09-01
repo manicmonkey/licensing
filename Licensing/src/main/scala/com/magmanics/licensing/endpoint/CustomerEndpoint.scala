@@ -42,7 +42,7 @@ class CustomerEndpoint {
    * Create a Customer, returning the persistent Customer (id populated)
    */
   @RequestMapping(method = Array(RequestMethod.POST))
-  def create(customer: Customer): Customer = customerRepository.create(customer)
+  def create(@RequestBody customer: Customer): Customer = customerRepository.create(customer)
 
   /**
    * Get enabled Customers
@@ -66,5 +66,5 @@ class CustomerEndpoint {
    * Update the given Customer
    */
   @RequestMapping(method = Array(RequestMethod.PUT))
-  def update(customer: Customer) = customerRepository.update(customer)
+  def update(@RequestBody customer: Customer) = customerRepository.update(customer)
 }

@@ -31,6 +31,7 @@ import com.magmanics.licensing.client.AuditClient
 import com.magmanics.licensing.ui.content.auditing.{AuditCodeSelectionTable, AuditTable}
 import com.magmanics.licensing.ui.content.user.UserSelectionTable
 import com.magmanics.vaadin.component.{HtmlLabel, UndefinedWidth}
+import com.magmanics.vaadin.spring.VaadinComponent
 import com.vaadin.data.util.ObjectProperty
 import com.vaadin.shared.ui.datefield.Resolution
 import com.vaadin.ui.Button.{ClickEvent, ClickListener}
@@ -42,7 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired
 /**
  * @author jbaxter - 17/06/11
  */
-//@VaadinComponent
+@VaadinComponent
 class AuditLogContent @Autowired() (auditTable: AuditTable, userSelectionTable: UserSelectionTable, auditCodeSelectionTable: AuditCodeSelectionTable) extends MainContent {
 
   val log = LoggerFactory.getLogger(classOf[AuditLogContent])

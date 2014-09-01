@@ -36,7 +36,7 @@ trait AuditClient {
   /**
    * @return a sequence of [[com.magmanics.auditing.model.Audit Audits]] which conform to the given search criteria
    */
-  @GET
+  @POST
   @Path("/messages")
   def getAuditMessages(auditSearch: AuditSearchDto): Seq[Audit]
 }

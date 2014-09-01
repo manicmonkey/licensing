@@ -27,7 +27,8 @@ package com.magmanics.licensing.ui
 import com.magmanics.licensing.ui.breadcrumb._
 import com.magmanics.licensing.ui.content._
 import com.magmanics.vaadin.component.HtmlLabel
-import com.vaadin.server.VaadinRequest
+import com.magmanics.vaadin.spring.SpringContextHelper
+import com.vaadin.server.{VaadinRequest, VaadinServlet}
 import com.vaadin.shared.ui.MarginInfo
 import com.vaadin.ui._
 
@@ -36,6 +37,7 @@ import com.vaadin.ui._
  */
 //@VaadinComponent
 //class LicensingApplication @Autowired() (auditLogContent: AuditLogContent) extends UI with CrumbWalkableComponent {
+//@Theme("valo")
 class LicensingApplication extends UI with CrumbWalkableComponent {
 
   var breadCrumbFragmentManager: BreadCrumbFragmentManager = _
@@ -47,6 +49,9 @@ class LicensingApplication extends UI with CrumbWalkableComponent {
   val container = new MainContentContainer
 
   override def init(request: VaadinRequest) {
+
+    auditLogContent = new SpringContextHelper(VaadinServlet.getCurrent.getServletContext).getBean(classOf[AuditLogContent])
+
 //    val window = new Window("Licensing application")
     val layout = new VerticalLayout {
       setMargin(true)

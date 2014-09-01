@@ -3,7 +3,7 @@ package com.magmanics.auditing.endpoint
 import com.magmanics.auditing.model.{AuditCode, Audit}
 import com.magmanics.auditing.service.{AuditService, AuditSearchDto}
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.{RequestMethod, RequestMapping, RestController}
+import org.springframework.web.bind.annotation.{RequestBody, RequestMethod, RequestMapping, RestController}
 
 /**
  * @author James Baxter - 27/08/2014.
@@ -19,7 +19,7 @@ class AuditEndpoint {
    * Persist the given Audit
    */
   @RequestMapping(method = Array(RequestMethod.POST))
-  def create(audit: Audit) = auditService.create(audit)
+  def create(@RequestBody audit: Audit) = auditService.create(audit)
 
   /**
    * @return a list of the distinct usernames for which there are audit entries
@@ -36,6 +36,6 @@ class AuditEndpoint {
   /**
    * @return a sequence of [[com.magmanics.auditing.model.Audit Audits]] which conform to the given search criteria
    */
-  @RequestMapping(method = Array(RequestMethod.GET), value = Array("/messages"))
-  def getAuditMessages(auditSearch: AuditSearchDto): Seq[Audit] = auditService.getAuditMessages(auditSearch)
+  @RequestMapping(method = Array(RequestMethod.POST), value = Array("/messages"))
+  def getAuditMessages(@RequestBody auditSearch: AuditSearchDto): Seq[Audit] = auditService.getAuditMessages(auditSearch)
 }

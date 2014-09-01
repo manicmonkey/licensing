@@ -46,7 +46,7 @@ class ConfigurationEndpoint {
    * @return the persistent configuration (ie includes an id).
    */
   @RequestMapping(method = Array(RequestMethod.POST))
-  def create(configuration: Configuration): Configuration = configurationRepository.create(configuration)
+  def create(@RequestBody configuration: Configuration): Configuration = configurationRepository.create(configuration)
 
   /**
    * Lookup a Configuration by its id
@@ -71,5 +71,5 @@ class ConfigurationEndpoint {
    * Updates a configuration
    */
   @RequestMapping(method = Array(RequestMethod.PUT))
-  def update(configuration: Configuration) = configurationRepository.update(configuration)
+  def update(@RequestBody configuration: Configuration) = configurationRepository.update(configuration)
 }

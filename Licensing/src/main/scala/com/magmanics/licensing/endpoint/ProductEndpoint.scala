@@ -42,13 +42,7 @@ class ProductEndpoint {
    * Create a Product, returning the persistent Product (id populated)
    */
   @RequestMapping(method = Array(RequestMethod.POST))
-  def create(product: Product): Product = productRepository.create(product)
-
-  /**
-   * Update the given Product
-   */
-  @RequestMapping(method = Array(RequestMethod.PUT))
-  def update(product: Product) = productRepository.update(product)
+  def create(@RequestBody product: Product): Product = productRepository.create(product)
 
   /**
    * Returns enabled Products
@@ -67,4 +61,10 @@ class ProductEndpoint {
    */
   @RequestMapping(method = Array(RequestMethod.GET), params = Array("id"))
   def get(@RequestParam id: Long): Option[Product] = productRepository.get(id)
+
+  /**
+   * Update the given Product
+   */
+  @RequestMapping(method = Array(RequestMethod.PUT))
+  def update(@RequestBody product: Product) = productRepository.update(product)
 }

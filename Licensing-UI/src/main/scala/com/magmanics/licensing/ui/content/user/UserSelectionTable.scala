@@ -26,6 +26,7 @@ package com.magmanics.licensing.ui.content.user
 
 import com.magmanics.licensing.client.AuditClient
 import com.magmanics.vaadin.ValueChangeListener
+import com.magmanics.vaadin.spring.VaadinComponent
 import com.vaadin.data.Property
 import com.vaadin.data.Property.ValueChangeEvent
 import com.vaadin.server.Resource
@@ -72,7 +73,7 @@ trait TableWithCheckboxes extends Table {
 /**
  * @author jbaxter - 18/06/11
  */
-//@VaadinComponent
+@VaadinComponent
 class UserSelectionTable extends TableWithCheckboxes {
 
   setSelectable(true)

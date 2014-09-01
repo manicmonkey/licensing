@@ -24,7 +24,7 @@
 
 package com.magmanics.licensing.ui.content.auditing
 
-import com.magmanics.auditing.service.AuditService
+import com.magmanics.licensing.client.AuditClient
 import com.magmanics.licensing.ui.content.user.TableWithCheckboxes
 import com.magmanics.vaadin.spring.{VaadinApplicationObjectSupport, VaadinComponent}
 import org.slf4j.LoggerFactory
@@ -36,7 +36,7 @@ import scala.collection.JavaConversions._
  * @author jbaxter - 19/06/11
  */
 @VaadinComponent
-class AuditCodeSelectionTable @Autowired() (auditService: AuditService, messageSource: VaadinApplicationObjectSupport) extends TableWithCheckboxes {
+class AuditCodeSelectionTable @Autowired() (messageSource: VaadinApplicationObjectSupport) extends TableWithCheckboxes {
 
   val log = LoggerFactory.getLogger(classOf[AuditCodeSelectionTable])
 
@@ -47,7 +47,7 @@ class AuditCodeSelectionTable @Autowired() (auditService: AuditService, messageS
 
   override def containerProperties = List(("auditcode", classOf[String], "", "Audit code", null, null))
 
-  override def itemRows = auditService.getAuditCodes.map(u => (Array(messageSource.getMessage(u.value)), u.value))
+  override def itemRows = AuditClient.client.getAuditCodes.map(u => (Array(messageSource.getMessage(u.value)), u.value))
 
   //select all
   setValue(getItemIds())
