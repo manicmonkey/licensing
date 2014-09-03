@@ -88,14 +88,14 @@ class ProductRepositoryImpl(productDao: ProductDao) extends ProductRepository {
 
   @Auditable("audit.products.getEnabled")
   def getEnabled(): Seq[Product] = {
-    val products = productDao.get.filter(_.enabled)
+    val products = productDao.get().filter(_.enabled)
     log.debug("Got enabled products: {}", products)
     products
   }
 
   @Auditable("audit.products.get")
-  def get(): Seq[Product] = productDao.get
+  def get(): Seq[Product] = productDao.get()
 
-  @Auditable("audit.product.getById")
+  @Auditable("audit.product.get")
   def get(id: Long): Option[Product] = productDao.get(id)
 }
