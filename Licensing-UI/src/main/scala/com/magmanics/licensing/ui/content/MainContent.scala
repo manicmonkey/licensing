@@ -24,16 +24,13 @@
 
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.ui.breadcrumb.CrumbWalkableComponent
 import com.vaadin.ui._
 
 /**
  * @author jbaxter - 06/04/11
  */
-class MainContent extends VerticalLayout with CrumbWalkableComponent {
+class MainContent extends VerticalLayout {
   setWidth("100%")
   setHeight(null)
   setMargin(true)
-
-  def walkTo(path: String) = null
 }

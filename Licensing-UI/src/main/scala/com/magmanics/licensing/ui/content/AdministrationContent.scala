@@ -24,16 +24,11 @@
 
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.vaadin.component.LinkButton
+import com.vaadin.ui.Button
 
 /**
  * @author jbaxter - 13/04/11
  */
 class AdministrationContent extends MainContent {
-  addComponent(new LinkButton("Magic", "magic"))
-
-  override def walkTo(path: String) = {
-    Console.println("walking to: " + path)
-    null
-  }
+  addComponent(new Button("Magic"))
 }

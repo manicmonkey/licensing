@@ -24,8 +24,7 @@
 
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.ui.CrumbTrailMessageResource
-import com.magmanics.vaadin.component.{HtmlLabel, LinkButton, UndefinedWidth}
+import com.magmanics.vaadin.component.{HtmlLabel, UndefinedWidth}
 import com.vaadin.ui._
 
 /**
@@ -33,11 +32,9 @@ import com.vaadin.ui._
  */
 class HomeContent extends MainContent {
 
-  val messageResource = new CrumbTrailMessageResource
-
   addComponent(new HorizontalLayout {
     addComponent(new HtmlLabel("Please select an option...") with UndefinedWidth)
-    List("licence-activation", "licence-management", "administration").foreach(l => addComponent(new LinkButton(messageResource.getMessage(l), l)))
+    List("licence-activation", "licence-management", "administration").foreach(l => addComponent(new Button(l)))
     setSpacing(true)
     setMargin(true)
   })

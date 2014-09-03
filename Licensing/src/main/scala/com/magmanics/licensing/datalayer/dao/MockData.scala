@@ -126,7 +126,7 @@ class MockData {
   }
 
   private def addAudits() {
-    (0 until 1000).flatMap(i => {
+    (0 until 300).flatMap(i => {
       val cal = Calendar.getInstance()
       cal.add(Calendar.HOUR, i * 2)
       List(

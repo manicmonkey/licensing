@@ -24,7 +24,6 @@
 
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.ui.breadcrumb.CrumbWalkableComponent
 import com.vaadin.ui._
 
 /**
@@ -32,11 +31,10 @@ import com.vaadin.ui._
  *
  * @author jbaxter - 06/04/11
  */
-class MainContentContainer extends Panel with CrumbWalkableComponent {
+class MainContentContainer extends Panel {
 
   setHeight(null) //shrink height to fit content
   setWidth("100%") //stretch to fill screen
-//  setSizeFull()
   setId("MainContentContainerId")
 
   var currentContent: MainContent = _

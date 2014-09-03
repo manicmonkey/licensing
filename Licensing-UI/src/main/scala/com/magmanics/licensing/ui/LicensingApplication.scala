@@ -24,104 +24,70 @@
 
 package com.magmanics.licensing.ui
 
-import com.magmanics.licensing.ui.breadcrumb._
 import com.magmanics.licensing.ui.content._
+import com.magmanics.vaadin.ClickHandler
 import com.magmanics.vaadin.component.HtmlLabel
 import com.magmanics.vaadin.spring.SpringContextHelper
-import com.vaadin.annotations.Title
-import com.vaadin.server.{Page, VaadinRequest, VaadinServlet}
+import com.vaadin.annotations.{Theme, Title}
+import com.vaadin.server.{VaadinRequest, VaadinServlet}
 import com.vaadin.shared.ui.MarginInfo
 import com.vaadin.ui._
 
 /**
  * @author jbaxter - 06/04/11
  */
-//@VaadinComponent
-//class LicensingApplication @Autowired() (auditLogContent: AuditLogContent) extends UI with CrumbWalkableComponent {
-//@Theme("valo")
+@Theme("valo")
 @Title("Licensing application")
-class LicensingApplication extends UI with CrumbWalkableComponent {
+class LicensingApplication extends UI {
 
-  var breadCrumbFragmentManager: BreadCrumbFragmentManager = _
-//  val breadCrumbManager = new BreadCrumbListener
+  lazy val springContextHelper = new SpringContextHelper(VaadinServlet.getCurrent.getServletContext)
 
-  var auditLogContent: AuditLogContent = _
+  lazy val auditLogContent = springContextHelper.getBean(classOf[AuditLogContent])
 
-  val crumbTrail = new BreadCrumbPanel
   val container = new MainContentContainer
 
   override def init(request: VaadinRequest) {
 
-    auditLogContent = new SpringContextHelper(VaadinServlet.getCurrent.getServletContext).getBean(classOf[AuditLogContent])
-
-    val layout = new VerticalLayout {
+    setContent(new VerticalLayout {
       setMargin(true)
       setSpacing(true)
-//      addComponent(breadCrumbManager)
-      addComponent(new Header)
-//      addComponent(crumbTrail)
+      //header
+      addComponent(new Panel {
+        setContent(new HorizontalLayout {
+          setMargin(new MarginInfo(false, false, false, true)) //indent text slightly
+          setWidth("100%") //stretch to fill screen
+          addComponent(new HtmlLabel("<h1>Product Licensing</h1>"))
+        })
+
+        setHeight(null) //shrink height to fit content
+        setWidth("100%") //stretch to fill screen
+      })
+      //menu
+      addComponent(new HorizontalLayout(
+        new Button("Licence activation") {
+          addClickListener(new ClickHandler(_ => container.walkTo("licence-activation")))
+        },
+        new Button("Licence management") {
+          addClickListener(new ClickHandler(_ => container.walkTo("licence-management")))
+        },
+        new Button("Administration") {
+          addClickListener(new ClickHandler(_ => container.walkTo("administration")))
+        }
+      ) {
+        setSpacing(true)
+      })
+      //content
       addComponent(container)
-    }
-//    window.setContent(layout)
-//    window.setSizeFull()
-//    addWindow(window)
-
-    setContent(layout)
-
-//    breadCrumbFragmentManager = new BreadCrumbFragmentManager(new Navigator(getUI, layout))
+    })
 
 //    container.updateContent(initialContent)
 //    container.updateContent(new HomeContent)
 //    container.updateContent(new LicenceManagementContent)
     container.updateContent(auditLogContent)
-    crumbTrail.updateDisplay(List(""))
   }
 
   lazy val initialContent = new MainContent {
     addComponent(new HtmlLabel("<h3>Please login...</h3>"))
     addComponent(new LoginForm)
-  }
-
-  def walkTo(path: String) = {
-    container.walkTo(path)
-  }
-}
-
-class Header extends HorizontalLayout {
-  addComponent(new Panel {
-    setContent(new HorizontalLayout {
-      setMargin(new MarginInfo(false, false, false, true)) //indent text slightly
-      setWidth("100%") //stretch to fill screen
-      addComponent(new HtmlLabel("<h1>Product Licensing</h1>"))
-    })
-  })
-  setHeight(null) //shrink height to fit content
-  setWidth("100%") //stretch to fill screen
-}
-
-class BreadCrumbPanel extends HorizontalLayout {
-
-  private val breadCrumbDesigner = new BreadCrumbDesigner
-
-  private val breadCrumbContainer = new HorizontalLayout {
-    setSpacing(true)
-  }
-
-  addComponent(new Panel {
-    setContent(new HorizontalLayout {
-      setMargin(new MarginInfo(true, false, true, true)) //padding to sides and beneath
-      setWidth("100%") //stretch to fit screen
-    })
-    addComponent(breadCrumbContainer)
-  })
-  setHeight(null) //shrink height to fit content
-  setWidth("100%") //stretch to fill screen
-
-  def updateDisplay(crumbs: List[String]) {
-    breadCrumbContainer.removeAllComponents()
-    breadCrumbContainer.addComponent(new Label("You are here:") {
-      setWidth(null)
-    })
-    breadCrumbDesigner.build(crumbs).foreach(breadCrumbContainer.addComponent)
   }
 }
