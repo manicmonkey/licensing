@@ -24,11 +24,63 @@
 
 package com.magmanics.licensing.ui.content
 
-import com.vaadin.ui.Button
+import com.magmanics.licensing.client.{CustomerClient, UserClient}
+import com.magmanics.licensing.ui.content.customer.CustomerSelectionTable
+import com.magmanics.licensing.ui.content.user.{PermissionsSelectionTable, UserSelectionComboBox}
+import com.vaadin.ui._
 
 /**
  * @author jbaxter - 13/04/11
  */
 class AdministrationContent extends MainContent {
-  addComponent(new Button("Magic"))
+
+  /**
+   * Admin access for...
+   * Customers
+   * Products
+   * Users
+   * Auditing
+   *
+   * todo...
+   * create users screen
+   * security is working
+   * need to expose user information from userendpoint - roles enabled
+   * list of users?
+   * access to customers (doesn't appear in domain model at moment?)
+   */
+
+  //define and wire up basic controls
+  private val userSelectionComboBox = new UserSelectionComboBox(UserClient.client.getUsers)
+  private val permissionSelectionTable = new PermissionsSelectionTable
+  private val customerSelectionTable = new CustomerSelectionTable(CustomerClient.client.get())
+
+  userSelectionComboBox.onUserChanged(u => {
+    permissionSelectionTable.setPermissions(u.permissions)
+    customerSelectionTable.setCustomers(u.customers)
+  })
+
+  //place controls in panels
+  private val userSelectionPanel = new VerticalLayout(
+    new Label("Users"),
+    userSelectionComboBox
+  )
+  private val permissionSelectionPanel = new VerticalLayout(
+    new Label("Permissions"),
+    permissionSelectionTable
+  )
+  private val customerSelectionPanel = new VerticalLayout(
+    new Label("Customer access"),
+    customerSelectionTable,
+    new CheckBox("Automatic access to new customers", false)
+  )
+  customerSelectionPanel.setSpacing(true)
+
+  //place panels in page layout
+  private val layout = new HorizontalLayout(
+    userSelectionPanel,
+    permissionSelectionPanel,
+    customerSelectionPanel
+  )
+  layout.setSpacing(true)
+  addComponent(layout)
 }

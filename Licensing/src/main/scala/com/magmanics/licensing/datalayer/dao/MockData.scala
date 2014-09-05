@@ -50,9 +50,7 @@ class MockData {
   @Autowired
   var auditDao: AuditDao = _
   
-  def getUUID: String = {
-    UUID.randomUUID.toString
-  }
+  def getUUID = UUID.randomUUID.toString
 
   def insert {
     val options = List(buildListProductOption("Printers", List("10", "20", "40", "80", "160", "320"), "20"), buildRadioProductOption("PDF Signing", default = false), buildRadioProductOption("Schedule and Sort", default = true))
@@ -63,28 +61,27 @@ class MockData {
 
     createProduct("V4", "Product Suite", enabled = false)
 
-    val customer = createCustomer("Edwards")
-    val customer2 = createCustomer("WD40")
-    createCustomer("Imperial Tobacco")
-    createCustomer("Wincanton")
-    createCustomer("DHL")
-    createCustomer("Odwalla")
-    createCustomer("Cambridge Assessment")
-    createCustomer("Medibureau")
-    createCustomer("Investec")
-    createCustomer("Special Metals")
-    createCustomer("Jordans")
-    createCustomer("Metro Bank")
-    createCustomer("OU", enabled = false)
-    createCustomer("Hendersons", enabled = false)
-    createCustomer("Gates", enabled = false)
+    val customer = createCustomer("Google")
+    val customer2 = createCustomer("Netflix")
+    createCustomer("Apple")
+    createCustomer("Amazon")
+    createCustomer("Blockchain")
+    createCustomer("Coursera")
+    createCustomer("feedly")
+    createCustomer("Square")
+    createCustomer("Tesla")
+    createCustomer("Atlassian")
+    createCustomer("Jetbrains")
+    createCustomer("LastPass")
+    createCustomer("Remember The Milk", enabled = false)
+    createCustomer("Mercedes", enabled = false)
 
-    val licenceConfiguration = buildConfiguration(true, 2, product, customer, "jbaxter")
+    val licenceConfiguration = buildConfiguration(true, 2, product, customer, "jbaxter") //todo fix users
     val licenceConfiguration2 = buildConfiguration(true, 1, product2, customer2, "matth")
     val licenceConfiguration3 = buildConfiguration(true, 2, product2, customer2, "lees", Map("Users" -> "5"))
 
-    buildActivation("jbaxter", "100608", licenceConfiguration, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
-    buildActivation("jbaxter", "110715", licenceConfiguration, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
+    buildActivation("daffy_duck", "100608", licenceConfiguration, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
+    buildActivation("daffy_duck", "110715", licenceConfiguration, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
     configurationDao.update(licenceConfiguration)
 
     addAudits()
@@ -130,12 +127,12 @@ class MockData {
       val cal = Calendar.getInstance()
       cal.add(Calendar.HOUR, i * 2)
       List(
-        Audit("jbaxter", AuditCode("audit.application.login"), "User 'jbaxter' logged in", cal.getTime),
-        Audit("rduke", AuditCode("audit.configuration.get"), "User 'rduke' created a document with cuk 'fear-and-loathing'"),
-        Audit("paulh", AuditCode("audit.customer.create"), "User 'paulh' modified the search 'Invoice Search'"),
-        Audit("geoffvl", AuditCode("audit.product.activation"), "User 'geoffvl' activated the product 'Value Adjustment'"),
-        Audit("mdamon", AuditCode("audit.products.getEnabled"), "User 'mdamon' retrieved all enabled products"),
-        Audit("hunterst", AuditCode("audit.product.update"), "User 'hunterst' updated the product 'PO Approval'")
+        Audit("daffy_duck", AuditCode("audit.application.login"), "User 'daffy_duck' logged in", cal.getTime),
+        Audit("old_mac_donald", AuditCode("audit.configuration.get"), "User 'old_mac_donald' created a document with cuk 'fear-and-loathing'"),
+        Audit("daffy_duck", AuditCode("audit.customer.create"), "User 'daffy_duck' modified the search 'Invoice Search'"),
+        Audit("daffy_duck", AuditCode("audit.product.activation"), "User 'daffy_duck' activated the product 'Value Adjustment'"),
+        Audit("santa", AuditCode("audit.products.getEnabled"), "User 'santa' retrieved all enabled products"),
+        Audit("old_mac_donald", AuditCode("audit.product.update"), "User 'old_mac_donald' updated the product 'PO Approval'")
       )
     }).foreach(auditDao.create)
   }

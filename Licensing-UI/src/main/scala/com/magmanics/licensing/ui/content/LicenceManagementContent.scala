@@ -95,10 +95,4 @@ class LicenceManagementContent extends MainContent {
       addComponent(activationDetailTable, 1, 6)
     })
   })
-
-  //  activationOverviewTable.setActivations()
-  //  activationDetailTable.setActivation()
-//  override def attach() {
-//    configurationOverviewTable.setConfigurations(configurationRepository.get(Customer(name = "Google")))
-//  }
 }

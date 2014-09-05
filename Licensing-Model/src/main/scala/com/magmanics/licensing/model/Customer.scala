@@ -24,6 +24,8 @@
 
 package com.magmanics.licensing.model
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+
 import scala.beans.BeanInfo
 
 /**
@@ -31,6 +33,6 @@ import scala.beans.BeanInfo
  * @since 02-Aug-2010
  */
 @BeanInfo
-case class Customer(id: Option[Long] = None,
+case class Customer(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id: Option[Long] = None,
                     var name: String,
                     var enabled: Boolean = true)

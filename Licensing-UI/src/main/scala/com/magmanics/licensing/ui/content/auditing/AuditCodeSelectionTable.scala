@@ -25,7 +25,7 @@
 package com.magmanics.licensing.ui.content.auditing
 
 import com.magmanics.licensing.client.AuditClient
-import com.magmanics.licensing.ui.content.user.TableWithCheckboxes
+import com.magmanics.vaadin.component.TableWithCheckboxes
 import com.magmanics.vaadin.spring.{VaadinApplicationObjectSupport, VaadinComponent}
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired

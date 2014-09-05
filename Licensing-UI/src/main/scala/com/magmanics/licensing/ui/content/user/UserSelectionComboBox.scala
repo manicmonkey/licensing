@@ -24,21 +24,31 @@
 
 package com.magmanics.licensing.ui.content.user
 
+import com.magmanics.licensing.model.User
+import com.vaadin.data.Property.{ValueChangeEvent, ValueChangeListener}
+import com.vaadin.data.util.BeanItemContainer
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode
 import com.vaadin.ui.ComboBox
 
 /**
  * @author jbaxter - 22/06/11
  */
-class UserSelectionComboBox extends ComboBox {
+class UserSelectionComboBox(users: Seq[User]) extends ComboBox {
 
   setInputPrompt("Please select a user")
+  val container = new BeanItemContainer[User](classOf[User])
+  setContainerDataSource(container)
+  setItemCaptionMode(ItemCaptionMode.PROPERTY)
+  setItemCaptionPropertyId("name")
+  setNullSelectionAllowed(false)
 
-  def setUsers(users: Seq[String]) {
-    getContainerDataSource.removeAllItems()
-    users.foreach(addItem(_))
-  }
+  users.sortBy(_.name).foreach(container.addBean)
 
-  def getUsers() = {
-    getValue.asInstanceOf[Set[String]]
+  def onUserChanged(handler: User => Unit) {
+    addValueChangeListener(new ValueChangeListener {
+      override def valueChange(event: ValueChangeEvent) {
+        handler(event.getProperty.getValue.asInstanceOf[User])
+      }
+    })
   }
 }
