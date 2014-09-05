@@ -40,15 +40,6 @@ class HomeContent extends MainContent {
   })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+object HomeContent {
+  val name = ""
+}

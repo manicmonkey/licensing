@@ -59,15 +59,6 @@ class ActivateLicenceContent extends MainContent {
   })
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
+object ActivateLicenceContent {
+  val name = "activate"
+}

@@ -24,13 +24,17 @@
 
 package com.magmanics.licensing.ui.content
 
+import com.vaadin.navigator.View
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent
 import com.vaadin.ui._
 
 /**
  * @author jbaxter - 06/04/11
  */
-class MainContent extends VerticalLayout {
+class MainContent extends VerticalLayout with View {
   setWidth("100%")
   setHeight(null)
   setMargin(true)
+
+  override def enter(p1: ViewChangeEvent) {}
 }

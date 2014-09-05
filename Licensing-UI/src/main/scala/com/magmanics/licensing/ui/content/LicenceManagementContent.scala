@@ -96,3 +96,7 @@ class LicenceManagementContent extends MainContent {
     })
   })
 }
+
+object LicenceManagementContent {
+  val name = "management"
+}

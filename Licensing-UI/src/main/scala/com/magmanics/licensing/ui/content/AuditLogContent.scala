@@ -108,3 +108,7 @@ class AuditLogContent @Autowired() (auditTable: AuditTable, auditCodeSelectionTa
   //let's get the audit table populated with the values we have displayed
   updateAudits()
 }
+
+object AuditLogContent {
+  val name = "audit"
+}

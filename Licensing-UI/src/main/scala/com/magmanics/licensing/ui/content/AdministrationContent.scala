@@ -84,3 +84,7 @@ class AdministrationContent extends MainContent {
   layout.setSpacing(true)
   addComponent(layout)
 }
+
+object AdministrationContent {
+  val name = "admin"
+}

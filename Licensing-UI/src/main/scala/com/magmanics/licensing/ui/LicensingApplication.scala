@@ -26,10 +26,11 @@ package com.magmanics.licensing.ui
 
 import com.magmanics.licensing.ui.content._
 import com.magmanics.vaadin.ClickHandler
-import com.magmanics.vaadin.component.HtmlLabel
+import com.magmanics.vaadin.component.{LinkButton, HtmlLabel}
 import com.magmanics.vaadin.spring.SpringContextHelper
 import com.vaadin.annotations.{Theme, Title}
-import com.vaadin.server.{VaadinRequest, VaadinServlet}
+import com.vaadin.navigator.Navigator
+import com.vaadin.server.{ExternalResource, VaadinRequest, VaadinServlet}
 import com.vaadin.shared.ui.MarginInfo
 import com.vaadin.ui._
 
@@ -42,11 +43,23 @@ class LicensingApplication extends UI {
 
   lazy val springContextHelper = new SpringContextHelper(VaadinServlet.getCurrent.getServletContext)
 
-  lazy val auditLogContent = springContextHelper.getBean(classOf[AuditLogContent])
-
   val container = new MainContentContainer
 
+  lazy val homeContent = new HomeContent
+  lazy val auditLogContent = springContextHelper.getBean(classOf[AuditLogContent])
+  lazy val licenceManagement = new LicenceManagementContent
+  lazy val activateLicence = new ActivateLicenceContent
+  lazy val administration = new AdministrationContent
+
   override def init(request: VaadinRequest) {
+
+    val navigator = new Navigator(this, container)
+
+    navigator.addView(HomeContent.name, homeContent)
+    navigator.addView(AuditLogContent.name, auditLogContent)
+    navigator.addView(LicenceManagementContent.name, licenceManagement)
+    navigator.addView(ActivateLicenceContent.name, activateLicence)
+    navigator.addView(AdministrationContent.name, administration)
 
     setContent(new VerticalLayout {
       setMargin(true)
@@ -62,32 +75,17 @@ class LicensingApplication extends UI {
         setHeight(null) //shrink height to fit content
         setWidth("100%") //stretch to fill screen
       })
+
       //menu
-      addComponent(new HorizontalLayout(
-        new Button("Licence activation") {
-          addClickListener(new ClickHandler(_ => container.walkTo("licence-activation")))
-        },
-        new Button("Licence management") {
-          addClickListener(new ClickHandler(_ => container.walkTo("licence-management")))
-        },
-        new Button("Administration") {
-          addClickListener(new ClickHandler(_ => container.walkTo("administration")))
-        }
-      ) {
-        setSpacing(true)
-      })
+      val buttons = new HorizontalLayout(
+        new LinkButton("Licence activation", ActivateLicenceContent.name, navigator),
+        new LinkButton("Licence management", LicenceManagementContent.name, navigator),
+        new LinkButton("Administration", AdministrationContent.name, navigator)
+      )
+      buttons.setSpacing(true)
+      addComponent(buttons)
       //content
       addComponent(container)
     })
-
-//    container.updateContent(initialContent)
-//    container.updateContent(new HomeContent)
-//    container.updateContent(new LicenceManagementContent)
-    container.updateContent(auditLogContent)
-  }
-
-  lazy val initialContent = new MainContent {
-    addComponent(new HtmlLabel("<h3>Please login...</h3>"))
-    addComponent(new LoginForm)
   }
 }
