@@ -29,7 +29,8 @@ import com.magmanics.vaadin.ClickHandler
 import com.magmanics.vaadin.component.{LinkButton, HtmlLabel}
 import com.magmanics.vaadin.spring.SpringContextHelper
 import com.vaadin.annotations.{Theme, Title}
-import com.vaadin.navigator.Navigator
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent
+import com.vaadin.navigator.{ViewChangeListener, Navigator}
 import com.vaadin.server.{ExternalResource, VaadinRequest, VaadinServlet}
 import com.vaadin.shared.ui.MarginInfo
 import com.vaadin.ui._
@@ -50,17 +51,24 @@ class LicensingApplication extends UI {
   lazy val licenceManagement = new LicenceManagementContent
   lazy val activateLicence = new ActivateLicenceContent
   lazy val administration = new AdministrationContent
+  lazy val userContent = new UserContent
 
   override def init(request: VaadinRequest) {
 
+    //setup back/forward button support
     val navigator = new Navigator(this, container)
-
     navigator.addView(HomeContent.name, homeContent)
     navigator.addView(AuditLogContent.name, auditLogContent)
     navigator.addView(LicenceManagementContent.name, licenceManagement)
     navigator.addView(ActivateLicenceContent.name, activateLicence)
     navigator.addView(AdministrationContent.name, administration)
+    navigator.addView(UserContent.name, userContent)
 
+    //main ui elements
+    val header = new HtmlLabel("<h1>Product Licensing</h1>")
+    val menu = new Menu(navigator)
+
+    //layout
     setContent(new VerticalLayout {
       setMargin(true)
       setSpacing(true)
@@ -69,23 +77,51 @@ class LicensingApplication extends UI {
         setContent(new HorizontalLayout {
           setMargin(new MarginInfo(false, false, false, true)) //indent text slightly
           setWidth("100%") //stretch to fill screen
-          addComponent(new HtmlLabel("<h1>Product Licensing</h1>"))
+          addComponent(header)
         })
-
         setHeight(null) //shrink height to fit content
         setWidth("100%") //stretch to fill screen
       })
-
-      //menu
-      val buttons = new HorizontalLayout(
-        new LinkButton("Licence activation", ActivateLicenceContent.name, navigator),
-        new LinkButton("Licence management", LicenceManagementContent.name, navigator),
-        new LinkButton("Administration", AdministrationContent.name, navigator)
-      )
-      buttons.setSpacing(true)
-      addComponent(buttons)
-      //content
+      menu.setSpacing(true)
+      addComponent(menu)
       addComponent(container)
     })
+  }
+
+  class Menu(navigator: Navigator) extends HorizontalLayout {
+    val home = new LinkButton("Home", HomeContent.name, navigator)
+    val activationLink = new LinkButton("Licence activation", ActivateLicenceContent.name, navigator)
+    val managementLink = new LinkButton("Licence management", LicenceManagementContent.name, navigator)
+
+    val adminLink = new LinkButton("Administration", AdministrationContent.name, navigator)
+    val auditLink = new LinkButton("Auditing", AuditLogContent.name, navigator)
+    val userLink = new LinkButton("Users", UserContent.name, navigator)
+
+    navigator.addViewChangeListener(new ViewChangeListener {
+      override def beforeViewChange(event: ViewChangeEvent): Boolean = true
+      override def afterViewChange(event: ViewChangeEvent) {
+        removeAllComponents()
+        addComponent(home)
+        event.getViewName match {
+          case HomeContent.name =>
+            addComponent(activationLink)
+            addComponent(managementLink)
+            addComponent(adminLink)
+          case ActivateLicenceContent.name => addComponent(activationLink)
+          case LicenceManagementContent.name => addComponent(managementLink)
+          case AdministrationContent.name =>
+            addComponent(adminLink)
+            addComponent(auditLink)
+            addComponent(userLink)
+          case AuditLogContent.name =>
+            addComponent(adminLink)
+            addComponent(auditLink)
+          case UserContent.name =>
+            addComponent(adminLink)
+            addComponent(userLink)
+        }
+      }
+    })
+    addComponent(home)
   }
 }

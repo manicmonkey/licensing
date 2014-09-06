@@ -32,12 +32,7 @@ import com.vaadin.ui._
  */
 class HomeContent extends MainContent {
 
-  addComponent(new HorizontalLayout {
-    addComponent(new HtmlLabel("Please select an option...") with UndefinedWidth)
-    List("licence-activation", "licence-management", "administration").foreach(l => addComponent(new Button(l)))
-    setSpacing(true)
-    setMargin(true)
-  })
+  addComponent(new Label("Welcome to the licensing system. Please select a link from the menu above"))
 }
 
 object HomeContent {
