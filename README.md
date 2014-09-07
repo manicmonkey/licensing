@@ -11,7 +11,6 @@ Roadmap
 -------
 
 - Get main UI elements / pages working
-- Add back button support
 - Internationalization
 
 - Investigate reports (maybe integrate High Charts)

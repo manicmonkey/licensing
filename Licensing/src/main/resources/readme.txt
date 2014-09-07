@@ -10,8 +10,6 @@ add implicit conversions for entities -> service case class
 maybe move dtos to highlight dependence and sphere of influence
 move dtos to datalayer or at least out of service as cyclic dependency between packages
 
-move logging to logback
-
 acceptance test for activation clients? mock implementation of service in java/.net for including in external projects
 
 Auditing

@@ -25,20 +25,19 @@
 package com.magmanics.licensing.ui
 
 import com.magmanics.licensing.ui.content._
-import com.magmanics.vaadin.ClickHandler
-import com.magmanics.vaadin.component.{LinkButton, HtmlLabel}
+import com.magmanics.vaadin.component.{HtmlLabel, LinkButton}
 import com.magmanics.vaadin.spring.SpringContextHelper
 import com.vaadin.annotations.{Theme, Title}
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent
-import com.vaadin.navigator.{ViewChangeListener, Navigator}
-import com.vaadin.server.{ExternalResource, VaadinRequest, VaadinServlet}
+import com.vaadin.navigator.{Navigator, ViewChangeListener}
+import com.vaadin.server._
 import com.vaadin.shared.ui.MarginInfo
 import com.vaadin.ui._
 
 /**
  * @author jbaxter - 06/04/11
  */
-@Theme("valo")
+@Theme("licensing")
 @Title("Licensing application")
 class LicensingApplication extends UI {
 
@@ -47,10 +46,12 @@ class LicensingApplication extends UI {
   val container = new MainContentContainer
 
   lazy val homeContent = new HomeContent
-  lazy val auditLogContent = springContextHelper.getBean(classOf[AuditLogContent])
-  lazy val licenceManagement = new LicenceManagementContent
-  lazy val activateLicence = new ActivateLicenceContent
-  lazy val administration = new AdministrationContent
+  lazy val activationContent = new ActivateLicenceContent
+  lazy val managementContent = new LicenceManagementContent
+  lazy val administrationContent = new AdministrationContent
+  lazy val auditContent = springContextHelper.getBean(classOf[AuditLogContent])
+  lazy val customerContent = new CustomerContent
+  lazy val productContent = new ProductContent
   lazy val userContent = new UserContent
 
   override def init(request: VaadinRequest) {
@@ -58,10 +59,12 @@ class LicensingApplication extends UI {
     //setup back/forward button support
     val navigator = new Navigator(this, container)
     navigator.addView(HomeContent.name, homeContent)
-    navigator.addView(AuditLogContent.name, auditLogContent)
-    navigator.addView(LicenceManagementContent.name, licenceManagement)
-    navigator.addView(ActivateLicenceContent.name, activateLicence)
-    navigator.addView(AdministrationContent.name, administration)
+    navigator.addView(LicenceManagementContent.name, managementContent)
+    navigator.addView(ActivateLicenceContent.name, activationContent)
+    navigator.addView(AdministrationContent.name, administrationContent)
+    navigator.addView(AuditLogContent.name, auditContent)
+    navigator.addView(CustomerContent.name, customerContent)
+    navigator.addView(ProductContent.name, productContent)
     navigator.addView(UserContent.name, userContent)
 
     //main ui elements
@@ -89,39 +92,68 @@ class LicensingApplication extends UI {
   }
 
   class Menu(navigator: Navigator) extends HorizontalLayout {
-    val home = new LinkButton("Home", HomeContent.name, navigator)
+
+    val arrow = new Image(null, new ThemeResource("img/right_arrow.png"))
+
+    val home = new HorizontalLayout(
+      new Image(null, new ThemeResource("img/rectangle.png")),
+      new LinkButton("Home", HomeContent.name, navigator),
+      new Image(null, new ThemeResource("img/right_arrow.png"))
+    )
+    home.setSpacing(true)
+
+    val context = new HorizontalLayout()
+    context.setSpacing(true)
+
     val activationLink = new LinkButton("Licence activation", ActivateLicenceContent.name, navigator)
     val managementLink = new LinkButton("Licence management", LicenceManagementContent.name, navigator)
 
     val adminLink = new LinkButton("Administration", AdministrationContent.name, navigator)
     val auditLink = new LinkButton("Auditing", AuditLogContent.name, navigator)
+    val customerLink = new LinkButton("Customers", CustomerContent.name, navigator)
+    val productLink = new LinkButton("Products", ProductContent.name, navigator)
     val userLink = new LinkButton("Users", UserContent.name, navigator)
 
     navigator.addViewChangeListener(new ViewChangeListener {
-      override def beforeViewChange(event: ViewChangeEvent): Boolean = true
+      override def beforeViewChange(event: ViewChangeEvent) = true
       override def afterViewChange(event: ViewChangeEvent) {
-        removeAllComponents()
-        addComponent(home)
+        context.removeAllComponents()
         event.getViewName match {
           case HomeContent.name =>
-            addComponent(activationLink)
-            addComponent(managementLink)
-            addComponent(adminLink)
-          case ActivateLicenceContent.name => addComponent(activationLink)
-          case LicenceManagementContent.name => addComponent(managementLink)
+            context.addComponent(activationLink)
+            context.addComponent(managementLink)
+            context.addComponent(adminLink)
+          case ActivateLicenceContent.name =>
+            context.addComponent(activationLink)
+          case LicenceManagementContent.name =>
+            context.addComponent(managementLink)
           case AdministrationContent.name =>
-            addComponent(adminLink)
-            addComponent(auditLink)
-            addComponent(userLink)
+            context.addComponent(adminLink)
+            context.addComponent(arrow)
+            context.addComponent(auditLink)
+            context.addComponent(customerLink)
+            context.addComponent(productLink)
+            context.addComponent(userLink)
           case AuditLogContent.name =>
-            addComponent(adminLink)
-            addComponent(auditLink)
+            context.addComponent(adminLink)
+            context.addComponent(arrow)
+            context.addComponent(auditLink)
+          case CustomerContent.name =>
+            context.addComponent(adminLink)
+            context.addComponent(arrow)
+            context.addComponent(customerLink)
+          case ProductContent.name =>
+            context.addComponent(adminLink)
+            context.addComponent(arrow)
+            context.addComponent(productLink)
           case UserContent.name =>
-            addComponent(adminLink)
-            addComponent(userLink)
+            context.addComponent(adminLink)
+            context.addComponent(arrow)
+            context.addComponent(userLink)
         }
       }
     })
     addComponent(home)
+    addComponent(context)
   }
 }
