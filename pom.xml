@@ -13,13 +13,17 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <aspectj.version>1.8.1</aspectj.version>
+        <logback.version>1.1.2</logback.version>
+        <scala.version>2.10.4</scala.version>
         <spring.version>4.0.5.RELEASE</spring.version>
+        <slf4j.version>1.7.7</slf4j.version>
     </properties>
 
     <modules>
         <module>Auditing</module>
-        <module>Licensing</module>
         <module>Licensing-Model</module>
+        <module>Licensing-Server</module>
         <module>Licensing-UI</module>
     </modules>
 
@@ -28,32 +32,33 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
+                <!-- Using old version to avoid ambiguous reference in scala code -->
                 <version>1.6.6</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>jcl-over-slf4j</artifactId>
-                <version>1.7.7</version>
+                <version>${slf4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-core</artifactId>
-                <version>1.1.2</version>
+                <version>${logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>ch.qos.logback</groupId>
                 <artifactId>logback-classic</artifactId>
-                <version>1.1.2</version>
+                <version>${logback.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-compiler</artifactId>
-                <version>2.10.4</version>
+                <version>${scala.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.scala-lang</groupId>
                 <artifactId>scala-library</artifactId>
-                <version>2.10.4</version>
+                <version>${scala.version}</version>
             </dependency>
             <!-- Spring security -->
             <dependency>
@@ -101,12 +106,12 @@
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjrt</artifactId>
-                <version>1.8.1</version>
+                <version>${aspectj.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
-                <version>1.8.1</version>
+                <version>${aspectj.version}</version>
             </dependency>
             <!-- JPA -->
             <dependency>
@@ -222,8 +227,8 @@
     </build>
 
     <organization>
-        <name>Magmanics</name>
-        <url>http://www.magmanics.co.uk</url>
+        <name>Resident Systems Ltd</name>
+        <url>https://github.com/manicmonkey/licensing</url>
     </organization>
 
     <developers>
@@ -240,49 +245,5 @@
             <distribution>manual</distribution>
         </license>
     </licenses>
-
-    <repositories>
-        <repository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </repository>
-        <repository>
-            <id>scala-tools.org_snapshots</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-snapshots</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>scala-tools.org</id>
-            <name>Scala-Tools Maven2 Repository</name>
-            <url>http://scala-tools.org/repo-releases</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>undercover</id>
-            <url>http://undercover.googlecode.com/svn/maven/repository</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>undercover_snaphost</id>
-            <url>http://undercover.googlecode.com/svn/maven/snapshot-repository</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>emma</id>
-            <url>http://emma.sourceforge.net/maven/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>maven-repository.dev.java.net</id>
-            <name>Java.net Maven 2 Repository</name>
-            <url>http://download.java.net/maven/2</url>
-        </pluginRepository>
-    </pluginRepositories>
 
 </project>

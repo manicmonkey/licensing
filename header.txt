@@ -1,4 +1,4 @@
-Magmanics Licensing. This web application allows for centralized control
+Resident Systems Licensing. This web application allows for centralized control
 of client application activation, with optional configuration parameters
 to control licensable features, and storage of supplementary information
 about the client machine. Client applications may interface with this
