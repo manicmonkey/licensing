@@ -45,8 +45,7 @@ trait CustomerClient {
   def get(): Seq[Customer]
 
   @GET
-  @Path("?enabled=true")
-  def getEnabled: Seq[Customer]
+  def getEnabled(@QueryParam("enabled") enabled: Boolean): Seq[Customer]
 
   @GET
   def get(@QueryParam("id") id: Long): Customer

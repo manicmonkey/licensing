@@ -63,7 +63,7 @@ class ActivationOverviewTable extends Table {
   }
 
   def onActivationChanged(handler: Activation => Unit) {
-    addListener(new Property.ValueChangeListener() {
+    addValueChangeListener(new Property.ValueChangeListener() {
       override def valueChange(event: Property.ValueChangeEvent) {
         val activation = event.getProperty.getValue.asInstanceOf[Activation]
         assert(activation != null, "Null selection not allowed")
