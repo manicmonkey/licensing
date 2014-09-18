@@ -52,12 +52,12 @@ trait CustomerDao {
   /**
    * Gets all Customers within the system
    */
-  def get(): Seq[Customer]
+  def get(): Set[Customer]
 
   /**
    *  Gets all enabled Customers within the system
    */
-  def getEnabled: Seq[Customer]
+  def getEnabled(enabled: Boolean): Set[Customer]
 
   /**
    * Gets a Customer by the given id
@@ -111,16 +111,17 @@ class CustomerDaoJPA extends CustomerDao {
     customerEntity
   }
 
-  def get(): Seq[Customer] = {
+  def get(): Set[Customer] = {
     log.debug("Getting all Customers")
     val query = em.createNamedQuery[CustomerEntity]("Customer.GetAll", classOf[CustomerEntity])
-    query.getResultList.asScala
+    query.getResultList.asScala.map(customerEntityToCustomer).toSet
   }
 
-  def getEnabled(): Seq[Customer] = {
+  def getEnabled(enabled: Boolean): Set[Customer] = {
     log.debug("Getting all enabled Customers")
     val query = em.createNamedQuery[CustomerEntity]("Customer.GetEnabled", classOf[CustomerEntity])
-    query.getResultList.asScala
+    query.setParameter("enabled", enabled)
+    query.getResultList.asScala.map(customerEntityToCustomer).toSet
   }
 
   def get(id: Long): Option[Customer] = {

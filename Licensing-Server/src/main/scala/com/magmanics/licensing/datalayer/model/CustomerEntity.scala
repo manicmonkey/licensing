@@ -27,20 +27,14 @@ package com.magmanics.licensing.datalayer.model
 import javax.persistence._
 
 /**
- * Created by IntelliJ IDEA.
- * User: James
- * Date: 28-May-2010
- * Time: 20:28:12
- * To change this template use File | Settings | File Templates.
+ * @author James Baxter - 28-May-2010
  */
-
-//todo http://blog.knoldus.com/2014/01/20/scala-slick-2-0-for-multi-database/
 @Entity
 @Table(name = "customers")
 @NamedQueries(Array(
   new NamedQuery(name = "Customer.GetByName", query = "SELECT c FROM CustomerEntity c WHERE c.name = :name"),
   new NamedQuery(name = "Customer.GetAll", query = "SELECT c FROM CustomerEntity c"),
-  new NamedQuery(name = "Customer.GetEnabled", query = "SELECT c FROM CustomerEntity c WHERE c.enabled = true")
+  new NamedQuery(name = "Customer.GetEnabled", query = "SELECT c FROM CustomerEntity c WHERE c.enabled = :enabled")
 ))
 class CustomerEntity {
 

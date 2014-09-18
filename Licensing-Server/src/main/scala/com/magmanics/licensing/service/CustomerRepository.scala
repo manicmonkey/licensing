@@ -46,12 +46,12 @@ trait CustomerRepository {
   /**
    * Get all Customers within the system
    */
-  def get(): Seq[Customer]
+  def get(): Set[Customer]
 
   /**
    * Get enabled Customers
    */
-  def getEnabled: Seq[Customer]
+  def getEnabled(enabled: Boolean): Set[Customer]
 
   /**
    * Gets a Customer given the specified id
@@ -80,13 +80,13 @@ class CustomerRepositoryImpl(customerDao: CustomerDao) extends CustomerRepositor
   }
 
   @Auditable("audit.customers.get")
-  def get(): Seq[Customer] = {
+  def get(): Set[Customer] = {
     customerDao.get()
   }
 
   @Auditable("audit.customers.getEnabled")
-  def getEnabled: Seq[Customer] = {
-    customerDao.getEnabled
+  def getEnabled(enabled: Boolean): Set[Customer] = {
+    customerDao.getEnabled(enabled)
   }
 
   @Auditable("audit.customer.getById")

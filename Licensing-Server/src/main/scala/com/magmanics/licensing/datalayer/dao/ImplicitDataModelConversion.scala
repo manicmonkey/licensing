@@ -82,7 +82,7 @@ object ImplicitDataModelConversion {
       case _ => None
     }
   }
-  implicit def customerEntitySeqToCustomerSeq(customers: Seq[CustomerEntity]): Seq[Customer] = {
+  implicit def customerEntitySeqToCustomerSeq(customers: Set[CustomerEntity]): Set[Customer] = {
     log.trace("Converting Seq[CustomerEntity]: {}", customers)
     customers.map(a => customerEntityToCustomer(a))
   }

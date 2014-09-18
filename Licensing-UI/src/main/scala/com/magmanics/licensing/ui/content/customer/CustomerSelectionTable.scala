@@ -8,7 +8,7 @@ import scala.collection.JavaConverters._
 /**
  * @author James Baxter - 05/09/2014.
  */
-class CustomerSelectionTable(customers: Seq[Customer]) extends TableWithCheckboxes {
+class CustomerSelectionTable(customers: Set[Customer]) extends TableWithCheckboxes {
 
   setSelectable(true)
   setMultiSelect(true)
@@ -19,11 +19,10 @@ class CustomerSelectionTable(customers: Seq[Customer]) extends TableWithCheckbox
     ("customer", classOf[String], "", "Customer", null, null)
   )
 
-  override def itemRows = customers.sortBy(_.name).map(c => Array(c.name) -> c.name)
+  override def itemRows = customers.toList.sortBy(_.name).map(c => Array(c.name) -> c.name)
 
-  def setCustomers(customerIds: Set[Long]) = {
-    val newValue = customerIds
-      .map(id => customers.find(_.id.get == id).getOrElse(throw new RuntimeException("Could not find customer with id: " + id)))
+  def setCustomers(customers: Set[Customer]) = {
+    val newValue = customers
       .map(_.name)
       .asJava
     setValue(newValue)

@@ -46,7 +46,7 @@ class CustomerRepositoryIntegrationTest extends TransactionalSpringBasedSuite wi
       val customer = customerService.create(Customer(name = "Customer one"))
 
       Then("it will appear in the standard listing of customers")
-      val retrievedCustomer = customerService.getEnabled.find(_.name == customer.name)
+      val retrievedCustomer = customerService.getEnabled(enabled = true).find(_.name == customer.name)
       assert(retrievedCustomer.isDefined)
     }
 
@@ -74,7 +74,8 @@ class CustomerRepositoryIntegrationTest extends TransactionalSpringBasedSuite wi
       customerService.update(customer)
 
       Then("the customer should not appear in the standard listing")
-      assert(customerService.getEnabled.find(_.name == "Customer one").isEmpty)
+      assert(customerService.getEnabled(enabled = true).find(_.name == "Customer one").isEmpty)
+      assert(customerService.getEnabled(enabled = false).find(_.name == "Customer one").nonEmpty)
     }
 
     scenario("a customer is enabled") {
@@ -86,7 +87,7 @@ class CustomerRepositoryIntegrationTest extends TransactionalSpringBasedSuite wi
       customerService.update(customer)
 
       Then("the customer should appear in the standard listing")
-      val customerOption = customerService.getEnabled.find(_.name == "Customer one")
+      val customerOption = customerService.getEnabled(enabled = true).find(_.name == "Customer one")
       assert(customerOption.isDefined)
       assert(customerOption.get == customer)
     }

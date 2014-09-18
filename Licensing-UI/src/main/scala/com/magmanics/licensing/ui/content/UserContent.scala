@@ -17,7 +17,8 @@ class UserContent extends MainContent {
 
   userSelectionComboBox.onUserChanged(u => {
     permissionSelectionTable.setPermissions(u.permissions)
-    customerSelectionTable.setCustomers(u.customers)
+    val customers = u.customers.map(CustomerClient.client.get)
+    customerSelectionTable.setCustomers(customers)
   })
 
   //place controls in panels
