@@ -40,6 +40,3 @@ class ProductOptionsTable extends Table {
     getValue.asInstanceOf[ProductOptionViewModel]
   }
 }
-
-@BeanInfo
-case class ProductOptionViewModel(id: Option[Long] = None, var name: String, var default: String, var `type`: String)

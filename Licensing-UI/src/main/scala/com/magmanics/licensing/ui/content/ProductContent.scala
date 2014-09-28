@@ -1,6 +1,7 @@
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.ui.content.product.{ProductOptionsTable, ProductComboBox}
+import com.magmanics.licensing.ui.content.product.{ProductOptionViewModel, ProductOptionDialog, ProductOptionsTable, ProductComboBox}
+import com.magmanics.vaadin.{ValueChangeListener, ClickHandler}
 import com.magmanics.vaadin.component.HtmlLabel
 import com.vaadin.ui._
 
@@ -16,7 +17,9 @@ class ProductContent extends MainContent {
   private val productEnabled = new CheckBox()
   private val optionsTable = new ProductOptionsTable()
   private val newOptionButton = new Button("New")
+  newOptionButton.setEnabled(false)
   private val modifyOptionButton = new Button("Modify")
+  modifyOptionButton.setEnabled(false)
 
   private val resetButton = new Button("Reset")
   private val saveButton = new Button("Save")
@@ -51,7 +54,22 @@ class ProductContent extends MainContent {
     productName.setValue(p.name)
     productEnabled.setValue(p.enabled)
     optionsTable.setProductOptions(p.options)
+    newOptionButton.setEnabled(true)
   })
+
+  optionsTable.addValueChangeListener(new ValueChangeListener[ProductOptionViewModel](o => modifyOptionButton.setEnabled(o.nonEmpty)))
+
+  newOptionButton.addClickListener(new ClickHandler(_ => {
+    val dialog = new ProductOptionDialog(None)
+    dialog.center()
+    getUI.addWindow(dialog)
+  }))
+
+  modifyOptionButton.addClickListener(new ClickHandler(_ => {
+    val dialog = new ProductOptionDialog(Some(optionsTable.getSelected))
+    dialog.center()
+    getUI.addWindow(dialog)
+  }))
 }
 
 object ProductContent {
