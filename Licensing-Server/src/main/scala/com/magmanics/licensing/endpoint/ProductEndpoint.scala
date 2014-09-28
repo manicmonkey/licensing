@@ -48,13 +48,13 @@ class ProductEndpoint {
    * Returns enabled Products
    */
   @RequestMapping(method = Array(RequestMethod.GET), params = Array("enabled=true"))
-  def getEnabled: Seq[Product] = productRepository.getEnabled
+  def getEnabled: Set[Product] = productRepository.getEnabled
 
   /**
    * Returns all Products
    */
   @RequestMapping(method = Array(RequestMethod.GET))
-  def get(): Seq[Product] = productRepository.get()
+  def get(): Set[Product] = productRepository.get()
 
   /**
    * Return the Product with the given id

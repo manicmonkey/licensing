@@ -85,10 +85,10 @@ class ProductEntity {
     radioOptions
   }
 
-  def getOptions: Seq[_ <: ProductOptionEntity[_]] = {
+  def getOptions: Set[ProductOptionEntity[_]] = {
     import scala.collection.JavaConverters._
     val productOptions: scala.collection.mutable.Set[_ <: ProductOptionEntity[_]] = getListOptions.asScala ++ getTextOptions.asScala ++ getRadioOptions.asScala
-    productOptions.toSeq.sortBy(_.name)
+    productOptions.toSet
   }
 
   def addOption(option: RadioProductOptionEntity) {

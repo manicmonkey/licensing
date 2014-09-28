@@ -35,5 +35,5 @@ case class Product(id: Option[Long] = None,
                    var name: String,
                    var description: String = "",
                    var enabled: Boolean = true,
-                   var options: Seq[ProductOption[_ <: Any]] = List()) //todo consider configurations required? dont want to load object graph...
+                   var options: Set[ProductOption[_ <: Any]] = Set()) //todo consider configurations required? dont want to load object graph...
 //todo consider mapping product options to product version? options immutable?

@@ -3,7 +3,7 @@ package com.magmanics.licensing.ui.content
 import com.magmanics.licensing.client.CustomerClient
 import com.magmanics.licensing.ui.content.customer.CustomerTable
 import com.magmanics.vaadin.ClickHandler
-import com.magmanics.vaadin.component.{UndefinedWidth, HtmlLabel}
+import com.magmanics.vaadin.component.{HtmlLabel, UndefinedWidth}
 import com.vaadin.ui._
 
 /**
@@ -11,8 +11,7 @@ import com.vaadin.ui._
  */
 class CustomerContent extends MainContent {
 
-  lazy val enabledCustomers = CustomerClient.client.getEnabled(enabled = true)
-  lazy val customers = CustomerClient.client.get()
+  val client = CustomerClient.client
 
   val customerCreationLayout = new HorizontalLayout(
     new Label("Add new customer"),
@@ -21,31 +20,29 @@ class CustomerContent extends MainContent {
   )
   customerCreationLayout.setSpacing(true)
 
-  val enabledCustomersTable = new CustomerTable(enabledCustomers)
+  val enabledCustomersTable = new CustomerTable(client.getEnabled(enabled = true))
   val disableButton = new Button("Disable >")
   val enableButton = new Button("< Enable")
-  val disabledCustomersTable = new CustomerTable(customers.diff(enabledCustomers))
+  val disabledCustomersTable = new CustomerTable(client.getEnabled(enabled = false))
 
   disableButton.addClickListener(new ClickHandler(_ => {
     Option(enabledCustomersTable.getSelected).foreach(c => {
       c.enabled = false
-      CustomerClient.client.update(c)
+      client.update(c)
       updateTables()
     })
   }))
   enableButton.addClickListener(new ClickHandler(_ => {
     Option(disabledCustomersTable.getSelected).foreach(c => {
       c.enabled = true
-      CustomerClient.client.update(c)
+      client.update(c)
       updateTables()
     })
   }))
 
   private def updateTables() {
-    val enabledCustomers = CustomerClient.client.getEnabled(enabled = true)
-    enabledCustomersTable.setCustomers(enabledCustomers)
-    val disabledCustomers = CustomerClient.client.getEnabled(enabled = false)
-    disabledCustomersTable.setCustomers(disabledCustomers)
+    enabledCustomersTable.setCustomers(client.getEnabled(enabled = true))
+    disabledCustomersTable.setCustomers(client.getEnabled(enabled = false))
   }
 
   val modificationLayout = new GridLayout(3, 3)

@@ -43,7 +43,7 @@ class ConfigurationTest {
   def cannotCreateWithMoreActivationsThanMaxActivations() {
     val activation1 = Activation(configurationId = 1, machineIdentifier = "dev0", productVersion = "110606", activationType = ActivationType.NEW, extraInfo = Map())
     val activation2 = Activation(configurationId = 1, machineIdentifier = "dev1", productVersion = "110606", activationType = ActivationType.NEW, extraInfo = Map())
-    Configuration(user = "jbaxter", maxActivations = 1, activations = List(activation1, activation2), productId = 1, customerId = 2L)
+    Configuration(user = "jbaxter", maxActivations = 1, activations = Set(activation1, activation2), productId = 1, customerId = 2L)
   }
 
   @Test(expectedExceptions = Array(classOf[IllegalStateException]))
@@ -75,7 +75,6 @@ class ConfigurationTest {
 
     assertTrue(conf.activationsAvailable)
     assertEquals(conf.totalActivations, 1)
-    assertEquals(conf.activations.head.productVersion, "110607")
   }
 
   @Test

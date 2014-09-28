@@ -50,11 +50,11 @@ class ActivationOverviewTable extends Table {
 
   setImmediate(true)
 
-  def setActivations(activations: Seq[Activation]) {
+  def setActivations(activations: Set[Activation]) {
 
     container.removeAllItems()
 
-    activations.foreach(container.addBean)
+    activations.toList.sortBy(_.created).foreach(container.addBean)
 
     if (container.size > 0) {
       select(firstItemId)

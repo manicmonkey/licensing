@@ -26,10 +26,12 @@ class UserContent extends MainContent {
     new Label("Users"),
     userSelectionComboBox
   )
+  userSelectionPanel.setSpacing(true)
   private val permissionSelectionPanel = new VerticalLayout(
     new Label("Permissions"),
     permissionSelectionTable
   )
+  permissionSelectionPanel.setSpacing(true)
   private val customerSelectionPanel = new VerticalLayout(
     new Label("Customer access"),
     customerSelectionTable,

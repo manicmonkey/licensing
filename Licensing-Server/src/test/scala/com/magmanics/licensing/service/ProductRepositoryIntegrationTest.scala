@@ -62,10 +62,10 @@ class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite wit
       Given("a new product with options")
       val boolOption = BoolOption(name = "Enable LDAP", default = true)
       val textOption = TextOption(name = "Branding", default = "Funky Fox")
-      val listOption = ListOption(name = "Users", default = "20", values = List("10", "20", "30"))
+      val listOption = ListOption(name = "Users", default = "20", values = Set("10", "20", "30"))
 
       When("the product is saved")
-      val product = productRepository.create(Product(name = "Teamcity", options = List(boolOption, textOption, listOption)))
+      val product = productRepository.create(Product(name = "Teamcity", options = Set(boolOption, textOption, listOption)))
 
       Then("the product and its options will be retrievable")
       val existingOptions = productRepository.get(product.id.get).get.options

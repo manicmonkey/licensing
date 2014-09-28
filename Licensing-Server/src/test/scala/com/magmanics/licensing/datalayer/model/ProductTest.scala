@@ -37,9 +37,9 @@ class ProductTest {
   def createWithOptions {
     val boolOption = BoolOption(name = "Boolean option", default = true)
     val textOption = TextOption(name = "Text option", default = "default value")
-    val listOption = ListOption(name = "List option", default = "default value", values = List("Option one", "Option two"))
+    val listOption = ListOption(name = "List option", default = "default value", values = Set("Option one", "Option two"))
 
-    val product = Product(name = "PDM", description = "Document archive", options = List(boolOption, textOption, listOption))
+    val product = Product(name = "PDM", description = "Document archive", options = Set(boolOption, textOption, listOption))
   }
 
   @Test
