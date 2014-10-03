@@ -1,0 +1,23 @@
+{
+  "name": "licensing-ui-spa",
+  "version": "0.1.0",
+  "homepage": "https://github.com/manicmonkey/licensing",
+  "authors": [
+    "James Baxter <j.w.baxter@gmail.com>"
+  ],
+  "description": "Fancy single page app for Product Licensing",
+  "main": "styles.css",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs-bower": "~2.1.15",
+    "bootstrap": "~3.2.0"
+  }
+}

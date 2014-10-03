@@ -25,6 +25,7 @@
         <module>Licensing-Model</module>
         <module>Licensing-Server</module>
         <module>Licensing-UI</module>
+        <module>Licensing-UI-AngularJS</module>
     </modules>
 
     <dependencyManagement>
