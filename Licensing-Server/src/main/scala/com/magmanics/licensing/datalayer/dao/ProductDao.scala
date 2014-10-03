@@ -51,12 +51,12 @@ trait ProductDao {
   /**
    * Gets all Products within the system
    */
-  def get(): Seq[Product]
+  def get(): Set[Product]
 
   /**
    * Get all enabled Products within the system
    */
-  def getEnabled(): Seq[Product]
+  def getEnabled(): Set[Product]
 
   /**
    * Gets the Product with the given id
@@ -138,12 +138,12 @@ class ProductDaoJPA extends ProductDao {
     }
   }
 
-  def get(): Seq[Product] = {
+  def get(): Set[Product] = {
     log.debug("Getting all Products")
     em.createNamedQuery[ProductEntity]("Product.GetAll", classOf[ProductEntity]).getResultList.asScala
   }
 
-  def getEnabled(): Seq[Product] = {
+  def getEnabled(): Set[Product] = {
     log.debug("Getting all enabled Products")
     em.createNamedQuery[ProductEntity]("Product.GetEnabled", classOf[ProductEntity]).getResultList.asScala
   }

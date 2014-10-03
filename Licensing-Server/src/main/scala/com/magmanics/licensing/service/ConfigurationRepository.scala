@@ -54,7 +54,7 @@ trait ConfigurationRepository {
   /**
    * Get configurations for a particular customer. Returns an empty list if none are found.
    */
-  def getByCustomer(customer: String): Seq[Configuration]
+  def getByCustomer(customer: String): Set[Configuration]
 
   /**
    * Try to get a configuration given a serial.
@@ -90,7 +90,7 @@ class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGene
   }
 
   @Auditable("audit.configurations.getByCustomer")
-  def getByCustomer(customer: String): Seq[Configuration] = {
+  def getByCustomer(customer: String): Set[Configuration] = {
     log.debug("Getting Configurations for {}", customer)
     val configurations = configurationDao.getByCustomer(customer)
     log.debug("Got configurations for customer({}): {}", customer, configurations)

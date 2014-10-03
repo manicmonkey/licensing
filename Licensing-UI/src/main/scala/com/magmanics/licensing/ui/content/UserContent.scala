@@ -17,7 +17,8 @@ class UserContent extends MainContent {
 
   userSelectionComboBox.onUserChanged(u => {
     permissionSelectionTable.setPermissions(u.permissions)
-    customerSelectionTable.setCustomers(u.customers)
+    val customers = u.customers.map(CustomerClient.client.get)
+    customerSelectionTable.setCustomers(customers)
   })
 
   //place controls in panels
@@ -25,10 +26,12 @@ class UserContent extends MainContent {
     new Label("Users"),
     userSelectionComboBox
   )
+  userSelectionPanel.setSpacing(true)
   private val permissionSelectionPanel = new VerticalLayout(
     new Label("Permissions"),
     permissionSelectionTable
   )
+  permissionSelectionPanel.setSpacing(true)
   private val customerSelectionPanel = new VerticalLayout(
     new Label("Customer access"),
     customerSelectionTable,

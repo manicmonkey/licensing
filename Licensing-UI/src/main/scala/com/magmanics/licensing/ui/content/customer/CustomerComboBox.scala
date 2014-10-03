@@ -33,7 +33,7 @@ import com.vaadin.ui.ComboBox
 /**
  * @author James Baxter - 17/08/2014.
  */
-class CustomerDropdown extends ComboBox {
+class CustomerComboBox extends ComboBox {
   setInputPrompt("Select a customer...")
   val container = new BeanItemContainer[Customer](classOf[Customer])
   setContainerDataSource(container)
@@ -43,7 +43,7 @@ class CustomerDropdown extends ComboBox {
   //      setTextInputAllowed(false)
 
   val customers = CustomerClient.client.get()
-  customers.foreach(container.addBean)
+  customers.toList.sortBy(_.name).foreach(container.addBean)
 
   def onCustomerChanged(handler: Customer => Unit) {
     addValueChangeListener(new ValueChangeListener {

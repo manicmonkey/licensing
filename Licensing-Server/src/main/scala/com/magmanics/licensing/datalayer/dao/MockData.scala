@@ -53,10 +53,10 @@ class MockData {
   def getUUID = UUID.randomUUID.toString
 
   def insert {
-    val options = List(buildListProductOption("Printers", List("10", "20", "40", "80", "160", "320"), "20"), buildRadioProductOption("PDF Signing", default = false), buildRadioProductOption("Schedule and Sort", default = true))
+    val options = Set[ProductOption[_]](buildListProductOption("Printers", Set("10", "20", "40", "80", "160", "320"), "20"), buildRadioProductOption("PDF Signing", default = false), buildRadioProductOption("Schedule and Sort", default = true))
     val product = createProduct("JFinder", "Picks up files, strips hash commands and uploads to PDM", options = options, enabled = true)
 
-    val options2 = List(buildTextProductOption("Internal reference", "MAG_XXX"), buildRadioProductOption("Doc import", default = true), buildListProductOption("Users", List("1", "2", "5", "10", "25", "50", "100"), "10"))
+    val options2 = Set[ProductOption[_]](buildTextProductOption("Internal reference", "MAG_XXX"), buildRadioProductOption("Doc import", default = true), buildListProductOption("Users", Set("1", "2", "5", "10", "25", "50", "100"), "10"))
     val product2 = createProduct("PDM", "Magmanics Archive solution", options = options2, enabled = true)
 
     createProduct("V4", "Product Suite", enabled = false)
@@ -87,7 +87,7 @@ class MockData {
     addAudits()
   }
 
-  def createProduct(name: String, description: String, options: Seq[ProductOption[_]] = List(), enabled: Boolean): LicencedProduct = {
+  def createProduct(name: String, description: String, options: Set[ProductOption[_]] = Set(), enabled: Boolean): LicencedProduct = {
     val product = new LicencedProduct(name = name, description = description, options = options, enabled = enabled)
     productDao.create(product)
   }
@@ -100,7 +100,7 @@ class MockData {
     new BoolOption(name = name, default = default)
   }
 
-  private def buildListProductOption(name: String, options: List[String], default: String) = {
+  private def buildListProductOption(name: String, options: Set[String], default: String) = {
     new ListOption(name = name, default = default, values = options)
   }
 
@@ -123,7 +123,7 @@ class MockData {
   }
 
   private def addAudits() {
-    (0 until 300).flatMap(i => {
+    (0 until 50).flatMap(i => {
       val cal = Calendar.getInstance()
       cal.add(Calendar.HOUR, i * 2)
       List(

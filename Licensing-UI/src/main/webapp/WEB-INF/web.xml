@@ -26,7 +26,7 @@ http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
         <init-param>
             <param-name>UI</param-name>
-            <param-value>com.magmanics.licensing.ui.LicensingApplication</param-value>
+            <param-value>com.magmanics.licensing.ui.LicensingUI</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

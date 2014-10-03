@@ -53,7 +53,7 @@ case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id:
                          options: Map[String, String] = Map(),
                          var enabled: Boolean = true,
                          var maxActivations: Int = 1,
-                         var activations: Seq[Activation] = List()) {
+                         var activations: Set[Activation] = Set()) {
 
   if(maxActivations < 1) {
     throw new IllegalStateException("maxActivations cannot be less than 1 (received " + maxActivations + ")")
@@ -77,7 +77,7 @@ case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id:
     if (activationType == ActivationType.NEW && !activationsAvailable)
       throw new NoActivationsLeftException("No activations available. Used maximum of: " + maxActivations)
 
-    activations = Activation(machineIdentifier = machineIdentifier, productVersion = productVersion, activationType = activationType, extraInfo = extraInfo, configurationId = id.get) +: activations
+    activations = activations + Activation(machineIdentifier = machineIdentifier, productVersion = productVersion, activationType = activationType, extraInfo = extraInfo, configurationId = id.get)
   }
 
   /**

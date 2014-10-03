@@ -45,9 +45,9 @@ object ImplicitDataModelConversion {
     log.trace("Converting ActivationEntity: {}", ac)
     Activation(Some(ac.id), ac.created, ac.machineIdentifier, ac.productVersion, ac.configurationId, ActivationType.withName(ac.activationType), ac.getActivationInfo().asScala.map(ai => ai.key -> ai.value).toMap)
   }
-  implicit def activationEntitySeqToActivationSeq(activations: Seq[ActivationEntity]): Seq[Activation] = {
+  implicit def activationEntitySeqToActivationSet(activations: Seq[ActivationEntity]): Set[Activation] = {
     log.trace("Converting Seq[ActivationEntity]: {}", activations)
-    activations.map(a => activationEntityToActivation(a))
+    activations.map(a => activationEntityToActivation(a)).toSet
   }
 
   //implicit configuration conversions
@@ -65,9 +65,9 @@ object ImplicitDataModelConversion {
       configuration.maxActivations,
       configuration.activations.asScala)
   }
-  implicit def configurationEntitySeqToConfigurationSeq(configurations: Seq[ConfigurationEntity]): Seq[Configuration] = {
+  implicit def configurationEntitySeqToConfigurationSet(configurations: Seq[ConfigurationEntity]): Set[Configuration] = {
     log.trace("Converting Seq[ConfigurationEntity]: {}", configurations)
-    configurations.map(a => configurationEntityToConfiguration(a))
+    configurations.map(a => configurationEntityToConfiguration(a)).toSet
   }
 
   //implicit customer conversions
@@ -82,9 +82,9 @@ object ImplicitDataModelConversion {
       case _ => None
     }
   }
-  implicit def customerEntitySeqToCustomerSeq(customers: Seq[CustomerEntity]): Seq[Customer] = {
+  implicit def customerEntitySeqToCustomerSet(customers: Seq[CustomerEntity]): Set[Customer] = {
     log.trace("Converting Seq[CustomerEntity]: {}", customers)
-    customers.map(a => customerEntityToCustomer(a))
+    customers.map(a => customerEntityToCustomer(a)).toSet
   }
 
   //implicit product conversions
@@ -99,9 +99,9 @@ object ImplicitDataModelConversion {
       case _ => None
     }
   }
-  implicit def productEntitySeqToProductSeq(products: Seq[ProductEntity]): Seq[Product] = {
+  implicit def productEntitySeqToProductSet(products: Seq[ProductEntity]): Set[Product] = {
     log.trace("Converting Seq[ProductEntity]: {}", products)
-    products.map(p => productEntityToProduct(p))
+    products.map(p => productEntityToProduct(p)).toSet
   }
 
   //implicit product option conversions
@@ -110,10 +110,10 @@ object ImplicitDataModelConversion {
     option match {
       case option: TextProductOptionEntity => TextOption(Some(option.id), option.name, option.default)
       case option: RadioProductOptionEntity => BoolOption(Some(option.id), option.name, option.default)
-      case option: ListProductOptionEntity => ListOption(Some(option.id), option.name, option.default, option.optionValues.asScala.map(_.value))
+      case option: ListProductOptionEntity => ListOption(Some(option.id), option.name, option.default, option.optionValues.asScala.map(_.value).toSet)
     }
   }
-  implicit def productOptionEntitySeqToProductOptionSeq(options: Seq[ProductOptionEntity[_]]): Seq[ProductOption[_]] = {
+  implicit def productOptionEntitySetToProductOptionSet(options: Set[ProductOptionEntity[_]]): Set[ProductOption[_]] = {
     log.trace("Converting Seq[ProductOptionEntity]: {}", options)
     options.map(o => productOptionEntityToProductOption(o))
   }

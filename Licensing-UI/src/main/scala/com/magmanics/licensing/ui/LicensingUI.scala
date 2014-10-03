@@ -38,8 +38,8 @@ import com.vaadin.ui._
  * @author jbaxter - 06/04/11
  */
 @Theme("licensing")
-@Title("Licensing application")
-class LicensingApplication extends UI {
+@Title("Product Licensing")
+class LicensingUI extends UI {
 
   lazy val springContextHelper = new SpringContextHelper(VaadinServlet.getCurrent.getServletContext)
 

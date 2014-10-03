@@ -25,8 +25,8 @@
 package com.magmanics.licensing.model
 
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type
-import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
 import com.fasterxml.jackson.annotation.JsonTypeInfo.{As, Id}
+import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
 
 /**
  * @author James Baxter <j.w.baxter@gmail.com>
@@ -54,7 +54,7 @@ trait ProductOption[T] {
 
 case class TextOption(id: Option[Long] = None, var name: String, var default: String) extends ProductOption[String]
 case class BoolOption(id: Option[Long] = None, var name: String, var default: Boolean) extends ProductOption[Boolean]
-case class ListOption(id: Option[Long] = None, var name: String, var default: String, values: Seq[String]) extends ProductOption[String]
+case class ListOption(id: Option[Long] = None, var name: String, var default: String, values: Set[String]) extends ProductOption[String]
 
 //case class TextOption(_id:Option[Long] = None,
 //                      _name: String,

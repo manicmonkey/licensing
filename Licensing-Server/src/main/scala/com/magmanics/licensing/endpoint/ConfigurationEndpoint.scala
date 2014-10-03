@@ -59,7 +59,7 @@ class ConfigurationEndpoint {
    * Get configurations for a particular customer. Returns an empty list if none are found.
    */
   @RequestMapping(method = Array(RequestMethod.GET), params = Array("customer"))
-  def getByCustomer(@RequestParam customer: String): Seq[Configuration] = configurationRepository.getByCustomer(customer)
+  def getByCustomer(@RequestParam customer: String): Set[Configuration] = configurationRepository.getByCustomer(customer)
 
   /**
    * Try to get a configuration given a serial.

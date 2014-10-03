@@ -52,12 +52,12 @@ trait ProductRepository {
   /**
    * Returns enabled Products
    */
-  def getEnabled: Seq[Product]
+  def getEnabled: Set[Product]
 
   /**
    * Returns all Products
    */
-  def get(): Seq[Product]
+  def get(): Set[Product]
 
   /**
    * Return the Product with the given id
@@ -87,14 +87,14 @@ class ProductRepositoryImpl(productDao: ProductDao) extends ProductRepository {
   }
 
   @Auditable("audit.products.getEnabled")
-  def getEnabled(): Seq[Product] = {
+  def getEnabled(): Set[Product] = {
     val products = productDao.get().filter(_.enabled)
     log.debug("Got enabled products: {}", products)
     products
   }
 
   @Auditable("audit.products.get")
-  def get(): Seq[Product] = productDao.get()
+  def get(): Set[Product] = productDao.get()
 
   @Auditable("audit.product.get")
   def get(id: Long): Option[Product] = productDao.get(id)

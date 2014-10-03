@@ -47,14 +47,14 @@ class CustomerEndpoint {
   /**
    * Get enabled Customers
    */
-  @RequestMapping(method = Array(RequestMethod.GET), params = Array("enabled=true"))
-  def getEnabled: Seq[Customer] = customerRepository.getEnabled
+  @RequestMapping(method = Array(RequestMethod.GET), params = Array("enabled"))
+  def getEnabled(@RequestParam enabled: Boolean): Set[Customer] = customerRepository.getEnabled(enabled)
 
   /**
    * Get all Customers within the system
    */
   @RequestMapping(method = Array(RequestMethod.GET))
-  def get(): Seq[Customer] = customerRepository.get()
+  def get(): Set[Customer] = customerRepository.get()
 
   /**
    * Gets a Customer given the specified id

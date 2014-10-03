@@ -61,7 +61,7 @@ trait ConfigurationDao {
   /**
    * Gets all Configurations for a given Customer
    */
-  def getByCustomer(customer: String): Seq[Configuration]
+  def getByCustomer(customer: String): Set[Configuration]
 
   /**
    * Updates the given Configuration, but is limited to:
@@ -140,7 +140,7 @@ class ConfigurationDaoJPA(activationDao: ActivationDao) extends ConfigurationDao
     query.getResultList.asScala.headOption.map(configurationEntityToConfiguration)
   }
 
-  def getByCustomer(customer: String): Seq[Configuration] = {
+  def getByCustomer(customer: String): Set[Configuration] = {
 
     log.debug("Getting Configurations for {}", customer)
 

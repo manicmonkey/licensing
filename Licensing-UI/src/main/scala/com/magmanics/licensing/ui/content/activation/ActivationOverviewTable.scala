@@ -50,11 +50,11 @@ class ActivationOverviewTable extends Table {
 
   setImmediate(true)
 
-  def setActivations(activations: Seq[Activation]) {
+  def setActivations(activations: Set[Activation]) {
 
     container.removeAllItems()
 
-    activations.foreach(container.addBean)
+    activations.toList.sortBy(_.created).foreach(container.addBean)
 
     if (container.size > 0) {
       select(firstItemId)
@@ -63,7 +63,7 @@ class ActivationOverviewTable extends Table {
   }
 
   def onActivationChanged(handler: Activation => Unit) {
-    addListener(new Property.ValueChangeListener() {
+    addValueChangeListener(new Property.ValueChangeListener() {
       override def valueChange(event: Property.ValueChangeEvent) {
         val activation = event.getProperty.getValue.asInstanceOf[Activation]
         assert(activation != null, "Null selection not allowed")
