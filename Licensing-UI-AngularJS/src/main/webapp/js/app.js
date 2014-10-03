@@ -2,12 +2,19 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
+                templateUrl: 'html/welcome.html'
+            })
+            .when('/activate', {
+                controller: 'ActivationController',
+                templateUrl: 'html/activation.html'
+            })
+            .when('/management', {
                 controller: 'ConfigurationController',
                 templateUrl: 'html/licence_management.html'
             })
-            .when('/activation', {
-                controller: 'ActivationController',
-                templateUrl: 'html/activation.html'
+            .when('/administration', {
+                controller: 'AdministrationController',
+                templateUrl: 'html/administration.html'
             })
             .when('/product_option', {
                 controller: 'ProductOptionController',
