@@ -9,6 +9,8 @@ Mockups can be seen using pencil.
 
 [![Build Status](https://travis-ci.org/manicmonkey/licensing.svg?branch=master)](https://travis-ci.org/manicmonkey/licensing)
 
+AngularJS frontend uses Grunt for build tasks and bower for dependency management. To get up and running install node/npm and run 'npm install' followed by 'grunt'. 
+
 Roadmap
 -------
 
@@ -34,3 +36,7 @@ todo...
 - access to customers (doesn't appear in domain model at moment?)
 
 Create product documentation: http://www.thinkful.com/learn/a-guide-to-using-github-pages/start/existing-project/project-page/existing-repo/
+
+Consider migrating DAOs to use Spring-data JPA Repository
+
+Extract mock data insertion - maybe use the REST API

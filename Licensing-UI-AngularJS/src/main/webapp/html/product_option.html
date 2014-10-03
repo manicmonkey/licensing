@@ -1,0 +1,44 @@
+<div class="row">
+    <div class="col-lg-12">
+        <h2>Product option</h2>
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="inputName" class="col-sm-2 control-label">Name</label>
+                <div class="col-sm-6">
+                    <input type="text" class="form-control" id="inputName" placeholder="Name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputType" class="col-sm-2 control-label">Type</label>
+                <div class="col-sm-6">
+                    <div class="btn-group" id="inputType">
+                        <button type="button" class="btn btn-default">Text</button>
+                        <button type="button" class="btn btn-default active">Radio</button>
+                        <button type="button" class="btn btn-default">List</button>
+                        <button type="button" class="btn btn-default">Date</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="has-error has-feedback">
+                    <label for="inputDefaultText" class="col-sm-2 control-label">Default (text)</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputDefaultText" placeholder="Default value">
+                        <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputDefaultDate" class="col-sm-2 control-label">Default (date)</label>
+                <div class="col-sm-6">
+                    <input type="date" class="form-control" id="inputDefaultDate">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-6">
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

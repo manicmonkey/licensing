@@ -18,6 +18,18 @@
   ],
   "dependencies": {
     "requirejs-bower": "~2.1.15",
-    "bootstrap": "~3.2.0"
+    "bootstrap": "~3.2.0",
+    "angular-route": "~1.2.26",
+    "angular": "~1.2.26",
+    "angular-resource": "~1.2.26",
+    "respond": "~1.4.2",
+    "jquery": "~2.1.1"
+  },
+  "exportsOverride": {
+    "bootstrap": {
+      "js": "dist/js/*.js",
+      "css": "dist/css/*.css",
+      "fonts": "dist/fonts/*.*"
+    }
   }
 }
