@@ -2,9 +2,8 @@
     <div class="col-lg-3">
         <select class="form-control"
                 ng-model="customer"
-                ng-change="updateConfiguration(customer.name)"
-                ng-options="customer as customer.name for customer in customers">
-            <option ng-repeat="customer in customers">{{customer.name}}</option>
+                ng-change="customerSelected(customer)"
+                ng-options="customer.name for customer in customers">
         </select>
     </div>
     <div class="col-lg-3">
@@ -12,12 +11,16 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-2">
-        <button type="button" class="btn btn-default">Disable configuration</button><br/>
-        <button type="button" class="btn btn-default">Increase activations</button><br/>
-        <button type="button" class="btn btn-default">Decrease activations</button>
+    <div class="col-md-2">
+        <div class="panel panel-default top_margin" style="margin-top: 15px;">
+            <div class="panel-body">
+                <button type="button" class="btn btn-default padding_right">Disable configuration</button><br/>
+                <button type="button" class="btn btn-default top_margin">Increase activations</button><br/>
+                <button type="button" class="btn btn-default top_margin">Decrease activations</button>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-10">
+    <div class="col-md-10">
         <div class="row">
             <div class="col-sm-10">
                 <h2>Licence configuration</h2>
@@ -27,7 +30,7 @@
             <div class="col-md-8">
                 <h3>Overview</h3>
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-hover">
                         <tr>
                             <th>Product</th>
                             <th>Created</th>
@@ -35,7 +38,7 @@
                             <th>Activations</th>
                             <th>Serial</th>
                         </tr>
-                        <tr ng-repeat="configuration in configurations">
+                        <tr ng-repeat="configuration in configurations" ng-mousedown="configurationSelected(configuration)" ng-class="{active: configuration.id == selectedConfigurationId}">
                             <td>{{configuration.product}}</td>
                             <td>{{configuration.created}}</td>
                             <td>{{configuration.user}}</td>
@@ -48,22 +51,55 @@
             <div class="col-md-4">
                 <h3>Product options</h3>
                 <div class="table-responsive">
-                    <table class="table table-striped table-hover">
+                    <table class="table table-hover">
                         <tr>
                             <th>Option</th>
                             <th>Value</th>
                         </tr>
-                        <tr>
-                            <td>CAL pooling</td>
-                            <td>separate</td>
+                        <tr ng-repeat="configurationOption in configurationOptions">
+                            <td>{{configurationOption.name}}</td>
+                            <td>{{configurationOption.value}}</td>
                         </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-10">
+                <h2>Licence activations</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <h3>Overview</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
                         <tr>
-                            <td>Client users</td>
-                            <td>10</td>
+                            <th>Created</th>
+                            <th>Machine identifier</th>
+                            <th>Product version</th>
+                            <th>Type</th>
                         </tr>
+                        <tr ng-repeat="activation in activations" ng-mousedown="activationSelected(activation)" ng-class="{active: activation.id == selectedActivationId}">
+                            <td>{{activation.created}}</td>
+                            <td>{{activation.machineIdentifier}}</td>
+                            <td>{{activation.productVersion}}</td>
+                            <td>{{activation.activationType.value}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h3>Activation info</h3>
+                <div class="table-responsive">
+                    <table class="table table-hover">
                         <tr>
-                            <td>Extra feature</td>
-                            <td>enabled</td>
+                            <th>Option</th>
+                            <th>Value</th>
+                        </tr>
+                        <tr ng-repeat="activationInfo in activationInfos">
+                            <td>{{activationInfo.name}}</td>
+                            <td>{{activationInfo.value}}</td>
                         </tr>
                     </table>
                 </div>
