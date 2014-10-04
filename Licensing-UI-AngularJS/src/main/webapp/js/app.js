@@ -1,4 +1,7 @@
+'use strict';
 angular.module('licensingApp', ['ngRoute', 'licensingServices'])
+    .constant('_', window._)
+    .constant('moment', window.moment)
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -24,24 +27,30 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 redirectTo: '/'
             })
     })
-    .controller('ConfigurationController', ['$scope', 'Configuration', function ($scope, Configuration) {
-        $scope.configurations = Configuration.query();
-//            [
-//            {
-//                product: "Product 1",
-//                created: "14-02-2014",
-//                user: "jbaxter",
-//                activations: "1 / 2",
-//                serial: "F3SC7-ASS54-L94FF-CXF1Q-POOUP"
-//            },
-//            {
-//                product: "Product 2",
-//                created: "13-02-2014",
-//                user: "mattf",
-//                activations: "1 / 1",
-//                serial: "ASX3S-P234D-PLM20-PK02B-WX923"
-//            }
-//        ]
+    .controller('ConfigurationController', ['$scope', '$q', '_', 'moment', 'Configuration', 'Customer', 'Product', function ($scope, $q, _, moment, Configuration, Customer, Product) {
+        Customer.query()
+            .$promise
+            .then(function(customers) {
+                $scope.customers = _.sortBy(customers, 'name');
+            });
+        $scope.updateConfiguration = function(customer) {
+            Configuration
+                .query({customer: customer})
+                .$promise
+                .then(function(configurations) {
+                    var productIds = _.map(configurations, 'productId');
+                    var uniqueProductIds = _.uniq(productIds);
+                    var productPromises = _.map(uniqueProductIds, function (id) { return Product.query({id: id}).$promise; });
+                    var productsPromise = $q.all(productPromises);
+                    productsPromise.then(function (products) {
+                        _.forEach(configurations, function(configuration) {
+                            configuration.product = _.find(products, {id: configuration.productId}).name;
+                            configuration.created = moment(new Date(configuration.created)).format('Do MMM YYYY');
+                        });
+                        $scope.configurations = configurations;
+                    });
+                });
+        };
     }])
     .controller('ActivationController', ['$scope', function ($scope) {}])
     .controller('ProductOptionController', ['$scope', function ($scope) {}]);
