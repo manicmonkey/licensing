@@ -40,3 +40,5 @@ Create product documentation: http://www.thinkful.com/learn/a-guide-to-using-git
 Consider migrating DAOs to use Spring-data JPA Repository
 
 Extract mock data insertion - maybe use the REST API
+
+AngularJS frontend - consider integrating less into grunt and created styles which extend bootstrap to add semantic value - ie rather than duplicate col-md-3 for all the labels in a form create a customer class and use 'extend'

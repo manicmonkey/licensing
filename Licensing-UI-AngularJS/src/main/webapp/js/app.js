@@ -38,17 +38,17 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
     }])
     .controller('ConfigurationController', ['$scope', '$q', '_', 'moment', 'Configuration', 'Customer', 'Product', function ($scope, $q, _, moment, Configuration, Customer, Product) {
         Customer
-            .query().$promise
+            .getAll({enabled: true}).$promise
             .then(function(customers) {
                 $scope.customers = _.sortBy(customers, 'name');
             });
         $scope.customerSelected = function(customer) {
             Configuration
-                .query({customer: customer.name}).$promise
+                .getAll({customer: customer.name}).$promise
                 .then(function(configurations) {
                     var productIds = _.map(configurations, 'productId');
                     var uniqueProductIds = _.uniq(productIds);
-                    var productPromises = _.map(uniqueProductIds, function (id) { return Product.query({id: id}).$promise; });
+                    var productPromises = _.map(uniqueProductIds, function (id) { return Product.getOne({id: id}).$promise; });
                     var productsPromise = $q.all(productPromises);
                     productsPromise.then(function (products) {
                         _.forEach(configurations, function(configuration) {
@@ -59,10 +59,12 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 });
             $scope.configurationOptions = [];
             $scope.activations = [];
+            $scope.selectedActivation = undefined;
             $scope.activationInfos = [];
         };
         $scope.configurationSelected = function(configuration) {
             $scope.selectedConfigurationId = configuration.id;
+            $scope.selectedActivation = undefined;
             $scope.activations = _.sortBy(configuration.activations, 'created').reverse();
             $scope.configurationOptions = _.sortBy(_.map(_.pairs(configuration.options),
                 function(pair) {
@@ -70,12 +72,35 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 }), 'name');
         };
         $scope.activationSelected = function(activation) {
-            $scope.selectedActivationId = activation.id;
+            $scope.selectedActivation = activation;
             $scope.activationInfos = _.sortBy(_.map(_.pairs(activation.extraInfo),
                 function(pair) {
                     return { name: pair[0], value: pair[1] }
                 }), 'name');
         }
     }])
+    .controller('ConfigurationCreation', ['$scope', '_', 'Product', function ($scope, _, Product) {
+        Product.getAll().$promise
+            .then(function(products) {
+                $scope.products = _.sortBy(products, 'name');
+            });
+
+        $scope.customerSelected = function(customer) {
+            $scope.customer = customer;
+        };
+        $scope.productSelected = function(product) {
+            $scope.product = product;
+        };
+        $scope.save = function() {
+            console.log("Got customer: " + $scope.customer)
+        };
+    }])
+    .controller('AdministrationController', [function (){}])
     .controller('ActivationController', ['$scope', function ($scope) {}])
-    .controller('ProductOptionController', ['$scope', function ($scope) {}]);
+    .controller('ProductOptionController', ['$scope', function ($scope) {}])
+    .controller('MenuController', ['$rootScope', '$scope', '$location', function ($rootScope, $scope, $location) {
+        $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
+            $scope.current = $location.path().substring(1);
+        });
+        $scope.current = $location.path().substring(1);
+    }]);

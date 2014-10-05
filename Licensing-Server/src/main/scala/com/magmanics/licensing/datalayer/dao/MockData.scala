@@ -80,9 +80,11 @@ class MockData {
     val licenceConfiguration2 = buildConfiguration(true, 1, product2, customer2, "matth")
     val licenceConfiguration3 = buildConfiguration(true, 2, product2, customer2, "lees", Map("Users" -> "5"))
 
-    buildActivation("daffy_duck", "100608", licenceConfiguration, Map("hostname" -> "devi8", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
-    buildActivation("daffy_duck", "110715", licenceConfiguration, Map("hostname" -> "dev0", "memory" -> "8GB", "diskspace" -> "2TB"))
+    buildActivation("eagle_eye_1", "100608", licenceConfiguration, Map("hostname" -> "eagle_eye_1", "memory" -> "3.25GB", "operating.system" -> "Windows 7 x86"))
+    buildActivation("eagle_eye_1", "110715", licenceConfiguration, Map("hostname" -> "eagle_eye_1", "memory" -> "8GB", "diskspace" -> "2TB", "operating.system" -> "Windows 8.1"))
+    buildActivation("movies_store", "110715", licenceConfiguration2, Map("hostname" -> "movies_store", "memory" -> "4GB", "diskspace" -> "16TB", "operating.system" -> "Windows 8"))
     configurationDao.update(licenceConfiguration)
+    configurationDao.update(licenceConfiguration2)
 
     addAudits()
   }
