@@ -3,6 +3,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
     .constant('_', window._)
     .constant('moment', window.moment)
     .constant('credentials', 'YWRtaW46cGFzc3dvcmQ=')
+    .constant('defaultDateFormat', 'Do MMM YYYY')
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -28,6 +29,13 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 redirectTo: '/'
             })
     })
+    .filter('formatDate', ['moment', 'defaultDateFormat', function (moment, defaultDateFormat) {
+        return function (input, format) {
+            if (!format)
+                format = defaultDateFormat;
+            return moment(new Date(input)).format(format);
+        };
+    }])
     .controller('ConfigurationController', ['$scope', '$q', '_', 'moment', 'Configuration', 'Customer', 'Product', function ($scope, $q, _, moment, Configuration, Customer, Product) {
         Customer
             .query().$promise
@@ -45,10 +53,6 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                     productsPromise.then(function (products) {
                         _.forEach(configurations, function(configuration) {
                             configuration.product = _.find(products, {id: configuration.productId}).name;
-                            configuration.created = moment(new Date(configuration.created)).format('Do MMM YYYY');
-                            _.forEach(configuration.activations, function(activation) {
-                                activation.created = moment(new Date(activation.created)).format('Do MMM YYYY');
-                            });
                         });
                         $scope.configurations = _.sortBy(configurations, 'created').reverse();
                     });

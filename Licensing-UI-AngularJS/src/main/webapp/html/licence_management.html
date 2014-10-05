@@ -40,7 +40,7 @@
                         </tr>
                         <tr ng-repeat="configuration in configurations" ng-mousedown="configurationSelected(configuration)" ng-class="{active: configuration.id == selectedConfigurationId}">
                             <td>{{configuration.product}}</td>
-                            <td>{{configuration.created}}</td>
+                            <td>{{configuration.created | formatDate}}</td>
                             <td>{{configuration.user}}</td>
                             <td>{{configuration.activations.length}} / {{configuration.maxActivations}}</td>
                             <td>{{configuration.serial}}</td>
@@ -81,7 +81,7 @@
                             <th>Type</th>
                         </tr>
                         <tr ng-repeat="activation in activations" ng-mousedown="activationSelected(activation)" ng-class="{active: activation.id == selectedActivationId}">
-                            <td>{{activation.created}}</td>
+                            <td>{{activation.created | formatDate}}</td>
                             <td>{{activation.machineIdentifier}}</td>
                             <td>{{activation.productVersion}}</td>
                             <td>{{activation.activationType.value}}</td>
