@@ -36,6 +36,16 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             return moment(new Date(input)).format(format);
         };
     }])
+    .filter('cleverOrdering', ['_', function(_) {
+        return function (input) {
+            //sort as int if they're all ints
+            if (_.all(input, function(v) { return !isNaN(parseInt(v)); })) {
+                return _.sortBy(input, function(v) { return parseInt(v); });
+            } else {
+                return input.sort();
+            }
+        };
+    }])
     .controller('ConfigurationController', ['$scope', '$q', '_', 'moment', 'Configuration', 'Customer', 'Product', function ($scope, $q, _, moment, Configuration, Customer, Product) {
         Customer
             .getAll({enabled: true}).$promise

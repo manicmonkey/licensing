@@ -193,7 +193,7 @@
                                 <select id="inputConfigurationOption4"
                                         class="form-control"
                                         ng-model="option.value"
-                                        ng-options="value for value in option.values">
+                                        ng-options="value for value in option.values | cleverOrdering">
                                 </select>
                             </div>
                         </div>
