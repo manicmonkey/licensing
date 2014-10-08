@@ -3,7 +3,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
     .constant('_', window._)
     .constant('moment', window.moment)
     .constant('credentials', 'YWRtaW46cGFzc3dvcmQ=')
-    .constant('defaultDateFormat', 'Do MMM YYYY')
+    .constant('defaultDateFormat', 'Do MMM YYYY HH:mm')
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -57,32 +57,29 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                         $scope.configurations = _.sortBy(configurations, 'created').reverse();
                     });
                 });
-            $scope.configurationOptions = [];
-            $scope.activations = [];
+            $scope.selectedConfiguration = undefined;
             $scope.selectedActivation = undefined;
-            $scope.activationInfos = [];
         };
         $scope.configurationSelected = function(configuration) {
-            $scope.selectedConfigurationId = configuration.id;
+            $scope.selectedConfiguration = configuration;
             $scope.selectedActivation = undefined;
-            $scope.activations = _.sortBy(configuration.activations, 'created').reverse();
-            $scope.configurationOptions = _.sortBy(_.map(_.pairs(configuration.options),
-                function(pair) {
-                    return { name: pair[0], value: pair[1] }
-                }), 'name');
         };
         $scope.activationSelected = function(activation) {
             $scope.selectedActivation = activation;
-            $scope.activationInfos = _.sortBy(_.map(_.pairs(activation.extraInfo),
-                function(pair) {
-                    return { name: pair[0], value: pair[1] }
-                }), 'name');
-        }
+        };
     }])
-    .controller('ConfigurationCreation', ['$scope', '_', 'Product', function ($scope, _, Product) {
+    .controller('ConfigurationCreation', ['$scope', '_', 'Configuration', 'Product', function ($scope, _, Configuration, Product) {
+        //at the moment the product options which the user fills in operates directly on the product.options model - maybe
+        //it would be better to create a configuration object here and operate on that (including maxActivations)
         Product.getAll().$promise
             .then(function(products) {
-                $scope.products = _.sortBy(products, 'name');
+                _.forEach(products, function(product) {
+                    _.forEach(product.options, function(option) {
+                        if (option.default != undefined)
+                            option.value = option.default;
+                    });
+                });
+                $scope.products = products;
             });
 
         $scope.customerSelected = function(customer) {
@@ -92,7 +89,28 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             $scope.product = product;
         };
         $scope.save = function() {
-            console.log("Got customer: " + $scope.customer)
+            var configurationOptions = _.map($scope.product.options, function(option) {
+                var o = {};
+                o[option.name] = option.value;
+                return o;
+            });
+            configurationOptions = _.reduce(configurationOptions, function(left, right) {
+                for (var option in right) {
+                    left[option] = right[option];
+                }
+                return left;
+            }, {});
+            var configuration = {
+                user: "jbaxter", //todo this should be set automatically by server...
+                productId: $scope.product.id,
+                customerId: $scope.customer.id,
+                created: Math.round(new Date().getTime() / 1000),
+                enabled: true,
+                activations: [],
+                maxActivations: $scope.product.maxActivations,
+                options: configurationOptions
+            };
+            Configuration.save(configuration);
         };
     }])
     .controller('AdministrationController', [function (){}])

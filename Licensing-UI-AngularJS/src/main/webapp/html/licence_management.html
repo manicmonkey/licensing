@@ -16,11 +16,11 @@
     <div class="col-md-2">
         <div class="panel panel-default top_margin" style="margin-top: 15px;">
             <div class="panel-body">
-                <button type="button" class="btn btn-default padding_right">Disable configuration</button>
+                <button type="button" class="btn btn-default padding_right" ng-class="{disabled : selectedConfiguration == undefined}">Disable configuration</button>
                 <br/>
-                <button type="button" class="btn btn-default top_margin">Increase activations</button>
+                <button type="button" class="btn btn-default top_margin" ng-class="{disabled : selectedConfiguration == undefined}">Increase activations</button>
                 <br/>
-                <button type="button" class="btn btn-default top_margin">Decrease activations</button>
+                <button type="button" class="btn btn-default top_margin" ng-class="{disabled : selectedConfiguration == undefined}">Decrease activations</button>
             </div>
         </div>
     </div>
@@ -45,7 +45,7 @@
                         </tr>
                         <tr ng-repeat="configuration in configurations"
                             ng-mousedown="configurationSelected(configuration)"
-                            ng-class="{active: configuration.id == selectedConfigurationId}">
+                            ng-class="{active: configuration.id == selectedConfiguration.id}">
                             <td>{{configuration.product}}</td>
                             <td>{{configuration.created | formatDate}}</td>
                             <td>{{configuration.user}}</td>
@@ -64,9 +64,9 @@
                             <th>Option</th>
                             <th>Value</th>
                         </tr>
-                        <tr ng-repeat="configurationOption in configurationOptions">
-                            <td>{{configurationOption.name}}</td>
-                            <td>{{configurationOption.value}}</td>
+                        <tr ng-repeat="(name, value) in selectedConfiguration.options">
+                            <td>{{name}}</td>
+                            <td>{{value}}</td>
                         </tr>
                     </table>
                 </div>
@@ -89,7 +89,7 @@
                             <th>Product version</th>
                             <th>Type</th>
                         </tr>
-                        <tr ng-repeat="activation in activations" ng-mousedown="activationSelected(activation)"
+                        <tr ng-repeat="activation in selectedConfiguration.activations | orderBy:'created'" ng-mousedown="activationSelected(activation)"
                             ng-class="{active: activation.id == selectedActivation.id}">
                             <td>{{activation.created | formatDate}}</td>
                             <td>{{activation.machineIdentifier}}</td>
@@ -108,9 +108,9 @@
                             <th>Option</th>
                             <th>Value</th>
                         </tr>
-                        <tr ng-repeat="activationInfo in activationInfos">
-                            <td>{{activationInfo.name}}</td>
-                            <td>{{activationInfo.value}}</td>
+                        <tr ng-repeat="(name, value) in selectedActivation.extraInfo">
+                            <td>{{name}}</td>
+                            <td>{{value}}</td>
                         </tr>
                     </table>
                 </div>
@@ -125,8 +125,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="windowTitle">Create configuration</h4>
             </div>
             <div class="modal-body">
@@ -139,7 +138,7 @@
                                     ng-required="true"
                                     ng-model="customer"
                                     ng-change="customerSelected(customer)"
-                                    ng-options="customer.name for customer in customers">
+                                    ng-options="customer.name for customer in customers | orderBy:'name'">
                             </select>
                         </div>
                     </div>
@@ -152,98 +151,67 @@
                                     class="form-control"
                                     ng-model="product"
                                     ng-change="productSelected(product)"
-                                    ng-options="product.name for product in products">
+                                    ng-options="product.name for product in products | orderBy:'name'">
                             </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <label for="inputConfigurationMaxActivations" class="control-label col-md-4">Max Activations</label>
+                        <div class="col-md-8">
+                            <input id="inputConfigurationMaxActivations"
+                                    class="form-control"
+                                    type="text"
+                                    ng-model="product.maxActivations">
                         </div>
                     </div>
                 </div>
                 <hr>
-                <div class="form-group">
-                    <div class="row">
-                        <label for="inputConfigurationOption1" class="control-label col-md-4">Boolean option</label>
-                        <div class="col-md-8">
-                            <input id="inputConfigurationOption1"
-                                   type="checkbox"
-                                   ng-model="option1"
-                                   ng-change="optionChanged(option1)">
+                <div class="form-group" ng-repeat="option in product.options | orderBy:'name'">
+                    <ng-switch on="option.type">
+                        <div class="row" ng-switch-when="bool">
+                            <label for="inputConfigurationOption1" class="control-label col-md-4">{{option.name}}</label>
+                            <div class="col-md-8">
+                                <input id="inputConfigurationOption1"
+                                       type="checkbox"
+                                       ng-model="option.value">
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <label for="inputConfigurationOption2" class="control-label col-md-4">Text option</label>
-                        <div class="col-md-8">
-                            <input id="inputConfigurationOption2"
-                                   class="form-control"
-                                   type="text"
-                                   ng-model="option2"
-                                   ng-change="optionChanged(option2)">
+                        <div class="row" ng-switch-when="text">
+                            <label for="inputConfigurationOption2" class="control-label col-md-4">{{option.name}}</label>
+                            <div class="col-md-8">
+                                <input id="inputConfigurationOption2"
+                                       class="form-control"
+                                       type="text"
+                                       ng-model="option.value">
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <label for="inputConfigurationOption3_1" class="control-label col-md-4">(Small) List options</label>
-                        <div class="col-md-8">
-                            <input id="inputConfigurationOption3_1"
-                                   type="radio"
-                                   ng-model="option3"
-                                   value="1">
-                            Option 1
+                        <div class="row" ng-switch-when="list">
+                            <label for="inputConfigurationOption4" class="control-label col-md-4">{{option.name}}</label>
+                            <div class="col-md-8">
+                                <select id="inputConfigurationOption4"
+                                        class="form-control"
+                                        ng-model="option.value"
+                                        ng-options="value for value in option.values">
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-4">
-                            <input id="inputConfigurationOption3_2"
-                                   type="radio"
-                                   ng-model="option3"
-                                   value="2">
-                            Option 2
+                        <div class="row" ng-switch-when="date">
+                            <label for="inputConfigurationOption5" class="control-label col-md-4">{{option.name}}</label>
+                            <div class="col-md-8">
+                                <input id="inputConfigurationOption5"
+                                       class="form-control"
+                                       type="date"
+                                       ng-model="option.value">
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-8 col-md-offset-4">
-                            <input id="inputConfigurationOption3_3"
-                                   type="radio"
-                                   ng-model="option3"
-                                   value="3">
-                            Option 3
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <label for="inputConfigurationOption4" class="control-label col-md-4">(Large) List options</label>
-                        <div class="col-md-8">
-                            <select id="inputConfigurationOption4"
-                                    class="form-control"
-                                    ng-model="option4">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                                <option>6</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <label for="inputConfigurationOption5" class="control-label col-md-4">Date option</label>
-                        <div class="col-md-8">
-                            <input id="inputConfigurationOption5"
-                                   class="form-control"
-                                   type="date"
-                                   ng-model="option5"
-                                   ng-change="optionChanged(option5)">
-                        </div>
-                    </div>
+                    </ng-switch>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="save()">Save changes</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save()">Save changes</button>
             </div>
         </div>
     </div>

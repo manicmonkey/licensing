@@ -12,7 +12,7 @@ class AllowAllCrossOriginFilter extends Filter {
 
   override def doFilter(request: ServletRequest, response: ServletResponse, chain: FilterChain): Unit = {
     response.asInstanceOf[HttpServletResponse].addHeader("Access-Control-Allow-Origin", "*")
-    response.asInstanceOf[HttpServletResponse].addHeader("Access-Control-Allow-Headers", "Authorization")
+    response.asInstanceOf[HttpServletResponse].addHeader("Access-Control-Allow-Headers", "Authorization, Content-Type")
     chain.doFilter(request, response)
   }
 

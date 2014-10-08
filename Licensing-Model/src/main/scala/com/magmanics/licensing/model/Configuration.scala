@@ -48,12 +48,12 @@ case class Configuration(@JsonDeserialize(contentAs=classOf[java.lang.Long]) id:
                          user: String,
                          productId: Long,
                          customerId: Long,
-                         created: Date = new Date,
+                         created: Date = new Date, //todo make optional
                          serial: Option[String] = None,
                          options: Map[String, String] = Map(),
                          var enabled: Boolean = true,
                          var maxActivations: Int = 1,
-                         var activations: Set[Activation] = Set()) {
+                         var activations: Set[Activation] = Set()) { //todo could make this optional so rest clients don't need to specify it
 
   if(maxActivations < 1) {
     throw new IllegalStateException("maxActivations cannot be less than 1 (received " + maxActivations + ")")
