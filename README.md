@@ -36,11 +36,3 @@ todo...
 - access to customers (doesn't appear in domain model at moment?)
 
 Create product documentation: http://www.thinkful.com/learn/a-guide-to-using-github-pages/start/existing-project/project-page/existing-repo/
-
-Consider migrating DAOs to use Spring-data JPA Repository
-
-Extract mock data insertion - maybe use the REST API
-
-AngularJS frontend - consider integrating less into grunt and created styles which extend bootstrap to add semantic value - ie rather than duplicate col-md-3 for all the labels in a form create a customer class and use 'extend'
-
-Would be nice to use radio buttons when a list option only has a few options
