@@ -104,7 +104,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 user: "jbaxter", //todo this should be set automatically by server...
                 productId: $scope.product.id,
                 customerId: $scope.customer.id,
-                created: Math.round(new Date().getTime() / 1000),
+                created: new Date().getTime(),
                 enabled: true,
                 activations: [],
                 maxActivations: $scope.product.maxActivations,
