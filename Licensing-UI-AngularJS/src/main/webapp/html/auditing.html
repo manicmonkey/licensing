@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-md-12">Select criteria to filter by and press the 'Filter' button...</div>
+</div>
+<style>
+    .date_control_fix {
+        padding-left: 10px;
+        padding-right: 0px;
+    }
+</style>
+<div class="row top_margin">
+    <div class="col-md-2">
+        <div class="row">
+            <div class="col-md-3">From:</div>
+            <div class="col-md-9 date_control_fix"><input class="form-control" type="date" ng-model="search.fromDate"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">To:</div>
+            <div class="col-md-9 date_control_fix"><input class="form-control" type="date" ng-model="search.toDate"></div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-2">Users:</div>
+            <div class="col-md-10">
+                <table class="table">
+                    <tr ng-repeat="user in search.users"
+                        ng-class="{active: user.selected == true}"
+                        ng-mousedown="selectUser(user)">
+                        <td><input type="checkbox" ng-checked="user.selected"></td>
+                        <td>{{user.name}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-4">Audit codes:</div>
+            <div class="col-md-8">
+                <table class="table">
+                    <tr ng-repeat="auditCode in search.auditCodes"
+                        ng-class="{active: auditCode.selected == true}"
+                        ng-mousedown="selectAuditCode(auditCode)">
+                        <td><input type="checkbox" ng-checked="auditCode.selected"></td>
+                        <td>{{auditCode.name}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-3">Message:</div>
+            <div class="col-md-9"><input class="form-control" ng-model="search.message" type="text"></div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-2 col-md-offset-10">
+        <button class="btn btn-primary" type="button" ng-click="filter(search)">Filter</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped top_margin">
+            <tr>
+                <th>Created</th>
+                <th>User</th>
+                <th>Audit Code</th>
+                <th>Audit Message</th>
+            </tr>
+            <tr ng-repeat="audit in audits">
+                <td>{{audit.created | formatDate}}</td>
+                <td>{{audit.username}}</td>
+                <td>{{audit.auditCode.value}}</td>
+                <td>{{audit.auditMessage}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

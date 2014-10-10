@@ -89,7 +89,8 @@
                             <th>Product version</th>
                             <th>Type</th>
                         </tr>
-                        <tr ng-repeat="activation in selectedConfiguration.activations | orderBy:'created'" ng-mousedown="activationSelected(activation)"
+                        <tr ng-repeat="activation in selectedConfiguration.activations | orderBy:'created'"
+                            ng-mousedown="activationSelected(activation)"
                             ng-class="{active: activation.id == selectedActivation.id}">
                             <td>{{activation.created | formatDate}}</td>
                             <td>{{activation.machineIdentifier}}</td>

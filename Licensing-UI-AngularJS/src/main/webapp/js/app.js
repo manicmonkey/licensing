@@ -4,6 +4,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
     .constant('moment', window.moment)
     .constant('credentials', 'YWRtaW46cGFzc3dvcmQ=')
     .constant('defaultDateFormat', 'Do MMM YYYY HH:mm')
+    .constant('formDateFormat', 'YYYY-MM-DD')
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -20,6 +21,10 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             .when('/administration', {
                 controller: 'AdministrationController',
                 templateUrl: 'html/administration.html'
+            })
+            .when('/administration/auditing', {
+                controller: 'AuditController',
+                templateUrl: 'html/auditing.html'
             })
             .when('/product_option', {
                 controller: 'ProductOptionController',
@@ -99,6 +104,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             $scope.product = product;
         };
         $scope.save = function() {
+            //todo probably can replace this complicated map/reduce with pluck
             var configurationOptions = _.map($scope.product.options, function(option) {
                 var o = {};
                 o[option.name] = option.value;
@@ -124,6 +130,47 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
         };
     }])
     .controller('AdministrationController', [function (){}])
+    .controller('AuditController', ['$scope', 'moment', 'formDateFormat', 'Audit', function ($scope, moment, formDateFormat, Audit){
+        $scope.search = {
+            fromDate: moment(new Date()).subtract(1, 'week').format(formDateFormat),
+            toDate: moment(new Date()).format(formDateFormat),
+            message: ''
+        };
+        Audit.getAuditCodes().$promise
+            .then(function(auditCodes) {
+                $scope.search.auditCodes = _.map(auditCodes, function(auditCode) {
+                    return {
+                        name: auditCode.value, //todo should get i18n version
+                        selected: true
+                    };
+                });
+            });
+        Audit.getUsernames().$promise
+            .then(function(usernames) {
+                $scope.search.users = _.map(usernames.sort(), function(username) {
+                    return {
+                        name: username,
+                        selected: true
+                    };
+                });
+            });
+        $scope.selectUser = function(user) {
+            user.selected = !user.selected; //todo this could go on a user object
+        };
+        $scope.selectAuditCode = function(auditCode) {
+            auditCode.selected = !auditCode.selected; //todo this could go on a user object
+        };
+        $scope.filter = function(search) {
+            $scope.audits = Audit.getAudits(
+                {
+                    "fromDate": moment(search.fromDate).toDate(),
+                    "toDate": moment(search.toDate).add(1, 'day').toDate(), //add a day for query so we include the whole day
+                    "users": _.pluck(_.filter(search.users, 'selected'), 'name'),
+                    "auditCodes": _.pluck(_.filter(search.auditCodes, 'selected'), 'name'),
+                    "text": search.message
+                });
+        }
+    }])
     .controller('ActivationController', ['$scope', function ($scope) {}])
     .controller('ProductOptionController', ['$scope', function ($scope) {}])
     .controller('MenuController', ['$rootScope', '$scope', '$location', function ($rootScope, $scope, $location) {

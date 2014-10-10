@@ -1,4 +1,31 @@
 angular.module('licensingServices', ['ngResource'])
+    .factory('Audit', ['$resource', '$http', 'credentials',
+        function ($resource, $http, credentials) {
+            $http.defaults.headers.common['Authorization'] = 'Basic ' + credentials;
+            return $resource('http://localhost:8080/rest/audits/:submodel', {}, {
+                getAudits: {
+                    method: 'POST',
+                    params: {
+                        submodel: 'messages'
+                    },
+                    isArray: true
+                },
+                getUsernames: {
+                    method: 'GET',
+                    params: {
+                        submodel: 'usernames'
+                    },
+                    isArray: true
+                },
+                getAuditCodes: {
+                    method: 'GET',
+                    params: {
+                        submodel: 'auditcodes'
+                    },
+                    isArray: true
+                }
+            });
+        }])
     .factory('Configuration', ['$resource', '$http', 'credentials',
         function ($resource, $http, credentials) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + credentials;

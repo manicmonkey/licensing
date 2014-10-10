@@ -4,6 +4,7 @@
              version="2.1">
     <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
         <properties>
+            <!-- todo change this to create if not exists -->
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
         </properties>
     </persistence-unit>

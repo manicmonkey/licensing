@@ -114,7 +114,7 @@ class AuditDaoJPA extends AuditDao {
     val queryString =
       if (auditSearch.text == "")
         "SELECT a FROM AuditEntity a WHERE a.created > :from AND a.created < :to AND a.username IN :users AND a.auditCode IN :auditCodes"
-      else
+      else //todo should be ilike
         "SELECT a FROM AuditEntity a WHERE a.created > :from AND a.created < :to AND a.username IN :users AND a.auditCode IN :auditCodes AND a.auditMessage LIKE :text"
 
     val query = em.createQuery[AuditEntity](queryString, classOf[AuditEntity])

@@ -35,6 +35,7 @@ class AuditEndpoint {
 
   /**
    * @return a sequence of [[com.magmanics.auditing.model.Audit Audits]] which conform to the given search criteria
+   * todo this might make more sense as a GET with query params
    */
   @RequestMapping(method = Array(RequestMethod.POST), value = Array("/messages"))
   def getAuditMessages(@RequestBody auditSearch: AuditSearchDto): Seq[Audit] = auditService.getAuditMessages(auditSearch)
