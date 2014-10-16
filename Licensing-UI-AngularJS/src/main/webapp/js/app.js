@@ -14,10 +14,6 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 controller: 'ActivationController',
                 templateUrl: 'html/activation.html'
             })
-            .when('/management', {
-                controller: 'ConfigurationController',
-                templateUrl: 'html/licence_management.html'
-            })
             .when('/administration', {
                 controller: 'AdministrationController',
                 templateUrl: 'html/administration.html'
@@ -25,6 +21,14 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             .when('/administration/auditing', {
                 controller: 'AuditController',
                 templateUrl: 'html/auditing.html'
+            })
+            .when('/login', {
+                controller: 'LoginController',
+                templateUrl: 'html/login.html'
+            })
+            .when('/management', {
+                controller: 'ConfigurationController',
+                templateUrl: 'html/licence_management.html'
             })
             .when('/product_option', {
                 controller: 'ProductOptionController',
@@ -49,6 +53,28 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             } else {
                 return input.sort();
             }
+        };
+    }])
+    .controller('LoginController', ['$rootScope', '$scope', '$location', 'Authentication', function($rootScope, $scope, $location, Authentication) {
+        $scope.loginError = "";
+        $scope.login = function() {
+            Authentication.login({
+                username: $scope.user.username,
+                password: $scope.user.password
+            }).$promise.
+            then(function (result) {
+                if (result.authenticated) {
+                    $rootScope.loggedIn = true;
+                    //forward on to the original destination if there is one
+                    if ($rootScope.loginDestination != null) {
+                        $location.path($rootScope.loginDestination);
+                    } else {
+                        $location.path('/');
+                    }
+                } else {
+                    $scope.loginError = "Could not log in - try again";
+                }
+            });
         };
     }])
     .controller('ConfigurationController', ['$scope', '$q', '_', 'moment', 'Configuration', 'Customer', 'Product', function ($scope, $q, _, moment, Configuration, Customer, Product) {
@@ -173,9 +199,29 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
     }])
     .controller('ActivationController', ['$scope', function ($scope) {}])
     .controller('ProductOptionController', ['$scope', function ($scope) {}])
-    .controller('MenuController', ['$rootScope', '$scope', '$location', function ($rootScope, $scope, $location) {
+    .controller('MenuController', ['$rootScope', '$scope', '$location', 'Authentication', function ($rootScope, $scope, $location, Authentication) {
         $rootScope.$on('$routeChangeSuccess', function(event, current, previous) {
             $scope.current = $location.path().substring(1);
         });
         $scope.current = $location.path().substring(1);
-    }]);
+        $scope.logout = function() {
+            Authentication.logout().$promise
+                .then(function() {
+                    $rootScope.loggedIn = false;
+                    $location.path('/login');
+                });
+        }
+    }])
+    .run(function($rootScope, $location) {
+        $rootScope.$on('$routeChangeStart', function(event, next, current) {
+            //todo a better way of doing this would be to register a low level http interceptor which redirects to login when we get 401
+            if (!$rootScope.loggedIn) {
+                // user not logged in - redirect to /login
+                if (next.templateUrl === 'html/login.html') {
+                } else {
+                    $rootScope.loginDestination = next.originalPath;
+                    $location.path('/login');
+                }
+            }
+        });
+    });

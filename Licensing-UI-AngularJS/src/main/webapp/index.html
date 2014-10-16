@@ -38,12 +38,14 @@
 <div class="container-fluid">
     <h1>Product Licensing<small>The home of all your product licensing dreams</small></h1>
     <div class="panel panel-default">
+        <!-- todo change to navbar as it works better on mobile and its easy to make the logout button float right -->
         <div class="panel-body" ng-controller="MenuController">
             <a class="btn btn-default" href="#" ng-class="{active: current == ''}"><span class="glyphicon glyphicon-home"></span> Home</a>
             <span class="glyphicon glyphicon-chevron-right"></span>
             <a class="btn btn-default" href="#activate" ng-class="{active: current == 'activate'}">Activate Licence</a>
             <a class="btn btn-default" href="#management" ng-class="{active: current == 'management'}">Licence Management</a>
             <a class="btn btn-default" href="#administration/auditing" ng-class="{active: current == 'administration'}">Administration</a>
+            <a class="btn btn-default" ng-class="{hidden: !loggedIn}" ng-click="logout()">Logout</a>
         </div>
     </div>
     <div class="panel panel-default">

@@ -44,6 +44,16 @@ trait AuthenticationService {
    * @return whether the user authenticated with acceptable credentials and authorities
    */
   def login(name: String, password: String): Boolean
+
+  /**
+   * @return Whether a user is logged in
+   */
+  def loggedIn(): Boolean
+
+  /**
+   * Logout the current user
+   */
+  def logout()
 }
 
 class AuthenticationServiceImpl(authenticationManager: AuthenticationManager) extends AuthenticationService {
@@ -63,7 +73,7 @@ class AuthenticationServiceImpl(authenticationManager: AuthenticationManager) ex
     try {
       val result: Authentication = authenticationManager.authenticate(request)
       if (result.getAuthorities.exists(p => p.getAuthority == "ROLE_USER")) {
-        SecurityContextHolder.getContext().setAuthentication(result)
+        SecurityContextHolder.getContext.setAuthentication(result)
         return true
       }
     } catch {
@@ -71,5 +81,25 @@ class AuthenticationServiceImpl(authenticationManager: AuthenticationManager) ex
     }
     false
     //spring security configured to allow anonymous access so authentication exceptions are not expected
+  }
+
+
+  /**
+   * @return Whether a user is logged in
+   */
+  override def loggedIn(): Boolean = {
+    log.debug("Checking a user is logged in")
+    val authentication = SecurityContextHolder.getContext.getAuthentication
+    val loggedIn = authentication != null && authentication.getAuthorities.exists(p => p.getAuthority == "ROLE_USER")
+    log.debug("Logged in = {}", loggedIn)
+    loggedIn
+  }
+
+  /**
+   * Logout the current user
+   */
+  override def logout() {
+    log.debug("Logging out")
+    SecurityContextHolder.clearContext()
   }
 }

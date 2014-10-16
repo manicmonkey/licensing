@@ -26,6 +26,21 @@ angular.module('licensingServices', ['ngResource'])
                 }
             });
         }])
+    .factory('Authentication', ['$resource',
+        function($resource) {
+            return $resource('http://localhost:8080/rest/authentication', {}, {
+                isLoggedIn: {
+                    method: 'GET'
+                },
+                login: {
+                    method: 'POST'
+                },
+                logout: {
+                    method: 'DELETE'
+                }
+            });
+        }
+    ])
     .factory('Configuration', ['$resource', '$http', 'credentials',
         function ($resource, $http, credentials) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + credentials;
