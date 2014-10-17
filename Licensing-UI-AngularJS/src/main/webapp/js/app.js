@@ -167,7 +167,10 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 $scope.search.auditCodes = _.map(auditCodes, function(auditCode) {
                     return {
                         name: auditCode.value,
-                        selected: true
+                        selected: true,
+                        select: function() {
+                            this.selected = !this.selected;
+                        }
                     };
                 });
             });
@@ -176,16 +179,13 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 $scope.search.users = _.map(usernames.sort(), function(username) {
                     return {
                         name: username,
-                        selected: true
+                        selected: true,
+                        select: function() {
+                            this.selected = !this.selected;
+                        }
                     };
                 });
             });
-        $scope.selectUser = function(user) {
-            user.selected = !user.selected; //todo this could go on a user object
-        };
-        $scope.selectAuditCode = function(auditCode) {
-            auditCode.selected = !auditCode.selected; //todo this could go on an audit object
-        };
         $scope.filter = function(search) {
             $scope.audits = Audit.getAudits(
                 {

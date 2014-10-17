@@ -25,7 +25,7 @@
                 <table class="table">
                     <tr ng-repeat="user in search.users"
                         ng-class="{active: user.selected == true}"
-                        ng-mousedown="selectUser(user)">
+                        ng-mousedown="user.select()">
                         <td><input type="checkbox" ng-checked="user.selected"></td>
                         <td>{{user.name}}</td>
                     </tr>
@@ -40,7 +40,7 @@
                 <table class="table">
                     <tr ng-repeat="auditCode in search.auditCodes"
                         ng-class="{active: auditCode.selected == true}"
-                        ng-mousedown="selectAuditCode(auditCode)">
+                        ng-mousedown="auditCode.select()">
                         <td><input type="checkbox" ng-checked="auditCode.selected"></td>
                         <td>{{auditCode.name}}</td>
                     </tr>
