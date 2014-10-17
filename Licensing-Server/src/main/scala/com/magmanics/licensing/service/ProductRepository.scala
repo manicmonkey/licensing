@@ -25,7 +25,6 @@
 package com.magmanics.licensing.service
 
 import com.magmanics.auditing.Auditable
-import com.magmanics.binding.DataBindPublisher
 import com.magmanics.licensing.datalayer.dao.ProductDao
 import com.magmanics.licensing.model.Product
 import org.slf4j.LoggerFactory
@@ -72,7 +71,6 @@ class ProductRepositoryImpl(productDao: ProductDao) extends ProductRepository {
 
   @PreAuthorize("hasRole('CREATE_PRODUCT')")
   @Auditable("audit.product.create")
-  @DataBindPublisher(Array(classOf[Product]))
   def create(product: Product): Product = {
     log.debug("Creating {}", product)
     productDao.create(product)
@@ -80,7 +78,6 @@ class ProductRepositoryImpl(productDao: ProductDao) extends ProductRepository {
 
   @PreAuthorize("hasRole('UPDATE_PRODUCT')")
   @Auditable("audit.product.update")
-  @DataBindPublisher(Array(classOf[Product]))
   def update(product: Product) {
     log.debug("Updating {}", product)
     productDao.update(product)
