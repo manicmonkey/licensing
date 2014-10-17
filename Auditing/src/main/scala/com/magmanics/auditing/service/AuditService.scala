@@ -69,7 +69,7 @@ class AuditServiceImpl extends AuditService {
     auditDao.create(audit)
   }
 
-  def getAuditCodes = { //todo language translation should happen in service layer? so we can reorder...
+  def getAuditCodes = {
     log.info("Getting distinct AuditCodes")
     auditDao.getAuditCodes
   }

@@ -31,7 +31,6 @@ import org.scalatest.GivenWhenThen
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 10-Aug-2010
  */
-//todo these service integration tests should help allow us to substitute the ui without changing anything downwards
 class CustomerRepositoryIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen { //focus on high level
 
   def contextLocation = "spring/integration-test.xml"
@@ -56,7 +55,7 @@ class CustomerRepositoryIntegrationTest extends TransactionalSpringBasedSuite wi
       customerService.create(Customer(name = "Customer one"))
 
       Then("saving the other should throw an error")
-      //todo disabled as SQLException is not thrown from Circumflex - we get undeclared exception and can't catch it
+      //todo fix this test
 //      intercept[DuplicateNameException] {
 //        customerService.create(Customer(name = "Customer one"))
 //      }

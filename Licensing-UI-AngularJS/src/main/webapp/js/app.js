@@ -143,7 +143,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 return left;
             }, {});
             var configuration = {
-                user: "jbaxter", //todo this should be set automatically by server...
+                user: "jbaxter",
                 productId: $scope.product.id,
                 customerId: $scope.customer.id,
                 created: new Date().getTime(),
@@ -166,7 +166,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             .then(function(auditCodes) {
                 $scope.search.auditCodes = _.map(auditCodes, function(auditCode) {
                     return {
-                        name: auditCode.value, //todo should get i18n version
+                        name: auditCode.value,
                         selected: true
                     };
                 });
@@ -184,7 +184,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
             user.selected = !user.selected; //todo this could go on a user object
         };
         $scope.selectAuditCode = function(auditCode) {
-            auditCode.selected = !auditCode.selected; //todo this could go on a user object
+            auditCode.selected = !auditCode.selected; //todo this could go on an audit object
         };
         $scope.filter = function(search) {
             $scope.audits = Audit.getAudits(
@@ -214,7 +214,6 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
     }])
     .run(function($rootScope, $location) {
         $rootScope.$on('$routeChangeStart', function(event, next, current) {
-            //todo a better way of doing this would be to register a low level http interceptor which redirects to login when we get 401
             if (!$rootScope.loggedIn) {
                 // user not logged in - redirect to /login
                 if (next.templateUrl === 'html/login.html') {

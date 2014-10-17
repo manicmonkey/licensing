@@ -32,10 +32,6 @@ import com.fasterxml.jackson.annotation.{JsonSubTypes, JsonTypeInfo}
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 02-Aug-2010
  */
-//todo trait?
-//abstract class ProductOption[T](val id: Option[Long],
-//                                var name: String,
-//                                var default: T)
 @JsonTypeInfo(
   use = Id.NAME,
   include = As.PROPERTY,

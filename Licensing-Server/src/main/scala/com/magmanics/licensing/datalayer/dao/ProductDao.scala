@@ -97,9 +97,6 @@ class ProductDaoJPA extends ProductDao {
       product.description = p.description
       product.enabled = p.enabled
 
-      //todo how to attach to product? cascade?? new test proj
-      //todo load options and delete/recreate
-
       p.options.foreach {
         case b: BoolOption =>
           val radio = new RadioProductOptionEntity
@@ -181,8 +178,7 @@ class ProductDaoJPA extends ProductDao {
     product.name = p.name
     product.description = p.description
     product.enabled = p.enabled
-    //todo how to attach to product? cascade?? new test proj
-    //todo load options and delete/recreate
+
     p.options.foreach {
       case b: BoolOption =>
         val radio = new RadioProductOptionEntity

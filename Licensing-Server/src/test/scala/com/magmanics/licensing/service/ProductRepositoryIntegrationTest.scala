@@ -112,7 +112,7 @@ class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite wit
     assert(productRepository.getEnabled.exists(_.name == product.name))
 
     When("the products name and description is changed and saved")
-    product.name = "Ubuntu 10.10" //todo document not using copy as vaadin wont (doc design decisions)
+    product.name = "Ubuntu 10.10" //todo document not using copy as vaadin wont (doc design decisions) - although now it uses rest api
     product.description = "Maverick Meercat"
     productRepository.update(product)
 

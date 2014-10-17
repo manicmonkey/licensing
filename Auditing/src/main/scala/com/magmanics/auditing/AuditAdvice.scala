@@ -48,8 +48,6 @@ class AuditAdvice {
   @Pointcut("execution(* com.magmanics.licensing.service..*.*(..))")
   private def serviceLayer() {}
 
-  //todo dont want to audit methods called by auditable methods? would have to use @before or @around
-
   @AfterReturning(pointcut = "serviceLayer() && @annotation(auditable)", returning = "retVal")
   def logSuccess(jp: JoinPoint, auditable: Auditable, retVal: Any): Any = {
     createAudit(AuditCode(auditable.value), "Called with (" + Arrays.asList(jp.getArgs.toArray: _*) + "), returning (" + retVal + ")")

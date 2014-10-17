@@ -75,7 +75,6 @@ class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGene
   @PreAuthorize("hasRole('CREATE_CONFIGURATION')")
   @Auditable("audit.configuration.create")
   def create(configuration: Configuration): Configuration = {
-    //todo set created date and user
     val generatedSerial = serialGenerator.generateSerial()
     val newConfiguration = configuration copy (serial = Some(generatedSerial))
     log.debug("Creating new configuration: {}", newConfiguration)
