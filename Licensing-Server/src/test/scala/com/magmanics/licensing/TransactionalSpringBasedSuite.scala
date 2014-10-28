@@ -38,8 +38,6 @@ trait TransactionalSpringBasedSuite extends FeatureSpec with BeforeAndAfterAll w
 
   val logger = LoggerFactory.getLogger(classOf[TransactionalSpringBasedSuite])
 
-//  val ddl = new DDLUnit(CustomerCircumflex, ConfigurationCircumflex, ConfigurationOptionCircumflex, ActivationCircumflex, ActivationInfoCircumflex, ProductCircumflex, TextProductOptionCircumflex, RadioProductOptionCircumflex, ListProductOptionCircumflex, ListProductOptionValueCircumflex, AuditCircumflex)
-
   def contextLocation: String
 
   var context: ConfigurableApplicationContext = _

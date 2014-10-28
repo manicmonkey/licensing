@@ -23,7 +23,7 @@
  */
 package com.magmanics.licensing.service
 
-import com.magmanics.licensing.TransactionalSpringBasedSuite
+import com.magmanics.licensing.{LoggedInUser, TransactionalSpringBasedSuite}
 import com.magmanics.licensing.model.{BoolOption, ListOption, Product, TextOption}
 import org.scalatest.GivenWhenThen
 
@@ -31,7 +31,7 @@ import org.scalatest.GivenWhenThen
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 14-Aug-2010
  */
-class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen { //focus on high level
+class ProductRepositoryIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen with LoggedInUser { //focus on high level
 
   def contextLocation = "spring/integration-test.xml"
 

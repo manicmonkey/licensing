@@ -27,4 +27,8 @@
         </authentication-provider>
     </authentication-manager>
 
+    <beans:bean id="authenticationService" class="com.magmanics.licensing.service.AuthenticationServiceImpl">
+        <beans:constructor-arg ref="authenticationManager" />
+    </beans:bean>
+
 </beans:beans>

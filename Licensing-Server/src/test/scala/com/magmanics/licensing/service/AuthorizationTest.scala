@@ -80,8 +80,8 @@ class AuthorizationTest extends TransactionalSpringBasedSuite with GivenWhenThen
   }
 
   def login(name: String, password: String) {
-    val request: Authentication = new UsernamePasswordAuthenticationToken(name, password);
-    val result: Authentication = authenticationManager.authenticate(request);
-    SecurityContextHolder.getContext().setAuthentication(result);
+    val request: Authentication = new UsernamePasswordAuthenticationToken(name, password)
+    val result: Authentication = authenticationManager.authenticate(request)
+    SecurityContextHolder.getContext.setAuthentication(result)
   }
 }

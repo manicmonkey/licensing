@@ -23,8 +23,12 @@
  */
 package com.magmanics.licensing.service
 
-import com.magmanics.licensing.TransactionalSpringBasedSuite
+import java.time.temporal.{ChronoUnit, TemporalUnit}
+import java.util.Date
+
+import com.magmanics.licensing.{LoggedInUser, TransactionalSpringBasedSuite}
 import com.magmanics.licensing.model.{Configuration, Customer, Product}
+import org.joda.time.DateTime
 import org.scalatest.GivenWhenThen
 import org.slf4j.LoggerFactory
 
@@ -32,7 +36,7 @@ import org.slf4j.LoggerFactory
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 15-Aug-2010
  */
-class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen {
+class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen with LoggedInUser {
 
   val log = LoggerFactory.getLogger(classOf[ConfigurationRepositoryIntegrationTest])
 
@@ -48,8 +52,8 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
   override protected def beforeAll() = {
     super.beforeAll()
     customer = context.getBean(classOf[CustomerRepository]).create(Customer(name = "DHL"))
-    customer2 = context.getBean(classOf[CustomerRepository]).create(Customer(name = "Odwalla"))
-    product = context.getBean(classOf[ProductRepository]).create(Product(name = "JFinder V3"))
+    customer2 = context.getBean(classOf[CustomerRepository]).create(Customer(name = "Mercedes"))
+    product = context.getBean(classOf[ProductRepository]).create(Product(name = "Yammer"))
   }
 
   feature("Configurations can be listed by customer") {
@@ -106,6 +110,22 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       val retrievedConfiguration = configurationRepository.getByCustomer(customer.name).find(_.id.get == savedConfiguration.id.get)
       assert(retrievedConfiguration.isDefined)
       assert(retrievedConfiguration.get.options.isEmpty)
+    }
+    scenario("But the server shouldn't believe it all") {
+      Given("a new configuration with username and creation date")
+      val configuration = Configuration(id = None, user = "user", productId = product.id.get,
+        customerId = customer.id.get, created = new DateTime(2014, 02, 18, 0, 0, 0, 0).toDate,
+        serial = None, options = Map(), enabled = true, maxActivations = 1, activations = Set())
+
+      When("the configuration is saved")
+      val savedConfiguration = configurationRepository.create(configuration)
+
+      Then("the username is the logged in user")
+      assert("admin".equals(savedConfiguration.user))
+
+      And("the created date is within the last minute at least")
+      assert(new Date().toInstant.minus(1, ChronoUnit.MINUTES).isBefore(savedConfiguration.created.toInstant))
+      assert(new Date().toInstant.isAfter(savedConfiguration.created.toInstant))
     }
   }
 

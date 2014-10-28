@@ -15,6 +15,7 @@
     <bean id="configurationRepository" class="com.magmanics.licensing.service.ConfigurationRepositoryImpl">
         <constructor-arg ref="configurationDao" />
         <constructor-arg ref="serialGenerator" />
+        <constructor-arg ref="authenticationService" />
     </bean>
 
     <bean id="customerRepository" class="com.magmanics.licensing.service.CustomerRepositoryImpl">

@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.{AuthenticationManager, BadCredentialsException, UsernamePasswordAuthenticationToken}
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 
 import scala.collection.JavaConversions._
 
@@ -49,6 +50,11 @@ trait AuthenticationService {
    * @return Whether a user is logged in
    */
   def loggedIn(): Boolean
+
+  /**
+   * @return Username of the logged in user
+   */
+  def currentUser(): Option[String]
 
   /**
    * Logout the current user
@@ -93,6 +99,18 @@ class AuthenticationServiceImpl(authenticationManager: AuthenticationManager) ex
     val loggedIn = authentication != null && authentication.getAuthorities.exists(p => p.getAuthority == "ROLE_USER")
     log.debug("Logged in = {}", loggedIn)
     loggedIn
+  }
+
+
+  /**
+   * @return Username of the logged in user
+   */
+  override def currentUser(): Option[String] = {
+    log.debug("Getting current user")
+    val authentication = SecurityContextHolder.getContext.getAuthentication
+    val user = Option(authentication).map(_.getPrincipal.asInstanceOf[User].getUsername)
+    log.debug("Current user = {}", user)
+    user
   }
 
   /**

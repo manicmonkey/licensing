@@ -23,7 +23,7 @@
  */
 package com.magmanics.licensing.service
 
-import com.magmanics.licensing.TransactionalSpringBasedSuite
+import com.magmanics.licensing.{LoggedInUser, TransactionalSpringBasedSuite}
 import com.magmanics.licensing.model.exception.NoActivationsLeftException
 import com.magmanics.licensing.service.exception._
 import com.magmanics.licensing.model.{Configuration, Customer, Product}
@@ -32,7 +32,7 @@ import org.scalatest.GivenWhenThen
  * @author James Baxter <j.w.baxter@gmail.com>
  * @since 15 -Aug-2010
  */
-class ActivationServiceIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen {
+class ActivationServiceIntegrationTest extends TransactionalSpringBasedSuite with GivenWhenThen with LoggedInUser {
 
   def contextLocation = "spring/integration-test.xml"
 

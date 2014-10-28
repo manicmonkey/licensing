@@ -22,7 +22,7 @@
         <authentication-provider>
             <password-encoder hash="md5" />
             <user-service>
-                <user name="admin" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="ROLE_USER,CREATE_CUSTOMER,CREATE_CONFIGURATION,UPDATE_PRODUCT,UPDATE_CUSTOMER" />
+                <user name="admin" password="5f4dcc3b5aa765d61d8327deb882cf99" authorities="ROLE_USER,CAN_ACTIVATE,CREATE_CUSTOMER,CREATE_CONFIGURATION,UPDATE_CONFIGURATION,CREATE_PRODUCT,UPDATE_PRODUCT,UPDATE_CUSTOMER" />
             </user-service>
         </authentication-provider>
     </authentication-manager>

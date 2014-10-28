@@ -24,6 +24,8 @@
 
 package com.magmanics.licensing.service
 
+import java.util.Date
+
 import com.magmanics.auditing.Auditable
 import com.magmanics.licensing.datalayer.SerialGenerator
 import com.magmanics.licensing.datalayer.dao.ConfigurationDao
@@ -68,7 +70,7 @@ trait ConfigurationRepository {
 }
 
 @PreAuthorize("isAuthenticated()")
-class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGenerator: SerialGenerator) extends ConfigurationRepository {
+class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGenerator: SerialGenerator, authenticationService: AuthenticationService) extends ConfigurationRepository {
 
   val log = LoggerFactory.getLogger(classOf[ConfigurationRepositoryImpl])
 
@@ -76,7 +78,8 @@ class ConfigurationRepositoryImpl(configurationDao: ConfigurationDao, serialGene
   @Auditable("audit.configuration.create")
   def create(configuration: Configuration): Configuration = {
     val generatedSerial = serialGenerator.generateSerial()
-    val newConfiguration = configuration copy (serial = Some(generatedSerial))
+    val currentUser = authenticationService.currentUser().getOrElse(throw new IllegalStateException("Could not get current user"))
+    val newConfiguration = configuration copy (serial = Some(generatedSerial), user = currentUser, created = new Date)
     log.debug("Creating new configuration: {}", newConfiguration)
     configurationDao.create(newConfiguration)
   }
