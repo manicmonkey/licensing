@@ -196,6 +196,9 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                     "text": search.message
                 });
         }
+        $scope.select = function(audit) {
+            $scope.selectedAudit = audit;
+        }
     }])
     .controller('ActivationController', ['$scope', function ($scope) {}])
     .controller('ProductOptionController', ['$scope', function ($scope) {}])

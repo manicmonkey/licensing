@@ -73,8 +73,44 @@
                 <td>{{audit.created | formatDate}}</td>
                 <td>{{audit.username}}</td>
                 <td>{{audit.auditCode.value}}</td>
-                <td>{{audit.auditMessage}}</td>
+                <td ng-click="select(audit)" data-toggle="modal" data-target="#viewAuditMessageWindow">{{audit.auditMessage | limitTo:100}}<span ng-if="audit.auditMessage.length > 100">...</span></td>
             </tr>
         </table>
+    </div>
+</div>
+
+<!-- (Modal) Configuration creation form -->
+<div class="modal fade" id="viewAuditMessageWindow" tabindex="-1" role="dialog" aria-labelledby="windowTitle"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="windowTitle">Audit message</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <tr>
+                        <td>Created</td>
+                        <td>{{selectedAudit.created | formatDate}}</td>
+                    </tr>
+                    <tr>
+                        <td>User</td>
+                        <td>{{selectedAudit.username}}</td>
+                    </tr>
+                    <tr>
+                        <td>Code</td>
+                        <td>{{selectedAudit.auditCode.value}}</td>
+                    </tr>
+                    <tr>
+                        <td>Message</td>
+                        <td>{{selectedAudit.auditMessage}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
     </div>
 </div>
