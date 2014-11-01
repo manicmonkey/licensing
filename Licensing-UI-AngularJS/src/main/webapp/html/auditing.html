@@ -4,7 +4,14 @@
 <style>
     .date_control_fix {
         padding-left: 10px;
-        padding-right: 0px;
+        padding-right: 0;
+    }
+    .max_height_with_scroll {
+        height: 300px;
+        width: auto;
+        padding-right:17px;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 </style>
 <div class="row top_margin">
@@ -21,7 +28,7 @@
     <div class="col-md-3">
         <div class="row">
             <div class="col-md-2">Users:</div>
-            <div class="col-md-10">
+            <div class="col-md-10 max_height_with_scroll">
                 <table class="table">
                     <tr ng-repeat="user in search.users"
                         ng-class="{active: user.selected == true}"
@@ -36,7 +43,7 @@
     <div class="col-md-4">
         <div class="row">
             <div class="col-md-4">Audit codes:</div>
-            <div class="col-md-8">
+            <div class="col-md-8 max_height_with_scroll">
                 <table class="table">
                     <tr ng-repeat="auditCode in search.auditCodes"
                         ng-class="{active: auditCode.selected == true}"
