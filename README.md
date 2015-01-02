@@ -9,7 +9,10 @@ Mockups can be seen using pencil.
 
 [![Build Status](https://travis-ci.org/manicmonkey/licensing.svg?branch=master)](https://travis-ci.org/manicmonkey/licensing)
 
-AngularJS frontend uses Grunt for build tasks and bower for dependency management. To get up and running install node/npm and run 'npm install' followed by 'grunt'. 
+AngularJS frontend uses Grunt for build tasks and bower for dependency management. To get up and running install node/npm and run
+- npm install
+- npm install -g grunt-cli
+- grunt
 
 Roadmap
 -------
