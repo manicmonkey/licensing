@@ -195,10 +195,10 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                     "auditCodes": _.pluck(_.filter(search.auditCodes, 'selected'), 'name'),
                     "text": search.message
                 });
-        }
+        };
         $scope.select = function(audit) {
             $scope.selectedAudit = audit;
-        }
+        };
     }])
     .controller('ActivationController', ['$scope', function ($scope) {}])
     .controller('ProductOptionController', ['$scope', function ($scope) {}])
@@ -213,7 +213,7 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                     $rootScope.loggedIn = false;
                     $location.path('/login');
                 });
-        }
+        };
     }])
     .run(function($rootScope, $location) {
         $rootScope.$on('$routeChangeStart', function(event, next, current) {
