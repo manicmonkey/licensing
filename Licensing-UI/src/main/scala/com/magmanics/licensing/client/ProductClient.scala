@@ -38,7 +38,6 @@ import org.jboss.resteasy.client.jaxrs.{BasicAuthentication, ResteasyClientBuild
 @Produces(Array(MediaType.APPLICATION_JSON, "application/*+json", "text/json"))
 trait ProductClient {
 
-
   /**
    * Create a Product, returning the persistent Product (id populated)
    */
