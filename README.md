@@ -1,11 +1,13 @@
 Licensing
 =========
 
-This is a project started in 2010 to play around with Scala and Vaadin. It's purpose is to act as a software licensing system.
+This project is designed to act as a software licensing system.
 
-I revived the project in mid 2014 and plan to find some time in between regular work, android development and game development to revitalize the project and put it into production.
+It's written in various technologies like Scala, Vaadin, AngularJS, JAX-RS / RESTEasy, Spring-Web, Spring-AOP.
 
-Mockups can be seen using pencil.
+UI mockups made in Pencil 2.0.5.
+
+UML diagrams made in ArgoUML 0.34.
 
 [![Build Status](https://travis-ci.org/manicmonkey/licensing.svg?branch=master)](https://travis-ci.org/manicmonkey/licensing)
 
@@ -37,5 +39,7 @@ todo...
 - need to expose user information from userendpoint - roles enabled
 - list of users?
 - access to customers (doesn't appear in domain model at moment?)
+
+- detail technical architecture - high level components and patterns.
 
 Create product documentation: http://www.thinkful.com/learn/a-guide-to-using-github-pages/start/existing-project/project-page/existing-repo/
