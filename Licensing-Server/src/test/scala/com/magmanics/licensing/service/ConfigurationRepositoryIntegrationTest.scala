@@ -111,7 +111,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
       assert(retrievedConfiguration.isDefined)
       assert(retrievedConfiguration.get.options.isEmpty)
     }
-    scenario("But the server shouldn't believe it all") {
+    scenario("But the server should override some values") {
       Given("a new configuration with username and creation date")
       val configuration = Configuration(id = None, user = "user", productId = product.id.get,
         customerId = customer.id.get, created = new DateTime(2014, 02, 18, 0, 0, 0, 0).toDate,
