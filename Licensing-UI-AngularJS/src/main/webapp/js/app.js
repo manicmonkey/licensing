@@ -22,6 +22,10 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
                 controller: 'AuditController',
                 templateUrl: 'html/auditing.html'
             })
+            .when('/administration/products', {
+                controller: 'ProductCreationController',
+                templateUrl: 'html/administration/products.html'
+            })
             .when('/login', {
                 controller: 'LoginController',
                 templateUrl: 'html/login.html'
@@ -108,6 +112,15 @@ angular.module('licensingApp', ['ngRoute', 'licensingServices'])
         $scope.activationSelected = function(activation) {
             $scope.selectedActivation = activation;
         };
+    }])
+    .controller('ProductCreationController', ['$scope', '_', 'Product', function ($scope, _, Product) {
+        Product.getAll().$promise
+            .then(function(products) {
+                $scope.products = products;
+            });
+        $scope.productOptionSelected = function(productOption) {
+            $scope.selectedProductOption = productOption;
+        }
     }])
     .controller('ConfigurationCreation', ['$scope', '_', 'Configuration', 'Product', function ($scope, _, Configuration, Product) {
         //at the moment the product options which the user fills in operates directly on the product.options model - maybe

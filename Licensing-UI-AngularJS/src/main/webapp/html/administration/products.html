@@ -1,0 +1,191 @@
+<div class="row">
+    <div class="col-md-2">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createProductWindow">
+            Create new product
+        </button>
+    </div>
+    <div class="col-md-3">
+        <select class="form-control"
+                ng-model="product"
+                ng-change="productSelected(product)"
+                ng-options="product.name for product in products">
+        </select>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10">
+        <div class="col-md-2">
+            Name
+        </div>
+        <div class="col-md-8">
+            Textbox
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10">
+        <div class="col-md-2">
+            Enabled
+        </div>
+        <div class="col-md-8">
+            Radio button
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-10">
+        <div class="col-md-2">
+            Options
+        </div>
+        <div class="col-md-6">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <tr>
+                        <th>Name</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                    </tr>
+                    <tr ng-repeat="option in product.options"
+                        ng-mousedown="productOptionSelected(option)"
+                        ng-class="{active: option.id == selectedProductOption.id}">
+                        <td>{{option.name}}</td>
+                        <td>{{option.type}}</td>
+                        <td>{{option.default}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="row">
+                <button type="button" class="btn">
+                    New
+                </button>
+            </div>
+            <div class="row">
+                <button type="button" class="btn">
+                    Modify
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- (Modal) Product creation form -->
+<div class="modal fade" id="createProductWindow" tabindex="-1" role="dialog" aria-labelledby="windowTitle"
+     aria-hidden="true" ng-controller="ConfigurationCreation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form name="form" novalidate>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span
+                            aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="windowTitle">Create configuration</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputConfigurationCustomer" class="control-label col-md-4">Customers</label>
+
+                            <div class="col-md-8">
+                                <select id="inputConfigurationCustomer"
+                                        class="form-control"
+                                        ng-model="customer"
+                                        ng-change="customerSelected(customer)"
+                                        ng-options="customer.name for customer in customers | orderBy:'name'"
+                                        required>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <label for="inputConfigurationProduct" class="control-label col-md-4">Products</label>
+
+                            <div class="col-md-8">
+                                <select id="inputConfigurationProduct"
+                                        class="form-control"
+                                        ng-model="product"
+                                        ng-change="productSelected(product)"
+                                        ng-options="product.name for product in products | orderBy:'name'"
+                                        required>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'has-error': product.maxActivations.$invalid}">
+                        <div class="row">
+                            <label for="inputConfigurationMaxActivations" class="control-label col-md-4">Max
+                                Activations</label>
+
+                            <div class="col-md-8">
+                                <input id="inputConfigurationMaxActivations"
+                                       class="form-control"
+                                       type="number"
+                                       ng-model="product.maxActivations"
+                                       min="1"
+                                       required>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group" ng-repeat="option in product.options | orderBy:'name'">
+                        <ng-switch on="option.type">
+                            <div class="row" ng-switch-when="bool">
+                                <label for="inputConfigurationOption1"
+                                       class="control-label col-md-4">{{option.name}}</label>
+
+                                <div class="col-md-8">
+                                    <input id="inputConfigurationOption1"
+                                           type="checkbox"
+                                           ng-model="option.value">
+                                </div>
+                            </div>
+                            <div class="row" ng-switch-when="text">
+                                <label for="inputConfigurationOption2"
+                                       class="control-label col-md-4">{{option.name}}</label>
+
+                                <div class="col-md-8">
+                                    <input id="inputConfigurationOption2"
+                                           class="form-control"
+                                           type="text"
+                                           ng-model="option.value">
+                                </div>
+                            </div>
+                            <div class="row" ng-switch-when="list">
+                                <label for="inputConfigurationOption4"
+                                       class="control-label col-md-4">{{option.name}}</label>
+
+                                <div class="col-md-8">
+                                    <select id="inputConfigurationOption4"
+                                            class="form-control"
+                                            ng-model="option.value"
+                                            ng-options="value for value in option.values | cleverOrdering"
+                                            required>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row" ng-switch-when="date">
+                                <label for="inputConfigurationOption5"
+                                       class="control-label col-md-4">{{option.name}}</label>
+
+                                <div class="col-md-8">
+                                    <input id="inputConfigurationOption5"
+                                           class="form-control"
+                                           type="date"
+                                           ng-model="option.value"
+                                           required>
+                                </div>
+                            </div>
+                        </ng-switch>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="save()"
+                            ng-disabled="form.$invalid">Save changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
