@@ -114,7 +114,7 @@ class ConfigurationRepositoryIntegrationTest extends TransactionalSpringBasedSui
     scenario("But the server should override some values") {
       Given("a new configuration with username and creation date")
       val configuration = Configuration(id = None, user = "user", productId = product.id.get,
-        customerId = customer.id.get, created = new DateTime(2014, 02, 18, 0, 0, 0, 0).toDate,
+        customerId = customer.id.get, created = new DateTime(2014, 2, 18, 0, 0, 0, 0).toDate,
         serial = None, options = Map(), enabled = true, maxActivations = 1, activations = Set())
 
       When("the configuration is saved")
