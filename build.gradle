@@ -1,0 +1,35 @@
+def springVersion = "4.0.5.RELEASE"
+
+ext.libraries = [
+	aspectjrt: 'org.aspectj:aspectjrt:1.8.1',
+	aspectjweaver: 'org.aspectj:aspectjweaver:1.8.1',
+	hibernate: [
+		'org.hibernate:hibernate-core:4.3.5.Final',
+    	'org.hibernate:hibernate-entitymanager:4.3.5.Final'
+    ],
+	logback: [
+		'ch.qos.logback:logback-core:1.1.2',
+	    'ch.qos.logback:logback-classic:1.1.2'
+	],
+	jpa: 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final',
+	scala: 'org.scala-lang:scala-library:2.11.1',
+	scalatest: [
+		'org.scalatest:scalatest_2.10:2.1.7',
+    	'org.pegdown:pegdown:1.2.1' //undeclared scala-test HTML Reporter dep
+	],
+	slf4j: 'org.slf4j:slf4j-api:1.6.6',
+	spring_core: dependencies.create('org.springframework:spring-core:4.0.5.RELEASE') {
+		exclude module: "commons-logging"
+		force = true
+	},
+	spring: [
+		"org.springframework:spring-aop:$springVersion",
+    	'org.springframework:spring-core:4.0.5.RELEASE',
+    	'org.springframework:spring-context:4.0.5.RELEASE',
+		'org.springframework:spring-tx:4.0.5.RELEASE',
+		'org.springframework:spring-orm:4.0.5.RELEASE',
+    	'org.springframework:spring-web:4.0.5.RELEASE',
+    	'org.springframework:spring-webmvc:4.0.5.RELEASE'
+	],
+	testng: 'org.testng:testng:5.14.2'
+]

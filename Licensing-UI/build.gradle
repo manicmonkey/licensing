@@ -1,0 +1,56 @@
+apply plugin: 'scala'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+jettyRunWar.contextPath = ''
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    compile project(':Auditing')
+    compile project(':Licensing-Model')
+    compile ('org.scala-lang:scala-library:2.10.4') {
+        force = true
+    }
+    compile ('org.slf4j:slf4j-api:1.6.6') {
+        force = true
+    }
+    compile ('org.slf4j:jcl-over-slf4j:1.6.6') {
+        force = true
+    }
+    compile libraries.logback
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.1'
+    compile 'com.fasterxml.jackson.core:jackson-annotations:2.4.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
+    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.10:2.4.1'
+    compile 'com.vaadin:vaadin-server:7.3.0'
+    compile 'com.vaadin:vaadin-themes:7.3.0'
+    compile 'com.vaadin:vaadin-client-compiled:7.3.0'
+    compile 'joda-time:joda-time:1.6.2'
+    compile libraries.aspectjrt
+    compile libraries.aspectjweaver
+    compile 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+    compile 'org.jboss.resteasy:resteasy-client:3.0.7.Final'
+    compile 'org.jboss.resteasy:resteasy-jackson2-provider:3.0.7.Final'
+    compile 'org.springframework.security:spring-security-core:3.2.4.RELEASE'
+    compile 'org.springframework.security:spring-security-config:3.2.4.RELEASE'
+    compile 'org.springframework.security:spring-security-web:3.2.4.RELEASE'
+    compile 'org.springframework:spring-aop:4.0.5.RELEASE'
+    compile 'org.springframework:spring-core:4.0.5.RELEASE'
+    compile 'org.springframework:spring-context:4.0.5.RELEASE'
+    //compile 'org.springframework:spring-orm:4.0.5.RELEASE'
+    //compile 'org.springframework:spring-web:4.0.5.RELEASE'
+    //compile 'org.springframework:spring-webmvc:4.0.5.RELEASE'
+    testCompile 'org.seleniumhq.selenium:selenium:2.0a7'
+    testCompile 'org.seleniumhq.selenium:selenium-server:2.0a7'
+    testCompile libraries.scalatest
+    testCompile 'org.springframework:spring-test:4.0.5.RELEASE'
+    testCompile libraries.testng
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+}

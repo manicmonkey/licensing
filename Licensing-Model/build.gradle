@@ -1,0 +1,15 @@
+apply plugin: 'scala'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile libraries.scala
+    compile libraries.slf4j
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+}

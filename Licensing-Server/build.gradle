@@ -1,0 +1,62 @@
+apply plugin: 'scala'
+apply plugin: 'war'
+apply plugin: 'jetty'
+
+test {
+	useTestNG()
+}
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "com.github.maiflai:gradle-scalatest:0.6-5-g9065d91"
+  }
+}
+
+apply plugin: "com.github.maiflai.scalatest"
+
+jettyRunWar.contextPath = ''
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+    providedCompile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final'
+    compile project(':Auditing')
+    compile project(':Licensing-Model')
+    compile ('org.scala-lang:scala-library:2.10.4') {
+    	force = true
+    }
+    compile ('org.slf4j:slf4j-api:1.6.6') {
+    	force = true
+    }
+    compile ('org.slf4j:jcl-over-slf4j:1.6.6') {
+    	force = true
+    }
+    compile libraries.logback
+    compile 'com.fasterxml.jackson.core:jackson-core:2.4.1'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.4.1'
+    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.10:2.4.1'
+    compile 'joda-time:joda-time:1.6.2'
+    compile libraries.aspectjrt
+    compile libraries.aspectjweaver
+    compile 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+    compile 'org.springframework.security:spring-security-core:3.2.4.RELEASE'
+    compile 'org.springframework.security:spring-security-config:3.2.4.RELEASE'
+    compile 'org.springframework.security:spring-security-web:3.2.4.RELEASE'
+    compile libraries.spring
+    compile 'org.springframework.data:spring-data-jpa:1.6.2.RELEASE'
+    runtime 'com.h2database:h2:1.4.179'
+    runtime libraries.hibernate
+    testCompile libraries.scalatest
+    testCompile 'org.springframework:spring-test:4.0.5.RELEASE'
+    testCompile libraries.testng
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+}

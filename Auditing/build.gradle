@@ -1,0 +1,28 @@
+apply plugin: 'scala'
+
+test {
+	useTestNG()
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile libraries.aspectjrt
+    compile libraries.scala
+    compile libraries.slf4j
+    compile libraries.spring
+    compile libraries.jpa
+    compile 'org.springframework.security:spring-security-core:3.2.4.RELEASE'
+    testCompile libraries.aspectjweaver
+    testCompile libraries.hibernate
+    testCompile libraries.logback
+    testCompile 'com.h2database:h2:1.4.179'
+    testCompile 'org.springframework:spring-test:4.0.5.RELEASE'
+    testCompile libraries.testng
+}
+
+tasks.withType(ScalaCompile) {
+    scalaCompileOptions.useAnt = false
+}
