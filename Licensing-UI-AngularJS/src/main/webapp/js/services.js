@@ -2,7 +2,7 @@ angular.module('licensingServices', ['ngResource'])
     .factory('Audit', ['$resource', '$http', 'credentials',
         function ($resource, $http, credentials) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + credentials;
-            return $resource('http://localhost:9090/rest/audits/:submodel', {}, {
+            return $resource('http://localhost:8080/rest/audits/:submodel', {}, {
                 getAudits: {
                     method: 'POST',
                     params: {
@@ -28,7 +28,7 @@ angular.module('licensingServices', ['ngResource'])
         }])
     .factory('Authentication', ['$resource',
         function($resource) {
-            return $resource('http://localhost:9090/rest/authentication', {}, {
+            return $resource('http://localhost:8080/rest/authentication', {}, {
                 isLoggedIn: {
                     method: 'GET'
                 },
@@ -44,7 +44,7 @@ angular.module('licensingServices', ['ngResource'])
     .factory('Configuration', ['$resource', '$http', 'credentials',
         function ($resource, $http, credentials) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + credentials;
-            return $resource('http://localhost:9090/rest/configurations', {}, {
+            return $resource('http://localhost:8080/rest/configurations', {}, {
                 getAll: {
                     method: 'GET',
                     isArray: true
@@ -54,7 +54,7 @@ angular.module('licensingServices', ['ngResource'])
     .factory('Customer', ['$resource', '$http', 'credentials',
         function ($resource, $http, credentials) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + credentials;
-            return $resource('http://localhost:9090/rest/customers', {}, {
+            return $resource('http://localhost:8080/rest/customers', {}, {
                 getAll: {
                     method: 'GET',
                     isArray: true
@@ -64,7 +64,7 @@ angular.module('licensingServices', ['ngResource'])
     .factory('Product', ['$resource', '$http', 'credentials',
         function ($resource, $http, credentials) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + credentials;
-            return $resource('http://localhost:9090/rest/products', {}, {
+            return $resource('http://localhost:8080/rest/products', {}, {
                 getOne: {
                     method: 'GET'
                 },
