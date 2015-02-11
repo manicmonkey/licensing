@@ -14,15 +14,14 @@ RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu trusty main" > /e
 RUN apt-get install -y wget
 
 # Deploy jetty
-ENV JETTY_HOME /opt/jetty
 RUN wget -O /tmp/jetty.tar.gz "http://eclipse.org/downloads/download.php?file=/jetty/stable-9/dist/jetty-distribution-9.2.7.v20150116.tar.gz&r=1"
 RUN tar zxvf /tmp/jetty.tar.gz -C /opt/
 RUN rm /tmp/jetty.tar.gz
-RUN ln -s /opt/jetty-distribution-9.2.7.v20150116/ $JETTY_HOME
+RUN ln -s /opt/jetty-distribution-9.2.7.v20150116/ /opt/jetty
  
-# Add ear file
-ADD licensing.war $JETTY_HOME/webapps/
+# Add war file
+ADD licensing.war /opt/jetty/webapps/
 
 EXPOSE 8080
-RUN java -Djetty.base=$JETTY_HOME -jar $JETTY_HOME/start.jar --add-to-startd=http,deploy
-CMD ["java", "-Djetty.base=$JETTY_HOME", "-jar", "$JETTY_HOME/start.jar"]
+RUN java -Djetty.base=/opt/jetty -jar /opt/jetty/start.jar --add-to-startd=http,deploy
+CMD ["java", "-Djetty.base=/opt/jetty", "-jar", "/opt/jetty/start.jar"]
