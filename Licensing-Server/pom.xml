@@ -239,9 +239,9 @@
                     <scanIntervalSeconds>10</scanIntervalSeconds>
                     <webAppSourceDirectory>src/main/webapp</webAppSourceDirectory>
                     <stopKey>stop</stopKey>
-                    <stopPort>8889</stopPort>
+                    <stopPort>8880</stopPort>
                     <httpConnector>
-                        <port>9090</port>
+                        <port>8080</port>
                     </httpConnector>
                 </configuration>
             </plugin>
