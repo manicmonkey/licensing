@@ -1,6 +1,6 @@
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.client.{CustomerClient, UserClient}
+import com.magmanics.licensing.client.{ClientFactory, CustomerClient, UserClient}
 import com.magmanics.licensing.ui.content.customer.CustomerSelectionTable
 import com.magmanics.licensing.ui.content.user.{PermissionsSelectionTable, UserSelectionComboBox}
 import com.vaadin.ui.{HorizontalLayout, CheckBox, Label, VerticalLayout}
@@ -11,13 +11,13 @@ import com.vaadin.ui.{HorizontalLayout, CheckBox, Label, VerticalLayout}
 class UserContent extends MainContent {
 
   //define and wire up basic controls
-  private val userSelectionComboBox = new UserSelectionComboBox(UserClient.client.getUsers)
+  private val userSelectionComboBox = new UserSelectionComboBox(ClientFactory.getUserClient.getUsers)
   private val permissionSelectionTable = new PermissionsSelectionTable
-  private val customerSelectionTable = new CustomerSelectionTable(CustomerClient.client.get())
+  private val customerSelectionTable = new CustomerSelectionTable(ClientFactory.getCustomerClient.get())
 
   userSelectionComboBox.onUserChanged(u => {
     permissionSelectionTable.setPermissions(u.permissions)
-    val customers = u.customers.map(CustomerClient.client.get)
+    val customers = u.customers.map(ClientFactory.getCustomerClient.get)
     customerSelectionTable.setCustomers(customers)
   })
 

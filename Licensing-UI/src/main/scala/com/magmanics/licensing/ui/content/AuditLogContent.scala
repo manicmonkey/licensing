@@ -27,7 +27,7 @@ package com.magmanics.licensing.ui.content
 import java.util.Date
 
 import com.magmanics.auditing.service.AuditSearchDto
-import com.magmanics.licensing.client.{UserClient, AuditClient}
+import com.magmanics.licensing.client.{ClientFactory, UserClient, AuditClient}
 import com.magmanics.licensing.ui.content.auditing.{AuditCodeSelectionTable, AuditTable}
 import com.magmanics.licensing.ui.content.user.UserSelectionTable
 import com.magmanics.vaadin.component.{HtmlLabel, UndefinedWidth}
@@ -48,7 +48,7 @@ class AuditLogContent @Autowired() (auditTable: AuditTable, auditCodeSelectionTa
 
   val log = LoggerFactory.getLogger(classOf[AuditLogContent])
 
-  val userSelectionTable = new UserSelectionTable(UserClient.client.getUsers)
+  val userSelectionTable = new UserSelectionTable(ClientFactory.getUserClient.getUsers)
 
   val fromDate = new PopupDateField(new ObjectProperty[Date](new DateMidnight().minusMonths(1).toDate))
   val toDate = new PopupDateField(new ObjectProperty[Date](new Date))
@@ -101,7 +101,7 @@ class AuditLogContent @Autowired() (auditTable: AuditTable, auditCodeSelectionTa
       userSelectionTable.getUsers,
       auditCodeSelectionTable.getAuditCodes,
       textSearchField.getValue)
-    val audits = AuditClient.client.getAuditMessages(searchDto)
+    val audits = ClientFactory.getAuditClient.getAuditMessages(searchDto)
     auditTable.setAudits(audits)
   }
 

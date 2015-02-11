@@ -24,7 +24,7 @@
 
 package com.magmanics.licensing.ui.content.auditing
 
-import com.magmanics.licensing.client.AuditClient
+import com.magmanics.licensing.client.ClientFactory
 import com.magmanics.vaadin.component.TableWithCheckboxes
 import com.magmanics.vaadin.spring.{VaadinApplicationObjectSupport, VaadinComponent}
 import org.slf4j.LoggerFactory
@@ -47,7 +47,7 @@ class AuditCodeSelectionTable @Autowired() (messageSource: VaadinApplicationObje
 
   override def containerProperties = List(("auditcode", classOf[String], "", "Audit code", null, null))
 
-  override def itemRows = AuditClient.client.getAuditCodes.map(u => (Array(messageSource.getMessage(u.value)), u.value))
+  override def itemRows = ClientFactory.getAuditClient.getAuditCodes.map(u => (Array(messageSource.getMessage(u.value)), u.value))
 
   //select all
   setValue(getItemIds())

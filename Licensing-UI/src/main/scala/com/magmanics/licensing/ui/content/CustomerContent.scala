@@ -1,6 +1,6 @@
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.client.CustomerClient
+import com.magmanics.licensing.client.{ClientFactory, CustomerClient}
 import com.magmanics.licensing.ui.content.customer.CustomerTable
 import com.magmanics.vaadin.ClickHandler
 import com.magmanics.vaadin.component.{HtmlLabel, UndefinedWidth}
@@ -11,7 +11,7 @@ import com.vaadin.ui._
  */
 class CustomerContent extends MainContent {
 
-  val client = CustomerClient.client
+  val client = ClientFactory.getCustomerClient
 
   val customerCreationLayout = new HorizontalLayout(
     new Label("Add new customer"),

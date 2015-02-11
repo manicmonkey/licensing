@@ -23,7 +23,7 @@
  */
 package com.magmanics.licensing.ui.content.customer
 
-import com.magmanics.licensing.client.CustomerClient
+import com.magmanics.licensing.client.{ClientFactory, CustomerClient}
 import com.magmanics.licensing.model.Customer
 import com.vaadin.data.Property.{ValueChangeEvent, ValueChangeListener}
 import com.vaadin.data.util.BeanItemContainer
@@ -42,7 +42,7 @@ class CustomerComboBox extends ComboBox {
   setNullSelectionAllowed(false)
   //      setTextInputAllowed(false)
 
-  val customers = CustomerClient.client.get()
+  val customers = ClientFactory.getCustomerClient.get()
   customers.toList.sortBy(_.name).foreach(container.addBean)
 
   def onCustomerChanged(handler: Customer => Unit) {

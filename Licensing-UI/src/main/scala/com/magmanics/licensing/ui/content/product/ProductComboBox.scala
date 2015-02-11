@@ -1,6 +1,6 @@
 package com.magmanics.licensing.ui.content.product
 
-import com.magmanics.licensing.client.ProductClient
+import com.magmanics.licensing.client.{ClientFactory, ProductClient}
 import com.magmanics.licensing.model.Product
 import com.vaadin.data.Property.{ValueChangeEvent, ValueChangeListener}
 import com.vaadin.data.util.BeanItemContainer
@@ -19,7 +19,7 @@ class ProductComboBox extends ComboBox {
   setNullSelectionAllowed(false)
   //      setTextInputAllowed(false)
 
-  val products = ProductClient.client.get()
+  val products = ClientFactory.getProductClient.get()
   products.sortBy(_.name).foreach(container.addBean)
 
   def onProductChanged(handler: Product => Unit) {

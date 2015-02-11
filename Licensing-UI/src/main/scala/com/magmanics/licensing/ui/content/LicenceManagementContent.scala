@@ -24,7 +24,7 @@
 
 package com.magmanics.licensing.ui.content
 
-import com.magmanics.licensing.client.{ProductClient, ConfigurationClient}
+import com.magmanics.licensing.client.{ClientFactory, ProductClient, ConfigurationClient}
 import com.magmanics.licensing.ui.content.activation.{ActivationDetailTable, ActivationOverviewTable}
 import com.magmanics.licensing.ui.content.configuration.{ConfigurationDetailTable, ConfigurationInfo, ConfigurationOverviewTable}
 import com.magmanics.licensing.ui.content.customer.CustomerComboBox
@@ -36,8 +36,8 @@ import com.vaadin.ui._
  */
 class LicenceManagementContent extends MainContent {
 
-  val configurationClient = ConfigurationClient.client
-  val productClient = ProductClient.client
+  val configurationClient = ClientFactory.getConfigurationClient
+  val productClient = ClientFactory.getProductClient
 
   val configurationOverviewTable = new ConfigurationOverviewTable
   val configurationDetailTable = new ConfigurationDetailTable
