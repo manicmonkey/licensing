@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Licensing System</name>
+
+    <artifactId>licensing-system</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>com.magmanics.licensing</groupId>
+        <artifactId>licensing-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.magmanics.licensing</groupId>
+            <artifactId>licensing-server</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.magmanics.licensing</groupId>
+            <artifactId>licensing-ui-vaadin</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <profiles>
+        <profile>
+            <id>Run_Docker_System</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>copy-dependencies</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <stripVersion>true</stripVersion>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.magmanics.licensing</groupId>
+                                    <artifactId>licensing-server</artifactId>
+                                    <version>1.0-SNAPSHOT</version>
+                                    <packaging>war</packaging>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>com.magmanics.licensing</groupId>
+                                    <artifactId>licensing-ui-vaadin</artifactId>
+                                    <version>1.0-SNAPSHOT</version>
+                                    <packaging>war</packaging>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>com.alexecollins.docker</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>2.4.0</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>package</goal>
+                                    <goal>start</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <!-- your installed version -->
+                            <version>1.15</version>
+                            <!-- used for push -->
+                            <username>jbaxter</username>
+                            <email>j.w.baxter+licensing@gmail.com</email>
+                            <host>http://localhost:2375</host>
+                            <!-- remove images created by Dockerfile -->
+                            <removeIntermediateImages>false</removeIntermediateImages>
+                            <!-- do/do not cache images (default true), disable to get the freshest images -->
+                            <cache>true</cache>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>

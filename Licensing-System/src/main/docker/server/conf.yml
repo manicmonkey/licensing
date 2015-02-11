@@ -1,0 +1,15 @@
+# additional data require to create the Docker image
+packaging:
+  # files to add to the build, usually used with ADD in the Dockerfile
+  add:
+    - target/dependency/licensing-server.war
+# optional list of port to expose on the host
+#ports:
+#  - 8080
+#healthChecks:
+#  pings:
+#    - url: http://localhost:8080/health-check
+#      timeout: 60000
+#      pattern: pattern that must be in the body of the return value
+# tag to use for images
+tag: jbaxter/licensing-server:${project.artifactId}-${project.version}
