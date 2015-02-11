@@ -14,16 +14,21 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <aspectj.version>1.8.1</aspectj.version>
+        <jackson.version>2.4.1</jackson.version>
         <logback.version>1.1.2</logback.version>
+        <resteasy.version>3.0.7.Final</resteasy.version>
         <scala.version>2.10.4</scala.version>
-        <spring.version>4.0.5.RELEASE</spring.version>
+        <spring.version>4.1.4.RELEASE</spring.version>
         <slf4j.version>1.7.7</slf4j.version>
     </properties>
 
     <modules>
         <module>Auditing</module>
+        <module>Licensing-Client</module>
+        <module>Licensing-MockData</module>
         <module>Licensing-Model</module>
         <module>Licensing-Server</module>
+        <module>Licensing-System</module>
         <module>Licensing-UI</module>
         <module>Licensing-UI-AngularJS</module>
     </modules>
@@ -80,6 +85,11 @@
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
+                <artifactId>spring-context</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
                 <version>${spring.version}</version>
             </dependency>
@@ -119,6 +129,43 @@
                 <groupId>org.hibernate.javax.persistence</groupId>
                 <artifactId>hibernate-jpa-2.1-api</artifactId>
                 <version>1.0.0.Final</version>
+            </dependency>
+            <!-- REST -->
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>jaxrs-api</artifactId>
+                <version>${resteasy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-client</artifactId>
+                <version>${resteasy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.resteasy</groupId>
+                <artifactId>resteasy-jackson2-provider</artifactId>
+                <version>${resteasy.version}</version>
+            </dependency>
+            <!-- Jackson 2 JSON serialization -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.module</groupId>
+                <artifactId>jackson-module-scala_2.10</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

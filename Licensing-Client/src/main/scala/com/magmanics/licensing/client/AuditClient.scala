@@ -40,13 +40,3 @@ trait AuditClient {
   @Path("/messages")
   def getAuditMessages(auditSearch: AuditSearchDto): Seq[Audit]
 }
-
-object AuditClient {
-  lazy val client = {
-    val client = new ResteasyClientBuilder().build()
-      .register(classOf[JacksonScalaContextResolver])
-      .register(new BasicAuthentication("admin", "password"), 1)
-    val target = client.target("http://localhost:8080/rest/audits")
-    target.proxy(classOf[AuditClient])
-  }
-}

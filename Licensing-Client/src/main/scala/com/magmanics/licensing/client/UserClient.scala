@@ -19,13 +19,3 @@ trait UserClient {
   @POST
   def updateUser(user: User)
 }
-
-object UserClient {
-  lazy val client = {
-    val client = new ResteasyClientBuilder().build()
-      .register(classOf[JacksonScalaContextResolver])
-      .register(new BasicAuthentication("admin", "password"), 1)
-    val target = client.target("http://localhost:8080/rest/users")
-    target.proxy(classOf[UserClient])
-  }
-}

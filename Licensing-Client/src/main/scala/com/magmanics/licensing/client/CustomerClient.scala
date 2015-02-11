@@ -26,56 +26,30 @@ package com.magmanics.licensing.client
 import javax.ws.rs._
 import javax.ws.rs.core.MediaType
 
-import com.magmanics.licensing.model.Product
+import com.magmanics.licensing.model.Customer
 import org.jboss.resteasy.client.jaxrs.{BasicAuthentication, ResteasyClientBuilder}
 
 /**
- * REST Client for Licensing product endpoint
+ * REST Client for Licensing customer endpoint
  *
- * @author James Baxter - 19/08/2014.
+ * @author James Baxter - 16/08/2014.
  */
 @Consumes(Array(MediaType.APPLICATION_JSON, "application/*+json", "text/json"))
 @Produces(Array(MediaType.APPLICATION_JSON, "application/*+json", "text/json"))
-trait ProductClient {
+trait CustomerClient {
 
-  /**
-   * Create a Product, returning the persistent Product (id populated)
-   */
   @POST
-  def create(product: Product): Product
+  def create(customer: Customer): Customer
 
-  /**
-   * Update the given Product
-   */
+  @GET
+  def get(): Set[Customer]
+
+  @GET
+  def getEnabled(@QueryParam("enabled") enabled: Boolean): Set[Customer]
+
+  @GET
+  def get(@QueryParam("id") id: Long): Customer
+
   @PUT
-  def update(product: Product)
-
-  /**
-   * Returns enabled Products
-   */
-  @GET
-  @Path("?enabled=true")
-  def getEnabled: Seq[Product]
-
-  /**
-   * Returns all Products
-   */
-  @GET
-  def get(): Seq[Product]
-
-  /**
-   * Return the Product with the given id
-   */
-  @GET
-  def get(@QueryParam("id") id: Long): Option[Product]
-}
-
-object ProductClient {
-  lazy val client = {
-    val client = new ResteasyClientBuilder().build()
-      .register(classOf[JacksonScalaContextResolver])
-      .register(new BasicAuthentication("admin", "password"), 1)
-    val target = client.target("http://localhost:8080/rest/products")
-    target.proxy(classOf[ProductClient])
-  }
+  def update(customer: Customer)
 }
