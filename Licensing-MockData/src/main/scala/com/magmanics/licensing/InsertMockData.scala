@@ -1,11 +1,10 @@
 package com.magmanics.licensing
 
-import java.util.{UUID, Calendar}
+import java.util.{Calendar, UUID}
 
-import com.magmanics.auditing.model.{AuditCode, Audit}
-import com.magmanics.licensing.model.{Product => LicencedProduct, _}
+import com.magmanics.auditing.model.{Audit, AuditCode}
 import com.magmanics.licensing.client._
-import com.magmanics.licensing.model._
+import com.magmanics.licensing.model.{Product => LicencedProduct, _}
 
 import scala.collection.immutable
 
@@ -18,6 +17,16 @@ object InsertMockData extends App {
   val customerClient = ClientFactory.getCustomerClient
   val configurationClient = ClientFactory.getConfigurationClient
   val auditClient = ClientFactory.getAuditClient
+
+  var gotResponse: Boolean = false
+  while (!gotResponse) {
+    Thread.sleep(1000)
+    try {
+      gotResponse = customerClient.get().size >= 0
+    } catch {
+      case e: Exception => e.printStackTrace()
+    }
+  }
 
   val options = Set[ProductOption[_]](buildListProductOption("Printers", Set("10", "20", "40", "80", "160", "320"), "20"), buildRadioProductOption("PDF Signing", default = false), buildRadioProductOption("Schedule and Sort", default = true))
   val product = createProduct("JFinder", "Picks up files, strips hash commands and uploads to PDM", options = options, enabled = true)
